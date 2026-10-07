@@ -179,7 +179,7 @@ export const SFX: {scene: SceneId; f: number; sfx: SfxName; vol?: number}[] = [
   {scene: 'demo', f: 204, sfx: 'whooshSoft', vol: 0.4},
   {scene: 'result', f: 2, sfx: 'whooshSoft', vol: 0.45},
   ...[8, 18, 28, 38, 48].map((f) => ({scene: 'result' as const, f, sfx: 'tick' as const, vol: 0.4})),
-  ...[84, 106, 128].map((f) => ({scene: 'result' as const, f, sfx: 'whooshSoft' as const, vol: 0.4})),
+  ...[84, 105, 126].map((f) => ({scene: 'result' as const, f, sfx: 'whooshSoft' as const, vol: 0.4})),
   {scene: 'ending', f: 4, sfx: 'shimmer', vol: 0.5},
   ...[18, 30, 42].map((f) => ({scene: 'ending' as const, f, sfx: 'whooshSoft' as const, vol: 0.45})),
   {scene: 'ending', f: 44, sfx: 'impact', vol: 0.5},

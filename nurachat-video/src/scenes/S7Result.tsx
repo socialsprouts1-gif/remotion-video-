@@ -9,8 +9,8 @@ import {ease, mix, prog} from '../lib/anim';
 
 const ICONS: IconName[] = ['chat', 'sparkle', 'user', 'repeat', 'calendar'];
 const CARD_AT = [6, 16, 26, 36, 46];
-const RECEDE_AT = 76;
-const LINE_AT = [82, 104, 126];
+const RECEDE_AT = 68;
+const LINE_AT = [86, 107, 128];
 const POS = [
   {x: -150, y: 330},
   {x: 130, y: 530},
@@ -24,7 +24,7 @@ const H = 118;
 /** 36.5–42s. The whole system as floating cards, which then step back for the three outcomes. */
 export const S7Result: React.FC = () => {
   const frame = useCurrentFrame();
-  const recede = prog(frame, RECEDE_AT, 22, ease.inOut);
+  const recede = prog(frame, RECEDE_AT, 16, ease.inOut);
 
   // centre points for connectors (canvas coordinates)
   const centre = (i: number) => ({x: 540 + POS[i].x, y: POS[i].y + H / 2});
