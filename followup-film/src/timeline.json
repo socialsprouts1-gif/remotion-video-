@@ -3,67 +3,212 @@
   "duration": 50,
   "beats": {
     "leadAppear": 0.5,
-    "textLead": [1.0, 2.9],
-    "leadTravel": [1.4, 5.6],
+    "textLead": [
+      1.0,
+      2.9
+    ],
+    "leadTravel": [
+      1.4,
+      5.6
+    ],
     "rupeeAppear": 2.6,
-    "rupeeAbsorb": [5.0, 5.7],
+    "rupeeAbsorb": [
+      5.0,
+      5.7
+    ],
     "bizAppear": 4.4,
-    "cardOpen": [4.8, 5.6],
-    "typing": [6.0, 6.8],
+    "cardOpen": [
+      4.8,
+      5.6
+    ],
+    "typing": [
+      6.0,
+      6.8
+    ],
     "message": 6.8,
-    "silence": [7.6, 9.8],
-    "dive": [9.8, 10.7],
+    "silence": [
+      7.6,
+      9.8
+    ],
+    "dive": [
+      9.8,
+      10.7
+    ],
     "clockIn": 10.45,
-    "clockKeys": [[10.8, 1], [11.6, 15], [12.4, 60], [13.2, 300], [14.1, 3600], [15.0, 86400]],
+    "clockKeys": [
+      [
+        10.8,
+        1
+      ],
+      [
+        11.6,
+        15
+      ],
+      [
+        12.4,
+        60
+      ],
+      [
+        13.2,
+        300
+      ],
+      [
+        14.1,
+        3600
+      ],
+      [
+        15.0,
+        86400
+      ]
+    ],
     "clockOut": 16.35,
-    "weaken": [11.0, 16.3],
+    "weaken": [
+      11.0,
+      16.3
+    ],
     "snap": 16.45,
-    "toCompetitor": [16.6, 18.0],
+    "toCompetitor": [
+      16.6,
+      18.0
+    ],
     "competitorLink": 17.6,
-    "bizDim": [17.0, 18.0],
-    "lostText": [18.2, 21.0],
+    "bizDim": [
+      17.0,
+      18.0
+    ],
+    "lostText": [
+      18.2,
+      21.0
+    ],
     "lostPull": 19.7,
-    "streams": [21.8, 26.8],
-    "text100": [22.2, 24.4],
-    "textMissed": [24.6, 27.0],
-    "chaos": [27.0, 30.0],
+    "streams": [
+      21.8,
+      26.8
+    ],
+    "text100": [
+      22.2,
+      24.4
+    ],
+    "textMissed": [
+      24.6,
+      27.0
+    ],
+    "chaos": [
+      27.0,
+      30.0
+    ],
     "freeze": 30.0,
     "textNoLack": 30.3,
     "textSpeed": 31.5,
     "freezeOut": 32.6,
     "aiBloom": 32.8,
-    "reorganize": [32.9, 34.3],
-    "pipeline": [34.0, 36.6],
-    "lanes": [36.8, 41.0],
+    "reorganize": [
+      32.9,
+      34.3
+    ],
+    "pipeline": [
+      34.0,
+      36.6
+    ],
+    "lanes": [
+      36.8,
+      41.0
+    ],
     "laneBeat": 0.25,
     "laneStart": 37.0,
-    "ecosystem": [41.0, 43.6],
-    "converge": [43.6, 44.5],
+    "ecosystem": [
+      41.0,
+      43.6
+    ],
+    "converge": [
+      43.6,
+      44.5
+    ],
     "textStart": 44.6,
     "textConvert": 46.2,
     "final": 47.9,
     "bpm": 120
   },
   "voiceover": [
-    [0.9, "एक lead."],
-    [2.3, "जिसके लिए आपने पैसे दिए हैं।"],
-    [5.3, "वो आपको WhatsApp पर message करता है…"],
-    [8.4, "…और जवाब? कुछ नहीं।"],
-    [10.7, "एक minute। पंद्रह minute। एक घंटा।"],
-    [14.2, "पूरा दिन।"],
-    [15.1, "जितना इंतज़ार, connection उतना कमज़ोर।"],
-    [17.0, "और customer… किसी और के पास चला गया।"],
-    [21.6, "अब इसे सौ leads से multiply कीजिए।"],
-    [24.6, "हर missed follow-up — revenue जो आप खो रहे हैं।"],
-    [27.2, "Leads आते रहते हैं… messages आते रहते हैं…"],
-    [30.3, "Leads की कमी नहीं है।"],
-    [31.5, "Follow-up की speed की कमी है।"],
-    [33.0, "अब सोचिए — हर lead को instant response मिले।"],
-    [35.0, "AI qualify करे, follow-up करे, booking तक ले जाए।"],
-    [37.4, "Question हो, interest हो, या silence — हर lead को सही रास्ता। Automatically।"],
-    [41.6, "पूरा system… connected।"],
-    [44.6, "Lead मिलना शुरुआत है।"],
-    [46.2, "Follow-up ही conversion बनाता है।"],
-    [48.2, "Automate your follow-up."]
+    [
+      0.9,
+      "One lead."
+    ],
+    [
+      2.3,
+      "One you've already paid for."
+    ],
+    [
+      5.3,
+      "They message you on WhatsApp…"
+    ],
+    [
+      8.4,
+      "…and the reply? Nothing."
+    ],
+    [
+      10.7,
+      "A minute. Fifteen minutes. An hour."
+    ],
+    [
+      14.2,
+      "A whole day."
+    ],
+    [
+      15.1,
+      "The longer you wait, the weaker the connection."
+    ],
+    [
+      17.0,
+      "And the customer… goes to someone else."
+    ],
+    [
+      21.6,
+      "Now multiply that by a hundred leads."
+    ],
+    [
+      24.6,
+      "Every missed follow-up is revenue you're losing."
+    ],
+    [
+      27.2,
+      "Leads keep coming. Messages keep coming…"
+    ],
+    [
+      30.3,
+      "Leads aren't the problem."
+    ],
+    [
+      31.5,
+      "Follow-up speed is."
+    ],
+    [
+      33.0,
+      "Now imagine every lead gets an instant response."
+    ],
+    [
+      35.0,
+      "AI qualifies them, follows up, and takes them all the way to a booking."
+    ],
+    [
+      37.4,
+      "A question, real interest, or silence — every lead finds the right path. Automatically."
+    ],
+    [
+      41.6,
+      "One system… fully connected."
+    ],
+    [
+      44.6,
+      "Getting the lead is the beginning."
+    ],
+    [
+      46.2,
+      "The follow-up is the conversion."
+    ],
+    [
+      48.2,
+      "Automate your follow-up."
+    ]
   ]
 }

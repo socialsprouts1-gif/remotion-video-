@@ -9,3 +9,9 @@ export const AUDIO = {
   // How far the score drops when a voiceover is present.
   duckUnderVoice: 0.6,
 };
+
+/** Currency glyph on the ad-spend token and the falling lost-revenue particles. */
+export const CURRENCY = '$';
+
+/** Logo file in public/ (square, black background — it is screen-blended so the black drops out). */
+export const LOGO = 'brand/logo.png';

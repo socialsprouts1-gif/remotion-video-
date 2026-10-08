@@ -1,5 +1,6 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, Img, staticFile} from 'remotion';
+import {LOGO} from '../config';
 import {B, CLOCK_KEYS} from '../timeline';
 import {C, FONT} from '../theme';
 import {ease, lerp, pt, rand} from '../lib/anim';
@@ -199,13 +200,44 @@ const FinalLine: React.FC<{t: number}> = ({t}) => {
 const Final: React.FC<{t: number}> = ({t}) => {
   const f = B.final;
   const cta = pt(t, f + 0.9, f + 1.5);
+  const lg = pt(t, f + 0.45, f + 1.25, ease.out);
+  const sweep = pt(t, f + 0.9, f + 1.9, ease.inOut);
   return (
     <>
       <FinalLine t={t} />
-      <Words t={t} text="Lead मिलना" at={B.textStart} out={f - 0.35} size={104} y={720} dim={pt(t, B.textConvert, B.textConvert + 0.5)} />
-      <Words t={t} text="शुरुआत है." at={B.textStart + 0.18} out={f - 0.35} size={104} y={850} dim={pt(t, B.textConvert, B.textConvert + 0.5)} />
-      <Words t={t} text="Follow-up ही" at={B.textConvert} out={f - 0.35} size={92} y={1080} />
-      <Words t={t} text="*conversion* बनाता है." at={B.textConvert + 0.2} out={f - 0.35} size={92} y={1200} />
+      {lg > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 540 - 250,
+            top: 450 - 250,
+            width: 500,
+            height: 500,
+            opacity: lg,
+            transform: `scale(${lerp(0.82, 1, lg)})`,
+            filter: `blur(${(1 - lg) * 14}px)`,
+            mixBlendMode: 'screen',
+            WebkitMaskImage: 'radial-gradient(circle, black 55%, transparent 72%)',
+            maskImage: 'radial-gradient(circle, black 55%, transparent 72%)',
+          }}
+        >
+          <Img src={staticFile(LOGO)} style={{width: '100%', height: '100%'}} />
+          {/* one light sweep across the mark */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%)',
+              transform: `translateX(${lerp(-70, 70, sweep)}%)`,
+              opacity: sweep > 0 && sweep < 1 ? 1 : 0,
+            }}
+          />
+        </div>
+      )}
+      <Words t={t} text="Getting the lead" at={B.textStart} out={f - 0.35} size={88} y={720} dim={pt(t, B.textConvert, B.textConvert + 0.5)} />
+      <Words t={t} text="is the beginning." at={B.textStart + 0.18} out={f - 0.35} size={88} y={840} dim={pt(t, B.textConvert, B.textConvert + 0.5)} />
+      <Words t={t} text="The follow-up" at={B.textConvert} out={f - 0.35} size={88} y={1080} />
+      <Words t={t} text="is the *conversion.*" at={B.textConvert + 0.2} out={f - 0.35} size={88} y={1200} />
       <Words t={t} text="AUTOMATE" at={f + 0.1} size={132} y={760} stagger={0} />
       <Words t={t} text="YOUR" at={f + 0.22} size={132} y={915} stagger={0} />
       <Words t={t} text="*FOLLOW-UP.*" at={f + 0.34} size={132} y={1070} stagger={0} />
@@ -238,19 +270,19 @@ const Final: React.FC<{t: number}> = ({t}) => {
 // ------------------------------------------------------------------ all screen-space type
 export const Hud: React.FC<{t: number}> = ({t}) => (
   <AbsoluteFill style={{pointerEvents: 'none'}}>
-    <Words t={t} text="एक *Lead.*" at={B.textLead[0]} out={B.textLead[1] - 0.4} size={128} y={600} />
+    <Words t={t} text="One *lead.*" at={B.textLead[0]} out={B.textLead[1] - 0.4} size={128} y={600} />
     <Clock t={t} />
     <LeadLost t={t} />
     {/* 100 leads */}
     <Words t={t} text="*100*" at={B.text100[0]} out={B.text100[1] - 0.4} size={168} y={300} />
     <Words t={t} text="LEADS" at={B.text100[0] + 0.12} out={B.text100[1] - 0.4} size={56} weight={700} color={C.metal} y={430} />
-    <Words t={t} text="हर missed follow-up" at={B.textMissed[0]} out={B.textMissed[1] - 0.45} size={70} y={1560} />
+    <Words t={t} text="Every missed follow-up" at={B.textMissed[0]} out={B.textMissed[1] - 0.45} size={70} y={1560} />
     <Words t={t} text="= potential *revenue* lost." at={B.textMissed[0] + 0.35} out={B.textMissed[1] - 0.45} size={52} weight={600} color={C.metal} y={1665} />
     {/* the freeze */}
-    <Words t={t} text="Leads की" at={B.textNoLack} out={B.freezeOut} size={104} y={640} dim={pt(t, B.textSpeed, B.textSpeed + 0.4) * 0.6} />
-    <Words t={t} text="कमी नहीं है." at={B.textNoLack + 0.15} out={B.freezeOut} size={104} y={775} dim={pt(t, B.textSpeed, B.textSpeed + 0.4) * 0.6} />
-    <Words t={t} text="Follow-up की" at={B.textSpeed} out={B.freezeOut} size={104} y={1010} />
-    <Words t={t} text="*speed* की कमी है." at={B.textSpeed + 0.15} out={B.freezeOut} size={104} y={1145} />
+    <Words t={t} text="Leads aren't" at={B.textNoLack} out={B.freezeOut} size={104} y={640} dim={pt(t, B.textSpeed, B.textSpeed + 0.4) * 0.6} />
+    <Words t={t} text="the problem." at={B.textNoLack + 0.15} out={B.freezeOut} size={104} y={775} dim={pt(t, B.textSpeed, B.textSpeed + 0.4) * 0.6} />
+    <Words t={t} text="Follow-up" at={B.textSpeed} out={B.freezeOut} size={104} y={1010} />
+    <Words t={t} text="*speed* is." at={B.textSpeed + 0.15} out={B.freezeOut} size={104} y={1145} />
     <Final t={t} />
   </AbsoluteFill>
 );

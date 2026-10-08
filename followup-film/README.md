@@ -1,6 +1,6 @@
 # The cost of a slow follow-up — cinematic network film
 
-A 50-second vertical (1080 × 1920, 30 fps) Hindi brand film for **NEURAXINE AI AUTOMATION**, built in Remotion.
+A 50-second vertical (1080 × 1920, 30 fps) English brand film for **NEURAXINE AI AUTOMATION**, built in Remotion.
 Everything happens inside one connected network that a single camera flies through. Scenes are framings of the same world, not cuts.
 
 ```bash
@@ -17,15 +17,15 @@ For review frames: `node scripts/stills.mjs 30 300 900` → `out/stills/`.
 
 | Time | Beat | What the network does |
 |------|------|-----------------------|
-| 0–5.6s | एक Lead. | A single lime node lights up in darkness and travels; a ₹ AD SPEND token is tethered to it and gets absorbed |
-| 5.6–10s | The message | The lead lands in the business's inbox and becomes the customer: typing… "Hi, मुझे आपकी service के बारे में जानना है." Then nothing, with real silence |
+| 0–5.6s | One lead. | A single lime node lights up in darkness and travels; a $ AD SPEND token is tethered to it and gets absorbed |
+| 5.6–10s | The message | The lead lands in the business's inbox and becomes the customer: typing… "Hi, I'd like to know more about your service." Then nothing, with real silence |
 | 10–16.4s | Time | The camera dives into the timestamp, which becomes the clock (00:00:01 → 24:00:00). The business↔customer link thins, breaks into dashes and flickers while the customer drifts away |
 | 16.4–21s | Lost | The link snaps; the customer flies to a competitor node; your node goes dark; LEAD LOST, with "LOST" pulled away through the network |
-| 21–27s | 100 leads | A hundred leads stream in. Some arrive and become revenue; others break mid-path and their ₹ falls into the dark. The meter shows potential vs actual with no numbers |
-| 27–32.8s | It multiplies | Hundreds of nodes and messages, chaos, then a hard freeze (sound cuts on the frame): "Leads की कमी नहीं है. / Follow-up की speed की कमी है." |
+| 21–27s | 100 leads | A hundred leads stream in. Some arrive and become revenue; others break mid-path and their $ falls into the dark. The meter shows potential vs actual with no numbers |
+| 27–32.8s | It multiplies | Hundreds of nodes and messages, chaos, then a hard freeze (sound cuts on the frame): "Leads aren't the problem. / Follow-up speed is." |
 | 32.8–37s | AI | Your node blooms into the AI core; the chaos is pulled into a pipeline LEAD → INSTANT RESPONSE → AI QUALIFICATION → FOLLOW-UP → BOOKING → REVENUE; lime propagates through the whole network |
 | 37–41s | Routed | Leads drop in on the beat and are routed into four lanes: question→AI response, interest→qualification, ready→booking, no response→follow-up |
-| 41–50s | The system | Pull back to the whole ecosystem, which converges into one glowing line: "Lead मिलना शुरुआत है." → "Follow-up ही conversion बनाता है." → AUTOMATE YOUR FOLLOW-UP. |
+| 41–50s | The system | Pull back to the whole ecosystem, which converges into one glowing line: "Getting the lead is the beginning." → "The follow-up is the conversion." → logo + AUTOMATE YOUR FOLLOW-UP. |
 
 ## How it is built
 
@@ -38,4 +38,5 @@ For review frames: `node scripts/stills.mjs 30 300 900` → `out/stills/`.
 - `scripts/make_score.py` — the score and sound design. It reads the timeline and re-creates the 100-leads randomness so each conversion pluck and broken-stream glitch lands on its frame.
 
 Colour discipline: lime is used only for active connections, the lead/customer, revenue, the AI and the CTA. Everything else is white, grey and black.
-Type: Poppins (SIL OFL), which carries Devanagari and Latin in one geometric voice.
+Type: Poppins (SIL OFL), a geometric sans.
+Brand: the logo is `public/brand/logo.png`, screen-blended so its black background drops out. The currency glyph is `CURRENCY` in `src/config.ts`.

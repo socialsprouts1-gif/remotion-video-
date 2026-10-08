@@ -21,6 +21,7 @@ import {
   stagePos,
   STAMP,
 } from '../world';
+import {CURRENCY} from '../config';
 import {frozen} from './Field';
 import {Dot, Label, Link, Trail} from './prims';
 
@@ -43,7 +44,7 @@ export const Lead: React.FC<P> = ({t, cam}) => {
   const ring = ((t - B.leadAppear) % 1.4) / 1.4;
   const flash = pt(t, B.leadAppear, B.leadAppear + 1.1);
 
-  // ₹ AD SPEND tether
+  // AD SPEND tether
   const rp = rupeePos(t);
   const rIn = pt(t, B.rupeeAppear, B.rupeeAppear + 0.5);
   const rOut = 1 - pt(t, B.rupeeAbsorb[0] + 0.3, B.rupeeAbsorb[1]);
@@ -70,7 +71,7 @@ export const Lead: React.FC<P> = ({t, cam}) => {
           <circle cx={rp.x} cy={rp.y} r={34 * (0.6 + 0.4 * rIn)} fill="rgba(8,10,9,0.92)" stroke={C.metal} strokeWidth={2} />
           <circle cx={rp.x} cy={rp.y} r={110} fill="url(#gWhite)" opacity={0.35} />
           <text x={rp.x} y={rp.y + 2} fontFamily={FONT} fontWeight={700} fontSize={38} fill={C.white} textAnchor="middle" dominantBaseline="middle">
-            ₹
+            {CURRENCY}
           </text>
           <Label p={{x: rp.x, y: rp.y + 62}} text="AD SPEND" z={cam.z} size={20} color={C.metal} o={pt(t, B.rupeeAppear + 0.3, B.rupeeAppear + 0.8)} />
         </g>
@@ -111,7 +112,7 @@ export const Business: React.FC<P> = ({t, cam}) => {
   );
 };
 
-const MSG = ['Hi, मुझे आपकी service', 'के बारे में जानना है.'];
+const MSG = ["Hi, I'd like to know more", 'about your service.'];
 
 export const Inbox: React.FC<P> = ({t, cam}) => {
   if (t < B.cardOpen[0] || t > 10.8) return null;
@@ -325,7 +326,7 @@ export const Streams: React.FC<P> = ({t, cam}) => {
               <path d={`M ${s.a.x} ${s.a.y} Q ${s.c.x} ${s.c.y} ${BIZ.x} ${BIZ.y}`} pathLength={1} strokeDasharray={`${s.brk} 1`} stroke="rgba(200,206,202,0.12)" strokeWidth={2 * m} fill="none" />
               <circle cx={pos.x} cy={pos.y} r={7 * m} fill={C.grey} />
               <text x={pos.x + 16 * m} y={pos.y} fontFamily={FONT} fontWeight={700} fontSize={22 * m} fill={C.grey2} dominantBaseline="middle">
-                ₹
+                {CURRENCY}
               </text>
             </g>
           );
