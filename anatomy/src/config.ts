@@ -25,4 +25,4 @@ export const AUDIO = {
 };
 
 /** Multi-sample camera motion blur (renders `samples`× slower). Set samples to 1 for fast drafts. */
-export const BLUR = {shutterAngle: 200, samples: 6};
+export const BLUR = {shutterAngle: 200, samples: 1};
