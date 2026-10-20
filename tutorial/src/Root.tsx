@@ -1,0 +1,8 @@
+import React from 'react';
+import {Composition} from 'remotion';
+import {FPS, T} from './data';
+import {Film} from './Film';
+
+export const RemotionRoot: React.FC = () => (
+  <Composition id="Tutorial" component={Film} durationInFrames={T.duration * FPS} fps={FPS} width={1920} height={1080} />
+);

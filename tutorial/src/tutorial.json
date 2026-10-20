@@ -1,0 +1,842 @@
+{
+ "fps": 30,
+ "duration": 182,
+ "intro": [
+  0,
+  11
+ ],
+ "outro": [
+  170,
+  182
+ ],
+ "chapters": [
+  {
+   "n": 1,
+   "title": "Explore the homepage",
+   "at": 11
+  },
+  {
+   "n": 2,
+   "title": "See the integrations",
+   "at": 39
+  },
+  {
+   "n": 3,
+   "title": "Start your free trial",
+   "at": 61
+  },
+  {
+   "n": 4,
+   "title": "Your dashboard",
+   "at": 92
+  },
+  {
+   "n": 5,
+   "title": "Connect your WhatsApp number",
+   "at": 121
+  }
+ ],
+ "chapterCard": 3,
+ "shots": [
+  {
+   "id": "home",
+   "chapter": 1,
+   "start": 14,
+   "dur": 25,
+   "kind": "image",
+   "src": "screens/home.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      1000,
+      565,
+      0
+     ],
+     "caption": "This is the Neura Chat homepage: neurachat.in"
+    },
+    {
+     "t": 3.5,
+     "cam": [
+      420,
+      420,
+      1.35
+     ],
+     "hl": [
+      86,
+      266,
+      734,
+      554
+     ],
+     "label": "WHAT IT DOES",
+     "caption": "Neura Chat turns WhatsApp into your sales machine: AI replies, campaigns and follow-ups, with no code."
+    },
+    {
+     "t": 8.5,
+     "cam": [
+      420,
+      900,
+      1.5
+     ],
+     "hl": [
+      88,
+      878,
+      737,
+      1024
+     ],
+     "label": "KEY FEATURES",
+     "caption": "AI chatbots, bulk campaigns, a built-in CRM, auto follow-ups and analytics."
+    },
+    {
+     "t": 13.5,
+     "cam": [
+      1371,
+      600,
+      1.15
+     ],
+     "hl": [
+      1172,
+      230,
+      1570,
+      966
+     ],
+     "label": "LIVE PREVIEW",
+     "caption": "On the right: what an AI conversation looks like to your customer on WhatsApp."
+    },
+    {
+     "t": 18.5,
+     "cam": [
+      880,
+      120,
+      1.35
+     ],
+     "hl": [
+      556,
+      24,
+      1214,
+      72
+     ],
+     "label": "MENU",
+     "caption": "The menu takes you to Features, Pricing, Use Cases, Integrations and Docs."
+    },
+    {
+     "t": 22,
+     "cam": [
+      1000,
+      565,
+      0
+     ],
+     "caption": "Next, let's see what Neura Chat connects with."
+    }
+   ]
+  },
+  {
+   "id": "integrations-home",
+   "chapter": 2,
+   "start": 42,
+   "dur": 19,
+   "kind": "image",
+   "src": "screens/integrations-home.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in/#integrations",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      1000,
+      565,
+      0
+     ],
+     "caption": "Scroll down to Integrations: Neura Chat connects with your entire stack."
+    },
+    {
+     "t": 3,
+     "cam": [
+      500,
+      520,
+      1.45
+     ],
+     "hl": [
+      88,
+      426,
+      685,
+      622
+     ],
+     "label": "WHATSAPP CLOUD API",
+     "caption": "It runs on the official WhatsApp Cloud API, through Meta's Business Platform."
+    },
+    {
+     "t": 7,
+     "cam": [
+      1150,
+      520,
+      1.4
+     ],
+     "hl": [
+      701,
+      426,
+      1605,
+      622
+     ],
+     "label": "AI REPLIES",
+     "caption": "AI replies can be powered by Claude, OpenAI or Gemini."
+    },
+    {
+     "t": 11,
+     "cam": [
+      1000,
+      735,
+      0.95
+     ],
+     "hl": [
+      88,
+      632,
+      1912,
+      832
+     ],
+     "label": "COMMERCE & PAYMENTS",
+     "caption": "Shopify and WooCommerce for orders, Razorpay and Stripe for payments, plus shipping, Sheets and CRM sync."
+    },
+    {
+     "t": 15,
+     "cam": [
+      1000,
+      900,
+      0.95
+     ],
+     "hl": [
+      88,
+      848,
+      1912,
+      1044
+     ],
+     "label": "AUTOMATION",
+     "caption": "And Zapier, n8n, Calendly, Twilio and webhooks for everything else."
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "chapter": 3,
+   "start": 64,
+   "dur": 7.5,
+   "kind": "image",
+   "src": "screens/home.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      1000,
+      565,
+      0
+     ],
+     "caption": "Ready? On the homepage, click 'Start 7-day free trial'."
+    },
+    {
+     "t": 2,
+     "cam": [
+      1560,
+      200,
+      1.6
+     ],
+     "hl": [
+      1598,
+      11,
+      1912,
+      85
+     ],
+     "label": "CLICK HERE",
+     "cursor": [
+      1755,
+      50
+     ],
+     "click": 4.4,
+     "caption": "Ready? On the homepage, click 'Start 7-day free trial'."
+    }
+   ],
+   "exit": "zoomThrough"
+  },
+  {
+   "id": "register",
+   "chapter": 3,
+   "start": 71.5,
+   "dur": 20.5,
+   "kind": "image",
+   "src": "screens/register.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in/auth/register",
+   "enter": "zoomThrough",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      1000,
+      565,
+      0
+     ],
+     "caption": "The sign-up page opens. Create your account in three quick steps."
+    },
+    {
+     "t": 3,
+     "cam": [
+      1450,
+      330,
+      1.45
+     ],
+     "hl": [
+      1186,
+      261,
+      1694,
+      314
+     ],
+     "label": "3 STEPS",
+     "caption": "1. Personal details   2. Verify your number   3. Set a password."
+    },
+    {
+     "t": 7,
+     "cam": [
+      1450,
+      420,
+      1.35
+     ],
+     "hl": [
+      1186,
+      344,
+      1713,
+      412
+     ],
+     "label": "ONE CLICK",
+     "cursor": [
+      1460,
+      378
+     ],
+     "caption": "Sign up with Google in one click, or fill in your details below."
+    },
+    {
+     "t": 10,
+     "cam": [
+      1450,
+      640,
+      1.3
+     ],
+     "hl": [
+      1186,
+      527,
+      1713,
+      600
+     ],
+     "label": "YOUR NAME",
+     "cursor": [
+      1300,
+      563
+     ],
+     "caption": "Enter your first and last name,"
+    },
+    {
+     "t": 12.3,
+     "cam": [
+      1450,
+      680,
+      1.3
+     ],
+     "hl": [
+      1186,
+      647,
+      1713,
+      719
+     ],
+     "label": "WORK EMAIL",
+     "cursor": [
+      1400,
+      683
+     ],
+     "caption": "your work email,"
+    },
+    {
+     "t": 14.3,
+     "cam": [
+      1450,
+      760,
+      1.3
+     ],
+     "hl": [
+      1186,
+      767,
+      1713,
+      839
+     ],
+     "label": "COMPANY",
+     "cursor": [
+      1400,
+      803
+     ],
+     "caption": "and your company name."
+    },
+    {
+     "t": 16.3,
+     "cam": [
+      1450,
+      800,
+      1.3
+     ],
+     "hl": [
+      1186,
+      854,
+      1713,
+      931
+     ],
+     "label": "CONTINUE",
+     "cursor": [
+      1450,
+      892
+     ],
+     "click": 17.6,
+     "caption": "Click Continue, verify your number, set a password, and you're in."
+    }
+   ]
+  },
+  {
+   "id": "dashboard",
+   "chapter": 4,
+   "start": 95,
+   "dur": 26,
+   "kind": "image",
+   "src": "screens/dashboard.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in/overview",
+   "blur": [
+    [
+     1568,
+     22,
+     1842,
+     66
+    ]
+   ],
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      1000,
+      565,
+      0
+     ],
+     "caption": "Welcome to your dashboard: your whole WhatsApp business in one place."
+    },
+    {
+     "t": 3,
+     "cam": [
+      1160,
+      370,
+      1.05
+     ],
+     "hl": [
+      367,
+      127,
+      1960,
+      604
+     ],
+     "label": "OVERVIEW",
+     "caption": "The overview shows that your number is connected and how many bots are running."
+    },
+    {
+     "t": 7.5,
+     "cam": [
+      800,
+      430,
+      1.55
+     ],
+     "hl": [
+      409,
+      389,
+      1186,
+      466
+     ],
+     "label": "LAST 14 DAYS",
+     "caption": "Messages sent and received, open conversations, and the share answered automatically."
+    },
+    {
+     "t": 12,
+     "cam": [
+      1160,
+      750,
+      0.95
+     ],
+     "hl": [
+      367,
+      631,
+      1960,
+      877
+     ],
+     "label": "AT A GLANCE",
+     "caption": "Quick cards for messages, contacts and active bots."
+    },
+    {
+     "t": 16,
+     "cam": [
+      420,
+      420,
+      1.15
+     ],
+     "hl": [
+      13,
+      139,
+      312,
+      627
+     ],
+     "label": "YOUR TOOLS",
+     "caption": "The sidebar has it all: Inbox, WhatsApp Numbers, Leads, Drip Campaigns, Reminders, Appointments..."
+    },
+    {
+     "t": 20.5,
+     "cam": [
+      420,
+      760,
+      1.3
+     ],
+     "hl": [
+      13,
+      822,
+      312,
+      880
+     ],
+     "label": "INTEGRATIONS",
+     "cursor": [
+      130,
+      851
+     ],
+     "click": 23.2,
+     "caption": "To connect your WhatsApp number, open Integrations."
+    }
+   ]
+  },
+  {
+   "id": "integrations-dash",
+   "chapter": 5,
+   "start": 124,
+   "dur": 10,
+   "kind": "image",
+   "src": "screens/integrations-dash.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in/integrations",
+   "blur": [
+    [
+     1568,
+     22,
+     1842,
+     66
+    ]
+   ],
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      628,
+      400,
+      1.3
+     ],
+     "hl": [
+      368,
+      139,
+      888,
+      656
+     ],
+     "label": "WHATSAPP BUSINESS",
+     "caption": "Find the WhatsApp Business card."
+    },
+    {
+     "t": 3,
+     "cam": [
+      628,
+      470,
+      1.6
+     ],
+     "hl": [
+      395,
+      424,
+      854,
+      539
+     ],
+     "label": "GOOD TO KNOW",
+     "caption": "A number can be on the WhatsApp app or the Cloud API, not both. Moving it over clears its chat history on the phone."
+    },
+    {
+     "t": 7.2,
+     "cam": [
+      700,
+      520,
+      1.6
+     ],
+     "hl": [
+      668,
+      564,
+      860,
+      629
+     ],
+     "label": "CONFIGURE",
+     "cursor": [
+      764,
+      597
+     ],
+     "click": 9.0,
+     "caption": "Click Configure."
+    }
+   ]
+  },
+  {
+   "id": "modal",
+   "chapter": 5,
+   "start": 134,
+   "dur": 8,
+   "kind": "image",
+   "src": "rec/modal.png",
+   "w": 1920,
+   "h": 1092,
+   "url": "neurachat.in/integrations",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      960,
+      545,
+      1.15
+     ],
+     "hl": [
+      553,
+      427,
+      1366,
+      775
+     ],
+     "label": "CONNECT THROUGH META",
+     "caption": "Choose 'Connect through Meta'. Meta walks you through it; no IDs or tokens to copy."
+    },
+    {
+     "t": 4,
+     "cam": [
+      890,
+      560,
+      1.45
+     ],
+     "hl": [
+      576,
+      588,
+      1201,
+      656
+     ],
+     "label": "PICK ONE",
+     "caption": "'Connect WhatsApp' keeps an existing WhatsApp Business number. 'Use a brand new number' is for a fresh one."
+    }
+   ]
+  },
+  {
+   "id": "click-connect",
+   "chapter": 5,
+   "start": 142,
+   "dur": 2.4,
+   "kind": "video",
+   "src": "rec/a-modal-click.mp4",
+   "w": 1920,
+   "h": 1092,
+   "url": "neurachat.in/integrations",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      890,
+      560,
+      1.45
+     ],
+     "hl": [
+      576,
+      588,
+      886,
+      656
+     ],
+     "label": "CONNECT WHATSAPP",
+     "click": 2.0,
+     "caption": "Click 'Connect WhatsApp'."
+    }
+   ]
+  },
+  {
+   "id": "opening-meta",
+   "chapter": 5,
+   "start": 144.4,
+   "dur": 2.1,
+   "kind": "video",
+   "src": "rec/b-opening-meta.mp4",
+   "w": 1920,
+   "h": 1092,
+   "url": "facebook.com",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      960,
+      546,
+      0
+     ],
+     "caption": "Meta opens in a new window."
+    }
+   ]
+  },
+  {
+   "id": "consent",
+   "chapter": 5,
+   "start": 146.5,
+   "dur": 2.5,
+   "kind": "video",
+   "src": "rec/c-consent.mp4",
+   "w": 1920,
+   "h": 1092,
+   "url": "facebook.com",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      960,
+      515,
+      0.95
+     ],
+     "hl": [
+      1180,
+      880,
+      1310,
+      935
+     ],
+     "label": "CONTINUE",
+     "click": 1.75,
+     "caption": "Log in with Facebook and click Continue to link your Meta business account."
+    }
+   ]
+  },
+  {
+   "id": "phone",
+   "chapter": 5,
+   "start": 149,
+   "dur": 8.5,
+   "kind": "image",
+   "src": "rec/phone.png",
+   "w": 1920,
+   "h": 1092,
+   "url": "facebook.com",
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      960,
+      450,
+      1.25
+     ],
+     "hl": [
+      592,
+      190,
+      1328,
+      252
+     ],
+     "label": "ADD YOUR NUMBER",
+     "caption": "Now add your WhatsApp phone number."
+    },
+    {
+     "t": 2.5,
+     "cam": [
+      990,
+      360,
+      1.6
+     ],
+     "hl": [
+      676,
+      296,
+      1310,
+      404
+     ],
+     "label": "NUMBER",
+     "caption": "Choose 'Enter a new phone number', pick your country code and type the number."
+    },
+    {
+     "t": 5.5,
+     "cam": [
+      900,
+      440,
+      1.6
+     ],
+     "hl": [
+      676,
+      420,
+      1005,
+      494
+     ],
+     "label": "VERIFY",
+     "caption": "Choose how to get your verification code: text message or phone call. Then click Next."
+    }
+   ]
+  },
+  {
+   "id": "connected",
+   "chapter": 5,
+   "start": 163,
+   "dur": 7,
+   "kind": "image",
+   "src": "screens/integrations-dash.png",
+   "w": 2000,
+   "h": 1131,
+   "url": "neurachat.in/integrations",
+   "blur": [
+    [
+     1568,
+     22,
+     1842,
+     66
+    ]
+   ],
+   "steps": [
+    {
+     "t": 0,
+     "cam": [
+      628,
+      300,
+      1.4
+     ],
+     "hl": [
+      716,
+      164,
+      864,
+      214
+     ],
+     "label": "CONNECTED",
+     "caption": "Back in Neura Chat, WhatsApp Business now shows Connected. You're live."
+    }
+   ]
+  }
+ ],
+ "verify": {
+  "at": 157.5,
+  "dur": 5.5,
+  "steps": [
+   {
+    "t": 0,
+    "title": "Enter the 6-digit code",
+    "sub": "Meta sends it by SMS or call"
+   },
+   {
+    "t": 1.9,
+    "title": "Confirm in Meta",
+    "sub": "Finish the remaining prompts"
+   },
+   {
+    "t": 3.6,
+    "title": "You're connected",
+    "sub": "Neura Chat receives your number automatically"
+   }
+  ]
+ }
+}
