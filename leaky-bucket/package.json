@@ -1,0 +1,23 @@
+{
+  "name": "leaky-bucket",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neura Chat \u2014 \"Your WhatsApp is a leaky bucket\" illustrated explainer (Remotion, 1080x1920)",
+  "scripts": {
+    "studio": "remotion studio",
+    "score": "python3 scripts/make_score.py",
+    "render": "remotion render BucketEN out/bucket-en.mp4 && remotion render BucketHI out/bucket-hi.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "@remotion/media-utils": "4.0.534",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.6.3"
+  }
+}

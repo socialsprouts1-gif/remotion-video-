@@ -1,0 +1,58 @@
+{
+  "fps": 30,
+  "duration": 55,
+  "bpm": 104,
+  "scenes": {
+    "pour": [0, 4.0],
+    "holes": [4.0, 8.0],
+    "hole1": [8.0, 12.0],
+    "hole2": [12.0, 16.0],
+    "hole3": [16.0, 20.0],
+    "more": [20.0, 23.5],
+    "fix": [23.5, 27.0],
+    "patch": [27.0, 37.0],
+    "stays": [37.0, 42.0],
+    "same": [42.0, 46.0],
+    "cta": [46.0, 49.5],
+    "end": [49.5, 55.0]
+  },
+  "patchAt": [27.0, 30.3, 33.6],
+  "copy": {
+    "en": {
+      "pour": {"k": "Every day, leads pour into", "h": ["your *WhatsApp.*"], "c": "Every day, new leads pour into your WhatsApp."},
+      "holes": {"k": "But your bucket", "h": ["has *holes.*"], "c": "But your bucket has holes, and leads leak out."},
+      "hole1": {"k": "Hole 1:", "h": ["*Late* replies."], "c": "Hole 1: customers wait, then leave.", "label": "NO REPLY", "chat": "Hello?? Anyone there?", "wait": "3 hrs"},
+      "hole2": {"k": "Hole 2:", "h": ["*Forgotten* follow-ups."], "c": "Hole 2: the follow-up you meant to send.", "label": "NO FOLLOW-UP", "note": "Call back Rahul, Monday", "miss": "missed"},
+      "hole3": {"k": "Hole 3:", "h": ["Leads *lost* in chats."], "c": "Hole 3: hot leads buried under hundreds of chats.", "label": "LOST LEAD", "hot": "HOT LEAD · buried"},
+      "more": {"k": "So you pour", "h": ["*more ads.*"], "c": "So you spend more on ads, and it leaks just as fast.", "tap": "+ ADS"},
+      "fix": {"k": "Don't pour more.", "h": ["*Fix* the bucket."], "c": "Don't pour more. Fix the bucket."},
+      "patches": [
+        {"k": "Patch 1:", "h": ["*AI replies* 24/7"], "c": "Patch 1: AI replies to every message, day or night.", "tag": "AI REPLIES"},
+        {"k": "Patch 2:", "h": ["*Auto* follow-ups"], "c": "Patch 2: follow-ups go out on their own.", "tag": "FOLLOW-UPS"},
+        {"k": "Patch 3:", "h": ["Every lead *tagged*"], "c": "Patch 3: a built-in CRM tags and tracks every lead.", "tag": "CRM"}
+      ],
+      "stays": {"k": "Now every lead", "h": ["*stays.*"], "c": "Now every lead stays, and turns into business.", "chips": ["Booked", "Paid", "Followed up"]},
+      "same": {"k": "Same leads.", "h": ["*More bookings.*"], "c": "Same leads. More bookings. No extra ad spend."},
+      "cta": {"k": "Where is your bucket", "h": ["*leaking?*"], "c": "Where is your bucket leaking? Comment LEAK.", "label": "Comment below"},
+      "end": {"pill": "Start your 7-day free trial", "tag": "WhatsApp AI Automation", "comment": "Comment"}
+    },
+    "hi": {
+      "pour": {"k": "Roz naye leads aate hain", "h": ["aapke *WhatsApp* pe."], "c": "Roz naye leads aapke WhatsApp pe aate hain."},
+      "holes": {"k": "Par aapki baalti mein", "h": ["*chhed* hain."], "c": "Par baalti mein chhed hain, leads beh jaate hain."},
+      "hole1": {"k": "Chhed 1:", "h": ["*Late* reply."], "c": "Chhed 1: customer wait karta hai, phir chala jaata hai.", "label": "NO REPLY", "chat": "Hello?? Koi hai?", "wait": "3 ghante"},
+      "hole2": {"k": "Chhed 2:", "h": ["*Bhoola* hua follow-up."], "c": "Chhed 2: woh follow-up jo bhejna tha.", "label": "NO FOLLOW-UP", "note": "Rahul ko call, Monday", "miss": "miss"},
+      "hole3": {"k": "Chhed 3:", "h": ["Chats mein *kho* gaye leads."], "c": "Chhed 3: hot lead sau chats ke neeche dab gaya.", "label": "LOST LEAD", "hot": "HOT LEAD · dab gaya"},
+      "more": {"k": "Toh aap daalte ho", "h": ["*aur ads.*"], "c": "Toh aur ads chalate ho, par sab utni hi tezi se beh jaata hai.", "tap": "+ ADS"},
+      "fix": {"k": "Aur mat daalo.", "h": ["Baalti *theek* karo."], "c": "Aur mat daalo. Baalti theek karo."},
+      "patches": [
+        {"k": "Patch 1:", "h": ["*AI reply* 24/7"], "c": "Patch 1: har message ka AI reply, din ho ya raat.", "tag": "AI REPLIES"},
+        {"k": "Patch 2:", "h": ["*Auto* follow-up"], "c": "Patch 2: follow-up apne aap jaata hai.", "tag": "FOLLOW-UPS"},
+        {"k": "Patch 3:", "h": ["Har lead *tagged*"], "c": "Patch 3: built-in CRM har lead ko tag aur track karta hai.", "tag": "CRM"}
+      ],
+      "stays": {"k": "Ab har lead", "h": ["*rukta hai.*"], "c": "Ab har lead rukta hai, aur business banta hai.", "chips": ["Booked", "Paid", "Followed up"]},
+      "same": {"k": "Wahi leads.", "h": ["*Zyada bookings.*"], "c": "Wahi leads. Zyada bookings. Extra ad spend nahi."},
+      "cta": {"k": "Aapki baalti kahan se", "h": ["*leak* ho rahi hai?"], "c": "Aapki baalti kahan se leak ho rahi hai? Comment mein likho LEAK.", "label": "Comment mein likho"},
+      "end": {"pill": "7-day free trial shuru karo", "tag": "WhatsApp AI Automation", "comment": "Comment"}
+    }
+  }
+}
