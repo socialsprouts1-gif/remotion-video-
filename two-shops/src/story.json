@@ -1,0 +1,74 @@
+{
+  "fps": 30,
+  "duration": 55,
+  "bpm": 108,
+  "scenes": {
+    "intro": [0, 4.0],
+    "same": [4.0, 8.0],
+    "raju": [8.0, 12.0],
+    "amit": [12.0, 16.0],
+    "day": [16.0, 25.0],
+    "week": [25.0, 29.0],
+    "diff": [29.0, 33.5],
+    "reply": [33.5, 37.0],
+    "features": [37.0, 46.5],
+    "cta": [46.5, 50.0],
+    "end": [50.0, 55.0]
+  },
+  "dayAt": [16.0, 19.0, 22.0],
+  "featureAt": [37.0, 40.2, 43.4],
+  "leads": [4.6, 5.3, 6.0, 6.8, 9.0, 10.2, 13.0, 14.0, 16.5, 17.5, 19.5, 20.5, 22.4],
+  "rajuReplies": [9.6, 11.4, 17.2],
+  "amitStart": 12.2,
+  "copy": {
+    "en": {
+      "names": ["Raju's", "Amit's"],
+      "intro": {"k": "Two shops.", "h": ["Same *street.*"], "c": "Two shops on the same street."},
+      "same": {"k": "Same products.", "h": ["Same *ads.*"], "c": "Same products, same ads, same customers messaging."},
+      "raju": {"k": "Raju replies", "h": ["*by hand.*"], "c": "Raju replies by hand, one chat at a time."},
+      "amit": {"k": "Amit uses", "h": ["*Neura Chat.*"], "c": "Amit uses Neura Chat. Every message gets a reply."},
+      "day": [
+        {"time": "10:00 AM", "c": "10 AM: Raju is still catching up.", "l": "Replying one by one…", "r": "Everyone answered ✓"},
+        {"time": "2:00 PM", "c": "2 PM: Raju forgot to follow up.", "l": "Forgot to follow up", "r": "Follow-ups sent ✓"},
+        {"time": "9:00 PM", "c": "9 PM: Raju closes. Amit's chats keep booking.", "l": "Closed. Messages waiting.", "r": "Booked for tomorrow ✓"}
+      ],
+      "week": {"k": "End of the", "h": ["*week?*"], "c": "End of the week: one calendar is empty, one is full.", "label": "Bookings this week"},
+      "diff": {"k": "The difference wasn't", "h": ["the *product.*"], "c": "The difference wasn't the product."},
+      "reply": {"k": "It was", "h": ["the *reply.*"], "c": "It was the reply."},
+      "features": [
+        {"k": "Amit's Neura Chat:", "h": ["*Instant* replies"], "c": "AI answers every message instantly, 24/7."},
+        {"k": "Amit's Neura Chat:", "h": ["*Auto* follow-ups"], "c": "Follow-ups and reminders go out on their own."},
+        {"k": "Amit's Neura Chat:", "h": ["*Bookings*"], "c": "Chats turn into appointments, automatically."}
+      ],
+      "cta": {"k": "Which shop", "h": ["are *you?*"], "c": "Which shop are you? Comment AMIT.", "label": "Comment below"},
+      "end": {"pill": "Start your 7-day free trial", "tag": "WhatsApp AI Automation", "comment": "Comment"}
+    },
+    "hi": {
+      "names": ["Raju ki dukaan", "Amit ki dukaan"],
+      "intro": {"k": "Do dukaanein.", "h": ["Ek hi *gali.*"], "c": "Ek hi gali mein do dukaanein."},
+      "same": {"k": "Same products.", "h": ["Same *ads.*"], "c": "Same products, same ads, same customers ke messages."},
+      "raju": {"k": "Raju reply karta hai", "h": ["*haath se.*"], "c": "Raju haath se reply karta hai, ek-ek chat."},
+      "amit": {"k": "Amit use karta hai", "h": ["*Neura Chat.*"], "c": "Amit Neura Chat use karta hai. Har message ka reply."},
+      "day": [
+        {"time": "10:00 AM", "c": "10 baje: Raju abhi bhi peeche hai.", "l": "Ek-ek reply…", "r": "Sabko reply ✓"},
+        {"time": "2:00 PM", "c": "2 baje: Raju follow-up bhool gaya.", "l": "Follow-up bhool gaya", "r": "Follow-ups sent ✓"},
+        {"time": "9:00 PM", "c": "Raat 9 baje: Raju band. Amit ki bookings chalu.", "l": "Band. Messages pending.", "r": "Kal ki booking ✓"}
+      ],
+      "week": {"k": "Hafte ke", "h": ["*end mein?*"], "c": "Hafte ke end mein: ek calendar khaali, ek bhara hua.", "label": "Is hafte ki bookings"},
+      "diff": {"k": "Farak product ka", "h": ["*nahi tha.*"], "c": "Farak product ka nahi tha."},
+      "reply": {"k": "Farak tha", "h": ["*reply* ka."], "c": "Farak tha reply ka."},
+      "features": [
+        {"k": "Amit ka Neura Chat:", "h": ["*Instant* reply"], "c": "AI har message ka turant jawab deta hai, 24/7."},
+        {"k": "Amit ka Neura Chat:", "h": ["*Auto* follow-up"], "c": "Follow-ups aur reminders apne aap jaate hain."},
+        {"k": "Amit ka Neura Chat:", "h": ["*Booking*"], "c": "Chat se seedha appointment, apne aap."}
+      ],
+      "cta": {"k": "Aap kaunsi", "h": ["*dukaan* ho?"], "c": "Aap kaunsi dukaan ho? Comment mein likho AMIT.", "label": "Comment mein likho"},
+      "end": {"pill": "7-day free trial shuru karo", "tag": "WhatsApp AI Automation", "comment": "Comment"}
+    }
+  },
+  "features": [
+    {"title": "AI REPLIES", "sub": "AI chatbot · assistant · FAQ bot", "tag": "24/7", "color": "#6D3BFF", "icon": "ai"},
+    {"title": "FOLLOW-UPS", "sub": "Drip campaigns · reminders", "tag": "AUTO", "color": "#13B05B", "icon": "repeat"},
+    {"title": "APPOINTMENTS", "sub": "Book · confirm · remind", "tag": "BOOKED", "color": "#F2762E", "icon": "calendar"}
+  ]
+}
