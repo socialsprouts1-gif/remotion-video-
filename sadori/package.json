@@ -1,0 +1,26 @@
+{
+  "name": "sadori",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SADORI EYEWEAR — 35s luxury 3D eyewear ad (Remotion + three.js, 1080x1920)",
+  "scripts": {
+    "studio": "remotion studio",
+    "score": "python3 scripts/make_score.py",
+    "render": "remotion render Sadori out/sadori.mp4 --gl=angle",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/fiber": "9.1.2",
+    "@remotion/cli": "4.0.534",
+    "@remotion/three": "4.0.534",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.534",
+    "three": "0.176.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "@types/three": "0.176.0",
+    "typescript": "5.6.3"
+  }
+}
