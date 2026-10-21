@@ -1,0 +1,24 @@
+{
+  "name": "browletto",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BROWLETTO Cafe, Akola: premium motion graphics ad (Remotion, 9:16 + 16:9)",
+  "scripts": {
+    "studio": "remotion studio",
+    "photos": "python3 scripts/prep_photos.py",
+    "score": "python3 scripts/make_score.py",
+    "render": "remotion render Browletto out/browletto-9x16.mp4",
+    "render:wide": "remotion render BrowlettoWide out/browletto-16x9.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.6.3"
+  }
+}
