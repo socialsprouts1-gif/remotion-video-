@@ -264,7 +264,7 @@ for i, f in enumerate(FF):
 
 # ---- slams on the speaker
 for s in TL["slam"]:
-    place(impact(0.7, 1.4), s["t"], gain=0.28, verb=0.35)
+    place(impact(0.7, 1.4), s["t"], gain=0.18, verb=0.35)
     place(whoosh(0.3, 800, 8000, 0.9), s["t"] - 0.25, gain=0.1)
 
 # ---- scene sound
@@ -342,7 +342,7 @@ H = ir()
 wet = np.stack([convolve(send[:, c], H[c]) for c in range(2)], axis=1)
 mix = dry + wet * 0.9
 mix = np.tanh(mix * 1.15) / np.tanh(1.15)
-mix *= 0.7 / max(1e-9, np.max(np.abs(mix)))
+mix *= 0.5 / max(1e-9, np.max(np.abs(mix)))
 fo = int(0.9 * SR)
 mix[-fo:] *= np.linspace(1, 0, fo)[:, None] ** 1.5
 
