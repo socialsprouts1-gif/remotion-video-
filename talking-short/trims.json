@@ -1,0 +1,13 @@
+{
+  "note": "Speech in/out points per clip (seconds), from silence detection at -35 dB. Raw clips: GitHub release clips-v1.",
+  "clips": {
+    "IMG_7860": [0.70, 7.05],
+    "IMG_7863": [0.35, 9.02],
+    "IMG_7864": [0.00, 5.08],
+    "IMG_7865": [0.55, 6.03],
+    "IMG_7866": [0.40, 5.62],
+    "IMG_7867": [0.00, 7.08],
+    "IMG_7868": [0.52, 5.62]
+  },
+  "pauses": {"IMG_7863": [[5.76, 6.15]], "IMG_7866": []}
+}
