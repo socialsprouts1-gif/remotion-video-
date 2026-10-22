@@ -1,0 +1,10 @@
+{
+  "note": "Graphic cues: [word index in captions.json, cue name]. Times are resolved by scripts/build_edit.py.",
+  "IMG_7860": [[5, "leadsOk"], [13, "inquiries"], [17, "realProblem"]],
+  "IMG_7863": [[3, "chatIn"], [5, "msgCustomer"], [17, "later"], [20, "msgReply"], [28, "msgLetKnow"], [33, "silence"]],
+  "IMG_7864": [[1, "busy"], [5, "forgot"], [12, "lost"]],
+  "IMG_7865": [[1, "chatOut"], [5, "msgCheck"], [14, "daysLater"], [17, "msgFollow2"]],
+  "IMG_7866": [[3, "msgYes"], [7, "typing"], [8, "msgAuto"]],
+  "IMG_7867": [[2, "autoTitle"], [8, "f1"], [13, "f2"], [19, "f3"], [23, "f4"], [29, "f5"]],
+  "IMG_7868": [[4, "manual"], [12, "system"], [17, "loop"]]
+}
