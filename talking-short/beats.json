@@ -1,0 +1,31 @@
+{
+  "note": "Full-frame motion-graphic scenes: [clip, first word, last word, scene]. Everything else shows the speaker.",
+  "ff": [
+    ["IMG_7860", 10, 16, "inbox"],
+    ["IMG_7863", 0, 22, "chatStory"],
+    ["IMG_7863", 33, 37, "ghost"],
+    ["IMG_7864", 5, 9, "buried"],
+    ["IMG_7865", 5, 19, "timeline"],
+    ["IMG_7866", 7, 12, "autoChat"],
+    ["IMG_7867", 0, 34, "features"],
+    ["IMG_7868", 9, 19, "system"]
+  ],
+  "punch": [
+    ["IMG_7860", 5], ["IMG_7860", 17], ["IMG_7860", 20],
+    ["IMG_7863", 28],
+    ["IMG_7864", 1], ["IMG_7864", 14],
+    ["IMG_7865", 1],
+    ["IMG_7866", 3],
+    ["IMG_7868", 4]
+  ],
+  "slam": [
+    ["IMG_7860", 5, "LEADS", "ok"],
+    ["IMG_7860", 20, "FOLLOW-UP", "bad"],
+    ["IMG_7863", 28, "I will let you know.", "quote"],
+    ["IMG_7864", 1, "BUSY", "neutral"],
+    ["IMG_7864", 13, "−1 CUSTOMER", "bad"],
+    ["IMG_7865", 1, "FOLLOW-UP", "ok"],
+    ["IMG_7866", 3, "REPLY", "ok"],
+    ["IMG_7868", 4, "MANUAL", "bad"]
+  ]
+}
