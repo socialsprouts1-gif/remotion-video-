@@ -225,15 +225,15 @@ nb = int(SPEECH / BAR) + 1
 for k in range(nb):
     t0 = k * BAR
     notes, root = prog[k % 4]
-    place(ep(notes, BAR), t0, gain=0.16, verb=0.4)
+    place(ep(notes, BAR), t0, gain=0.07, verb=0.4)
     for bt in range(4):
         tb = t0 + bt * BEAT
         if tb > SPEECH - 0.2:
             break
         if bt in (0, 2):
-            place(kick(0.6), tb, gain=0.16)
-            place(pluck(root, 0.3, 0.1), tb, gain=0.18)
-        place(hat(), tb + BEAT * 0.5, gain=0.05, pan=0.3)
+            place(kick(0.6), tb, gain=0.07)
+            place(pluck(root, 0.3, 0.1), tb, gain=0.07)
+        place(hat(), tb + BEAT * 0.5, gain=0.025, pan=0.3)
 
 # panel entrances: whoosh
 for c in range(len(TL["clips"])):
