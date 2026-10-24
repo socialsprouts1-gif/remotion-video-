@@ -1,0 +1,25 @@
+{
+  "note": "Word indices from src/captions.json. ff = full-frame motion scenes over the voice; everything else shows the speaker.",
+  "ff": [
+    [16, 40, "adspend"],
+    [41, 45, "flatline"],
+    [65, 75, "convert"],
+    [76, 99, "story"],
+    [115, 126, "whatsapp"],
+    [144, 156, "reveal"],
+    [157, 178, "features"]
+  ],
+  "slam": [
+    [1, "1 GALTI", "neutral"],
+    [8, "LAKHS KA NUKSAAN", "bad"],
+    [47, "ADS NAHI", "neutral"],
+    [55, "CONVERSION SYSTEM", "ok"],
+    [59, "LEADS? EASY.", "neutral"],
+    [105, "HAR MAHINE", "neutral"],
+    [107, "LAKHS KA LOSS", "bad"],
+    [131, "NO SYSTEM", "bad"],
+    [139, "REVENUE LOST", "bad"]
+  ],
+  "punch": [1, 8, 47, 55, 59, 105, 107, 131, 139, 181, 187, 194, 206],
+  "cta": [[181, "link"], [187, "comment"], [191, "dm"], [206, "follow"]]
+}
