@@ -5,11 +5,12 @@ import json, os, subprocess
 import numpy as np
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-FPS, IN, OUT, KEEP, END_CARD = 30, 0.04, 55.98, 0.07, 2.8
+FPS, IN, OUT, KEEP, END_CARD = 30, 0.0, 56.36, 0.07, 2.8
 # silence between takes (speech end -> next speech start) and the one long breath in take 1
 SPANS = [(0.09, 5.42), (5.85, 9.94), (10.51, 13.70), (14.31, 18.29), (19.00, 23.99), (24.58, 28.30), (28.83, 32.19),
          (32.64, 36.56), (37.16, 42.31), (43.17, 46.21), (46.35, 49.40), (49.70, 52.48), (53.13, 55.81)]
-CUT = [(2.92, 3.16)] + [(a[1], b[0]) for a, b in zip(SPANS, SPANS[1:]) if b[0] - a[1] > 0.2]
+# nothing is cut: every take plays in full so no word is clipped
+CUT = []
 caps = json.load(open(os.path.join(ROOT, "src", "captions.json")))
 
 spans, cur = [], IN
