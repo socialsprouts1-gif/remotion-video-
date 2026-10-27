@@ -245,8 +245,12 @@ for k in range(nb):
         place(pluck(root + 24 + (7 if bt == 2 else 0), 0.25, 0.15), tb, gain=0.012, pan=-0.2)
 
 # sticker pops (match STICKERS in Film.tsx)
-for k, i in enumerate([2, 7, 9, 29, 31, 33, 40, 49, 53, 68, 82, 90, 105, 111, 119, 127, 138, 153, 160, 168, 174, 181, 188, 195, 201, 211, 219, 225, 249, 261, 282]):
+for k, i in enumerate([2, 7, 29, 31, 40, 68, 90, 105, 111, 119, 127, 138, 153, 160, 168, 188, 195, 211, 225, 249, 282]):
     place(bubble(k % 2 == 0), W[i] - 0.1, gain=0.06, pan=-0.3 if k % 2 else 0.3)
+# whoosh into each big title
+for i in (49, 82, 174, 260, 303):
+    place(whoosh(0.35, 500, 7000, 0.8), W[i] - 0.3, gain=0.07)
+    place(thud(0.1), W[i] - 0.05, gain=0.07)
 # CTA
 for k in range(2):
     place(keyclick() * 1.5, W[305] - 0.05 + k * 0.1, gain=0.08)
