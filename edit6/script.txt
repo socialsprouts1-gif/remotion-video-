@@ -1,0 +1,15 @@
+Agar aap Akola se hain aur koi service ya product-based business chala rahe hain, toh ye video aapke liye hai.
+Kyunki bahut baar aisa hota hai na, ki humein WhatsApp par inquiry ya lead aati hai, lekin hum time par attend nahi kar paate.
+Ab humne specifically ek aisa software banaya hai jo WhatsApp automation karta hai.
+Matlab, jab bhi aapke paas koi inquiry ya message aayega, toh AI automatically usse handle kar lega.
+Ab ye complicated stuff chhodiye, main aapko ek live example dikhata hoon.
+Ye dekhiye, ye ek salon ki chat hai, jiske liye humne automation create kiya hai.
+Jaise hi hum unhe "Hi" bhejte hain, humein automatically ek template message milta hai, jismein customer apne according option choose kar sakta hai.
+Yahan par directly appointment book ho rahi hai. Appointment book karne ke liye poora calendar aur schedule bhi available hai.
+Aur agar aap product-based business chalate hain, toh aapke products bhi show honge aur store ki location bhi share ki ja sakti hai.
+Hamara AI itna smart hai!
+Ab humne raat ko 11:42 par message kiya ki kya hum kal aa sakte hain, toh AI automatically reply karta hai ki aap walk-in karna chahenge ya main aapki appointment book kar doon?
+Simply, ye dekhiye, AI se aap kuch bhi pooch sakte hain, alag-alag tarike se questions kar sakte hain, aur AI intelligently unka reply dega.
+Aur agar koi aisa question hai jiska answer AI ke paas available nahi hai, toh woh kahega ki main apni team se confirm karke aapko batata hoon.
+Ab ye software humne kaafi limited businesses ke liye available rakha hai, kyunki humein aise business owners chahiye jo apne business ko grow karne ke liye serious hain aur is opportunity ko samajhte hain.
+Toh agar aap bhi apne business mein WhatsApp automation use karna chahte hain, comment karo "AI" aur hum aapko saari details bhej denge!
