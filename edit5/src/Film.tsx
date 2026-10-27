@@ -5,16 +5,17 @@ import edit from './edit.json';
 
 // ---------------------------------------------------------------- tokens: Diwali night, gold + burgundy
 const C = {
-  bg: '#0E0507',
-  wine: '#3A0A14',
+  bg: '#060606',
+  wine: '#121212',
+  coal: '#1E1A16',
   burg: '#6E1428',
   burg2: '#8E2238',
-  gold: '#F3C969',
-  gold2: '#E0A63B',
-  cream: '#FFF3DC',
-  ink: '#1A0B0E',
-  dim: 'rgba(255,243,220,0.6)',
-  line: 'rgba(243,201,105,0.22)',
+  gold: '#FF8A00',
+  gold2: '#FF6A00',
+  cream: '#F7F3EE',
+  ink: '#0A0A0A',
+  dim: 'rgba(247,243,238,0.6)',
+  line: 'rgba(255,138,0,0.28)',
   red: '#FF4A3D',
   green: '#3DDC84',
   flame: '#FF9A2E',
@@ -22,7 +23,7 @@ const C = {
 const SANS = 'InterV, "Liberation Sans", sans-serif';
 const SERIF = '"Instrument Serif", "Liberation Serif", serif';
 const FPS = edit.fps;
-const GOLD_GRAD = 'linear-gradient(180deg, #FFE7A3 0%, #F3C969 45%, #C98A22 100%)';
+const GOLD_GRAD = 'linear-gradient(180deg, #FFC46B 0%, #FF9A1F 45%, #F26A00 100%)';
 
 let loaded = false;
 const loadFonts = () => {
@@ -82,7 +83,7 @@ const Speaker: React.FC<{t: number; pip?: boolean}> = ({t, pip}) => {
             src={staticFile(c.src)}
             startFrom={c.in}
             muted={pip}
-            style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'contrast(1.08) saturate(1.05) brightness(0.96) sepia(0.08)'}}
+            style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'contrast(1.1) saturate(1.0) brightness(0.95)'}}
           />
         </Sequence>
       ))}
@@ -92,8 +93,8 @@ const Speaker: React.FC<{t: number; pip?: boolean}> = ({t, pip}) => {
 
 const Grade: React.FC = () => (
   <>
-    <AbsoluteFill style={{background: 'radial-gradient(ellipse 70% 50% at 50% 42%, transparent 45%, rgba(20,4,8,0.45) 80%, rgba(14,5,7,0.85) 100%)'}} />
-    <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(14,5,7,0.5), transparent 20%, transparent 58%, rgba(14,5,7,0.75))'}} />
+    <AbsoluteFill style={{background: 'radial-gradient(ellipse 70% 50% at 50% 42%, transparent 45%, rgba(0,0,0,0.45) 80%, rgba(0,0,0,0.85) 100%)'}} />
+    <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(0,0,0,0.5), transparent 20%, transparent 58%, rgba(0,0,0,0.78))'}} />
   </>
 );
 
@@ -150,46 +151,37 @@ const CHUNKS: Chunk[] = (() => {
 const Captions: React.FC<{t: number; small?: boolean}> = ({t, small}) => {
   const c = CHUNKS.find((x) => t >= x.s && t < x.e);
   if (!c) return null;
-  if (small) {
-    return (
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1715, display: 'flex', justifyContent: 'center'}}>
-        <div style={{display: 'flex', gap: 14, background: 'rgba(14,5,7,0.86)', borderRadius: 18, padding: '14px 26px', border: `1px solid ${C.line}`}}>
-          {c.words.map((w, i) => {
-            if (t < w.s - 0.02) return null;
-            const p = ap(t, w.s - 0.02, 0.1);
-            return (
-              <span key={i} style={{fontFamily: SANS, fontWeight: 750, fontSize: 44, letterSpacing: '-0.02em', color: GOLD_W.has(key(w.w)) ? C.gold : RED_W.has(key(w.w)) ? C.red : C.cream, opacity: p, transform: `translateY(${(1 - p) * 10}px)`, display: 'inline-block'}}>
-                {clean(w.w)}
-              </span>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
+  const cur = c.words.reduce((n, w, i) => (t >= w.s - 0.03 ? i : n), -1);
+  const pop = sp(t, c.s - 0.03, 420, 22);
+  const fs = small ? 52 : 86;
   return (
-    <div style={{position: 'absolute', left: 50, right: 50, top: 1230, display: 'flex', justifyContent: 'center', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 22}}>
+    <div style={{position: 'absolute', left: 40, right: 40, top: small ? 1700 : 1240, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center', gap: small ? 10 : 14, transform: `scale(${lerp(0.82, 1, m1(pop))})`, opacity: m1(pop * 3)}}>
       {c.words.map((w, i) => {
-        if (t < w.s - 0.02) return null;
+        const on = i === cur;
+        const seen = i <= cur;
         const k = key(w.w);
-        const serif = SERIF_W.has(k);
-        const p = pt(t, w.s - 0.02, w.s + 0.12, ease.out);
-        const gold = GOLD_W.has(k);
+        const wp = sp(t, w.s - 0.03, 520, 18);
         return (
           <span
             key={i}
             style={{
-              fontFamily: serif ? SERIF : SANS,
-              fontStyle: serif ? 'italic' : 'normal',
-              fontWeight: serif ? 400 : 800,
-              fontSize: serif ? 128 : 76,
-              letterSpacing: serif ? '-0.01em' : '-0.035em',
-              lineHeight: 1.05,
-              ...(gold ? goldText : {color: RED_W.has(k) ? C.red : '#fff'}),
+              fontFamily: SANS,
+              fontWeight: 900,
+              fontSize: fs,
+              letterSpacing: '-0.03em',
+              textTransform: 'uppercase',
+              lineHeight: 1.12,
+              padding: small ? '2px 14px' : '4px 20px',
+              borderRadius: small ? 12 : 18,
               display: 'inline-block',
-              transform: `translateY(${(1 - p) * 26}px) scale(${lerp(1.15, 1, p)})`,
-              filter: p < 1 ? `blur(${(1 - p) * 8}px) drop-shadow(0 6px 20px rgba(0,0,0,0.8))` : 'drop-shadow(0 6px 20px rgba(0,0,0,0.8))',
-              opacity: p,
+              background: on ? GOLD_GRAD : 'transparent',
+              color: on ? C.ink : RED_W.has(k) && seen ? C.red : GOLD_W.has(k) && seen ? C.gold : '#fff',
+              opacity: seen ? 1 : 0.45,
+              transform: `scale(${on ? lerp(1.25, 1.06, m1(wp)) : 1}) rotate(${on ? -2 : 0}deg)`,
+              boxShadow: on ? '0 12px 30px rgba(255,106,0,0.45)' : 'none',
+              WebkitTextStroke: on ? undefined : small ? '1.5px #000' : '3px #000',
+              paintOrder: 'stroke fill',
+              textShadow: on ? 'none' : '0 6px 18px rgba(0,0,0,0.85)',
             }}
           >
             {clean(w.w)}
@@ -214,7 +206,7 @@ const Grain: React.FC<{frame: number; o?: number}> = ({frame, o = 0.07}) => (
 
 /** Rich backdrop: wine-to-black with a slow gold rangoli ring behind the hero object. */
 const Stage: React.FC<{t: number; cy?: number; children?: React.ReactNode}> = ({t, cy = 820, children}) => (
-  <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 55% at 50% ${(cy / 1920) * 100}%, ${C.burg} 0%, ${C.wine} 45%, ${C.bg} 100%)`}}>
+  <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 55% at 50% ${(cy / 1920) * 100}%, #3A1C04 0%, ${C.wine} 48%, ${C.bg} 100%)`}}>
     <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, opacity: 0.35}}>
       <g transform={`rotate(${t * 8} 540 ${cy})`}>
         {Array.from({length: 24}, (_, i) => {
@@ -234,7 +226,7 @@ const Kicker: React.FC<{t: number; at: number; children: React.ReactNode; top?: 
   const p = ap(t, at, 0.3);
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top, display: 'flex', justifyContent: 'center', opacity: p, transform: `translateY(${(1 - p) * -30}px)`}}>
-      <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 26, letterSpacing: '0.3em', color: C.gold, border: `1.5px solid ${C.line}`, borderRadius: 999, padding: '12px 28px', background: 'rgba(14,5,7,0.5)'}}>{children}</div>
+      <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 26, letterSpacing: '0.3em', color: C.gold, border: `1.5px solid ${C.line}`, borderRadius: 999, padding: '12px 28px', background: 'rgba(6,6,6,0.5)'}}>{children}</div>
     </div>
   );
 };
@@ -267,7 +259,7 @@ const PhoneBack: React.FC<{w?: number; color?: string}> = ({w = 300, color = C.b
 const Laptop: React.FC<{w?: number}> = ({w = 640}) => (
   <div style={{width: w * 1.12, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
     <div style={{width: w, height: w * 0.64, borderRadius: w * 0.035, background: '#0d0d10', padding: w * 0.022, boxSizing: 'border-box', boxShadow: '0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 2px #333'}}>
-      <div style={{width: '100%', height: '100%', borderRadius: w * 0.012, background: `radial-gradient(circle at 30% 30%, ${C.burg2}, ${C.wine} 50%, #120408)`}} />
+      <div style={{width: '100%', height: '100%', borderRadius: w * 0.012, background: `radial-gradient(circle at 30% 30%, ${C.gold2}, #3A1C04 50%, #0a0a0a)`}} />
     </div>
     <div style={{width: w * 1.12, height: w * 0.035, borderRadius: `0 0 ${w * 0.03}px ${w * 0.03}px`, background: 'linear-gradient(180deg,#d9d9de,#9b9ba3)'}} />
   </div>
@@ -275,7 +267,7 @@ const Laptop: React.FC<{w?: number}> = ({w = 640}) => (
 
 const Tablet: React.FC<{w?: number}> = ({w = 330}) => (
   <div style={{width: w, height: w * 1.4, borderRadius: w * 0.09, background: 'linear-gradient(145deg,#e4e4e9,#a7a7ae)', padding: w * 0.04, boxSizing: 'border-box', boxShadow: '0 40px 80px rgba(0,0,0,0.6)'}}>
-    <div style={{width: '100%', height: '100%', borderRadius: w * 0.05, background: `radial-gradient(circle at 70% 25%, ${C.gold2}, ${C.burg} 45%, #120408)`}} />
+    <div style={{width: '100%', height: '100%', borderRadius: w * 0.05, background: `radial-gradient(circle at 70% 25%, #FFC46B, ${C.gold2} 40%, #1a0d02)`}} />
   </div>
 );
 
@@ -289,7 +281,7 @@ const Wallet: React.FC<SP> = ({t, a}) => {
   return (
     <Stage t={t} cy={760}>
       <Kicker t={t} at={a}>ACCOUNT BALANCE</Kicker>
-      <div style={{position: 'absolute', left: 120, right: 120, top: 340, background: 'rgba(14,5,7,0.75)', border: `1.5px solid ${C.line}`, borderRadius: 40, padding: '44px 50px', transform: `translateY(${(1 - ap(t, a, 0.3)) * 100}px)`, opacity: ap(t, a, 0.2)}}>
+      <div style={{position: 'absolute', left: 120, right: 120, top: 340, background: 'rgba(6,6,6,0.75)', border: `1.5px solid ${C.line}`, borderRadius: 40, padding: '44px 50px', transform: `translateY(${(1 - ap(t, a, 0.3)) * 100}px)`, opacity: ap(t, a, 0.2)}}>
         <div style={{fontFamily: SANS, fontWeight: 600, fontSize: 30, color: C.dim}}>Savings account</div>
         <div style={{display: 'flex', alignItems: 'center', gap: 10, marginTop: 14}}>
           <Rupee size={84} color={drain > 0.6 ? C.red : C.cream} />
@@ -308,7 +300,7 @@ const Wallet: React.FC<SP> = ({t, a}) => {
           ))}
         </div>
         <div style={{background: C.cream, borderRadius: 120, padding: '40px 70px', display: 'flex', alignItems: 'center', gap: 30, boxShadow: '0 30px 60px rgba(0,0,0,0.5)'}}>
-          <span style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 84, color: C.burg}}>mann mein…</span>
+          <span style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 84, color: C.gold2}}>mann mein…</span>
           <div style={{transform: 'rotate(8deg)'}}>
             <PhoneBack w={90} />
           </div>
@@ -430,7 +422,7 @@ const Link: React.FC<SP> = ({t, a}) => {
           <div style={{position: 'absolute', left: 300, top: 760, width: 90, height: 90, borderRadius: 90, background: 'rgba(255,255,255,0.35)', border: '3px solid #fff', opacity: tap > 0 && tap < 1 ? 1 - tap : 0, transform: `scale(${lerp(0.6, 1.8, tap)})`}} />
         </div>
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1640, textAlign: 'center', fontFamily: SANS, fontSize: 24, color: 'rgba(255,243,220,0.45)'}}>Trading involves risk. T&amp;C apply.</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1640, textAlign: 'center', fontFamily: SANS, fontSize: 24, color: 'rgba(247,243,238,0.45)'}}>Trading involves risk. T&amp;C apply.</div>
     </Stage>
   );
 };
@@ -450,23 +442,23 @@ const Draw: React.FC<SP> = ({t, a}) => {
       {/* golden ticket */}
       <div style={{position: 'absolute', left: 110, right: 110, top: 200, height: 250, borderRadius: 26, background: GOLD_GRAD, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 40px 80px rgba(0,0,0,0.55)', transform: `rotate(${lerp(-14, -3, m1(ticket))}deg) scale(${lerp(0.5, 1, m1(ticket))})`, opacity: m1(ticket * 2)}}>
         {[0, 1].map((s) => (
-          <div key={s} style={{position: 'absolute', top: 100, [s ? 'right' : 'left']: -26, width: 52, height: 52, borderRadius: 52, background: C.wine}} />
+          <div key={s} style={{position: 'absolute', top: 100, [s ? 'right' : 'left']: -26, width: 52, height: 52, borderRadius: 52, background: C.bg}} />
         ))}
-        <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 28, letterSpacing: '0.4em', color: C.burg}}>DIWALI GIVEAWAY</div>
+        <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 28, letterSpacing: '0.4em', color: C.ink}}>DIWALI GIVEAWAY</div>
         <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 120, color: C.ink, lineHeight: 1}}>Lucky Winner</div>
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 540, textAlign: 'center', fontFamily: SANS, fontWeight: 900, fontSize: 110, letterSpacing: '-0.04em', color: C.cream, opacity: m1(win * 2), transform: `scale(${lerp(1.4, 1, m1(win))})`}}>
         jeet sakte hain
       </div>
       {/* reels */}
-      <div style={{position: 'absolute', left: 70, right: 70, top: 730, height: 520, borderRadius: 44, background: 'rgba(14,5,7,0.85)', border: `3px solid ${C.gold}`, display: 'flex', gap: 18, padding: 22, boxSizing: 'border-box', boxShadow: `0 0 80px rgba(243,201,105,0.25)`}}>
+      <div style={{position: 'absolute', left: 70, right: 70, top: 730, height: 520, borderRadius: 44, background: 'rgba(6,6,6,0.85)', border: `3px solid ${C.gold}`, display: 'flex', gap: 18, padding: 22, boxSizing: 'border-box', boxShadow: `0 0 80px rgba(255,138,0,0.25)`}}>
         {PRIZE.map((pz, i) => {
           const stop = W(pz.at) - 0.05;
           const spinning = t < stop;
           const land = sp(t, stop, 380, 16);
           const off = spinning ? -(((t - a) * 2400 + i * 300) % (476 * 3)) : (1 - m1(land)) * -80;
           return (
-            <div key={pz.name} style={{flex: 1, borderRadius: 26, background: spinning ? 'rgba(255,243,220,0.06)' : 'rgba(243,201,105,0.12)', overflow: 'hidden', position: 'relative', border: `1.5px solid ${spinning ? C.line : C.gold}`}}>
+            <div key={pz.name} style={{flex: 1, borderRadius: 26, background: spinning ? 'rgba(247,243,238,0.06)' : 'rgba(255,138,0,0.12)', overflow: 'hidden', position: 'relative', border: `1.5px solid ${spinning ? C.line : C.gold}`}}>
               <div style={{position: 'absolute', left: 0, right: 0, top: 0, transform: `translateY(${off}px)`, filter: spinning ? 'blur(6px)' : undefined}}>
                 {(spinning ? [0, 1, 2, 3, 4, 5].map((k) => PRIZE[(i + k) % 3]) : [pz]).map((q, k) => (
                   <div key={k} style={{height: 476, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 26}}>
@@ -486,9 +478,9 @@ const Draw: React.FC<SP> = ({t, a}) => {
           const v = 300 + rand(i * 4.1) * 700;
           const x = 540 + Math.cos(ang) * v * confetti;
           const y = 640 + Math.sin(ang) * v * confetti * 0.8 + confetti * confetti * 700;
-          return <div key={i} style={{position: 'absolute', left: x, top: y, width: 14, height: 26, borderRadius: 3, background: [C.gold, C.cream, C.burg2, C.flame][i % 4], transform: `rotate(${i * 47 + confetti * 720}deg)`, opacity: 1 - confetti}} />;
+          return <div key={i} style={{position: 'absolute', left: x, top: y, width: 14, height: 26, borderRadius: 3, background: [C.gold, C.cream, '#FFC46B', C.gold2][i % 4], transform: `rotate(${i * 47 + confetti * 720}deg)`, opacity: 1 - confetti}} />;
         })}
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1300, textAlign: 'center', fontFamily: SANS, fontSize: 24, color: 'rgba(255,243,220,0.45)'}}>Winners are picked by lucky draw. T&amp;C apply.</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1300, textAlign: 'center', fontFamily: SANS, fontSize: 24, color: 'rgba(247,243,238,0.45)'}}>Winners are picked by lucky draw. T&amp;C apply.</div>
     </Stage>
   );
 };
@@ -509,7 +501,7 @@ const Steps: React.FC<SP> = ({t, a}) => (
         const p = sp(t, W(s.at) - 0.08, 280, 20);
         const done = t > W(s.at) + 0.6;
         return (
-          <div key={i} style={{display: 'flex', alignItems: 'center', gap: 30, background: done ? 'rgba(243,201,105,0.12)' : 'rgba(14,5,7,0.7)', border: `2px solid ${done ? C.gold : C.line}`, borderRadius: 34, padding: '34px 34px', marginBottom: 30, transform: `translateX(${(1 - m1(p)) * 600}px)`, opacity: m1(p * 2)}}>
+          <div key={i} style={{display: 'flex', alignItems: 'center', gap: 30, background: done ? 'rgba(255,138,0,0.12)' : 'rgba(6,6,6,0.7)', border: `2px solid ${done ? C.gold : C.line}`, borderRadius: 34, padding: '34px 34px', marginBottom: 30, transform: `translateX(${(1 - m1(p)) * 600}px)`, opacity: m1(p * 2)}}>
             <div style={{width: 110, height: 110, borderRadius: 110, background: done ? GOLD_GRAD : 'transparent', border: `3px solid ${C.gold}`, display: 'grid', placeItems: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 70, color: done ? C.ink : C.gold, flexShrink: 0}}>
               {done ? <Check size={60} color={C.ink} sw={3.2} /> : i + 1}
             </div>
@@ -563,7 +555,7 @@ const Insta: React.FC<SP> = ({t, a}) => {
             return (
               <div key={h} style={{width: 190, textAlign: 'center', transform: `scale(${lerp(0.4, on ? 1.12 : 1, m1(p))})`, opacity: m1(p * 2)}}>
                 <div style={{width: 150, height: 150, margin: '0 auto', borderRadius: 150, padding: 6, background: on ? 'linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7)' : '#DBDBDB'}}>
-                  <div style={{width: '100%', height: '100%', borderRadius: 150, border: '5px solid #fff', boxSizing: 'border-box', background: `radial-gradient(circle at 40% 35%, ${[C.gold, C.burg2, C.flame, C.burg][i]}, ${C.wine})`, display: 'grid', placeItems: 'center'}}>
+                  <div style={{width: '100%', height: '100%', borderRadius: 150, border: '5px solid #fff', boxSizing: 'border-box', background: `radial-gradient(circle at 40% 35%, ${[C.gold, '#2a2a2a', C.flame, C.gold2][i]}, #111)`, display: 'grid', placeItems: 'center'}}>
                     <div style={{width: 40, height: 40, borderRadius: 40, background: C.flame, boxShadow: `0 0 30px ${C.gold}`}} />
                   </div>
                 </div>
@@ -612,7 +604,7 @@ const Wise: React.FC<SP> = ({t, a}) => (
         );
       })}
     </div>
-    <div style={{position: 'absolute', left: 0, right: 0, top: 1420, textAlign: 'center', fontFamily: SANS, fontSize: 26, color: 'rgba(255,243,220,0.5)', opacity: ap(t, a + 0.3)}}>Trading involves risk. Invest only what you can afford.</div>
+    <div style={{position: 'absolute', left: 0, right: 0, top: 1420, textAlign: 'center', fontFamily: SANS, fontSize: 26, color: 'rgba(247,243,238,0.5)', opacity: ap(t, a + 0.3)}}>Trading involves risk. Invest only what you can afford.</div>
     <Bubble t={t} at={a + 0.2} x={440} y={1480} d={200} />
   </Stage>
 );
@@ -672,12 +664,12 @@ const Finale: React.FC<{t: number}> = ({t}) => {
   const d = sp(t, W(132) - 0.08, 260, 16);
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
-      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(14,5,7,0.55), transparent 35%, transparent 70%, rgba(14,5,7,0.7))', opacity: ap(t, a, 0.4)}} />
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(6,6,6,0.55), transparent 35%, transparent 70%, rgba(6,6,6,0.7))', opacity: ap(t, a, 0.4)}} />
       <Sparks t={t} n={40} o={ap(t, a, 0.5)} />
       <div style={{position: 'absolute', left: 0, right: 0, top: 200, textAlign: 'center', opacity: m1(p * 2), transform: `translateY(${(1 - m1(p)) * -60}px)`}}>
         <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 80, letterSpacing: '0.2em', paddingLeft: '0.2em', color: C.cream}}>HAPPY</div>
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 290, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 240, lineHeight: 1, ...goldText, opacity: m1(d * 2), transform: `scale(${lerp(1.4, 1, m1(d))})`, filter: 'drop-shadow(0 10px 40px rgba(255,154,46,0.45))'}}>Diwali</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 290, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 240, lineHeight: 1, ...goldText, opacity: m1(d * 2), transform: `scale(${lerp(1.4, 1, m1(d))})`, filter: 'drop-shadow(0 10px 40px rgba(255,138,0,0.5))'}}>Diwali</div>
       {[0, 1, 2, 3, 4].map((i) => {
         const q = sp(t, a + 0.1 + i * 0.08, 240, 18);
         return (
@@ -700,7 +692,7 @@ const EndCard: React.FC<{t: number}> = ({t}) => {
       <Stage t={t} cy={820}>
         <div style={{position: 'absolute', left: 0, right: 0, top: 430, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 56, letterSpacing: '0.24em', paddingLeft: '0.24em', color: C.cream, opacity: pt(r, 0, 0.4)}}>HAPPY</div>
         <div style={{position: 'absolute', left: 0, right: 0, top: 500, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 220, lineHeight: 1, ...goldText}}>Diwali</div>
-        <div style={{position: 'absolute', left: 90, right: 90, top: 820, borderRadius: 34, border: `2px solid ${C.gold}`, background: 'rgba(14,5,7,0.7)', padding: '34px 40px', textAlign: 'center', opacity: pt(r, 0.3, 0.7), transform: `translateY(${(1 - pt(r, 0.3, 0.8, ease.out)) * 40}px)`}}>
+        <div style={{position: 'absolute', left: 90, right: 90, top: 820, borderRadius: 34, border: `2px solid ${C.gold}`, background: 'rgba(6,6,6,0.7)', padding: '34px 40px', textAlign: 'center', opacity: pt(r, 0.3, 0.7), transform: `translateY(${(1 - pt(r, 0.3, 0.8, ease.out)) * 40}px)`}}>
           <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 44, color: C.cream, lineHeight: 1.2}}>Delta Exchange account</div>
           <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 60, color: C.gold}}>mere link se kholiye</div>
         </div>
@@ -708,7 +700,7 @@ const EndCard: React.FC<{t: number}> = ({t}) => {
           <div style={{background: GOLD_GRAD, borderRadius: 999, padding: '20px 44px', fontFamily: SANS, fontWeight: 850, fontSize: 44, color: C.ink, letterSpacing: '-0.01em'}}>@deepakwadhwa.official</div>
         </div>
         <div style={{position: 'absolute', left: 0, right: 0, top: 1210, textAlign: 'center', fontFamily: SANS, fontWeight: 500, fontSize: 32, color: C.dim, opacity: pt(r, 0.9, 1.3)}}>details in highlights</div>
-        <div style={{position: 'absolute', left: 0, right: 0, top: 1760, textAlign: 'center', fontFamily: SANS, fontSize: 22, color: 'rgba(255,243,220,0.45)'}}>Trading involves risk. T&amp;C apply.</div>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1760, textAlign: 'center', fontFamily: SANS, fontSize: 22, color: 'rgba(247,243,238,0.45)'}}>Trading involves risk. T&amp;C apply.</div>
         {[0, 1, 2, 3, 4].map((i) => (
           <Diya key={i} t={t} x={40 + i * 205} y={1470 + (i % 2) * 30} s={0.9} seed={i * 1.3} />
         ))}
