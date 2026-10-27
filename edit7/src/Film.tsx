@@ -69,7 +69,7 @@ const Captions: React.FC<{t: number}> = ({t}) => {
   if (!c) return null;
   const out = pt(t, c.e - 0.18, c.e, ease.in);
   return (
-    <div style={{position: 'absolute', left: 160, right: 160, bottom: 92, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', columnGap: 16, opacity: 1 - out, filter: out > 0 ? `blur(${out * 6}px)` : undefined}}>
+    <div style={{position: 'absolute', left: 220, right: 220, top: 640, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', columnGap: 16, opacity: 1 - out, filter: out > 0 ? `blur(${out * 6}px)` : undefined}}>
       {c.words.map((w, i) => {
         const p = pt(t, w.s - 0.06, w.s + 0.28, ease.out);
         const warm = WARM_W.has(key(w.w));
@@ -80,7 +80,7 @@ const Captions: React.FC<{t: number}> = ({t}) => {
               fontFamily: warm ? SERIF : SANS,
               fontStyle: warm ? 'italic' : 'normal',
               fontWeight: warm ? 400 : 650,
-              fontSize: warm ? 74 : 58,
+              fontSize: warm ? 82 : 62,
               letterSpacing: warm ? '0' : '-0.02em',
               lineHeight: 1.15,
               color: warm ? C.warm : C.white,
@@ -163,6 +163,15 @@ const Grain: React.FC<{frame: number}> = ({frame}) => (
   </AbsoluteFill>
 );
 
+// ---------------------------------------------------------------- reframes: a new framing on each sentence
+const SENT = WORDS.filter((w, i) => i === 0 || /[.?!…]$/.test(WORDS[i - 1].w)).map((w) => w.s);
+const FRAMES = [
+  {z: 1.03, x: 50, y: 40},
+  {z: 1.15, x: 52, y: 20},
+  {z: 1.08, x: 46, y: 38},
+  {z: 1.18, x: 50, y: 18},
+];
+
 // ---------------------------------------------------------------- film
 export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   const frame = useCurrentFrame();
@@ -170,13 +179,19 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   const dim = emphLevel(t);
   const sig = pt(t, W(152) - 0.3, W(152) + 0.4, ease.inOut);
   // slow cinematic drift, a gentle push on each emphasis moment, then settle for the sign-off
-  const z = 1.02 + 0.03 * Math.sin(t * 0.12) + 0.06 * dim + 0.04 * sig;
+  const frameIdx = SENT.filter((x) => t >= x - 0.02).length;
+  const lastCut = SENT.filter((x) => t >= x - 0.02).slice(-1)[0] ?? 0;
+  const prevZ = frameIdx > 1 ? FRAMES[(frameIdx - 2) % FRAMES.length] : FRAMES[0];
+  const curZ = FRAMES[(frameIdx - 1 + FRAMES.length) % FRAMES.length];
+  const k = pt(t, lastCut - 0.02, lastCut + 0.35, ease.out);
+  const shot = {z: lerp(prevZ.z, curZ.z, k), x: lerp(prevZ.x, curZ.x, k), y: lerp(prevZ.y, curZ.y, k)};
+  const z = shot.z + 0.015 * Math.sin(t * 0.15) + 0.06 * dim + 0.04 * sig;
   const fadeIn = pt(t, 0, 0.6, ease.out);
   const fadeOut = pt(t, edit.speech + 0.5, edit.duration, ease.inOut);
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      <AbsoluteFill style={{transform: `scale(${z})`, transformOrigin: '50% 40%'}}>
-        <OffthreadVideo src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: `contrast(1.08) saturate(${0.82 - 0.35 * dim}) brightness(${1 - 0.45 * Math.max(dim, sig * 0.9)})`}} />
+      <AbsoluteFill style={{transform: `scale(${z})`, transformOrigin: `${shot.x}% ${shot.y}%`}}>
+        <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: `contrast(1.1) saturate(${0.86 - 0.35 * dim}) brightness(${1 - 0.45 * Math.max(dim, sig * 0.9)})`}} />
       </AbsoluteFill>
       {/* grade: teal shadows / warm highlights, vignette, bottom fade for the captions */}
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,30,40,0.18), rgba(40,25,10,0.12))', mixBlendMode: 'soft-light'}} />
@@ -186,8 +201,11 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
       <Emphasis t={t} />
       <Signature t={t} />
       <Grain frame={frame} />
+      <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: 64, background: '#000'}} />
+      <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 64, background: '#000'}} />
       <AbsoluteFill style={{background: '#000', opacity: Math.max(1 - fadeIn, fadeOut)}} />
-      {withMusic && <Audio src={staticFile('audio/score.wav')} volume={0.9} />}
+      <Audio src={staticFile('audio/voice.wav')} />
+      {withMusic && <Audio src={staticFile('audio/score.wav')} volume={0.55} />}
     </AbsoluteFill>
   );
 };
