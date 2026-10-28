@@ -243,6 +243,14 @@ const Rupee: React.FC<{size?: number; color?: string}> = ({size = 40, color = C.
 );
 
 // ---------------------------------------------------------------- devices (drawn, no brand marks)
+/** Real MacBook (1384x760) and iPad Pro (712x784) product images supplied by the client, backgrounds removed. */
+const MacImg: React.FC<{w?: number}> = ({w = 600}) => (
+  <Img src={staticFile('brand/macbook.png')} style={{width: w, height: (w * 760) / 1384, display: 'block', filter: 'drop-shadow(0 40px 60px rgba(0,0,0,0.65))'}} />
+);
+const PadImg: React.FC<{w?: number}> = ({w = 300}) => (
+  <Img src={staticFile('brand/ipad.png')} style={{width: w, height: (w * 784) / 712, display: 'block', filter: 'drop-shadow(0 40px 60px rgba(0,0,0,0.65))'}} />
+);
+
 /** Real iPhone 18 Pro Max (Burgundy) product image supplied by the client (checkerboard removed). 586x718. */
 const PhoneImg: React.FC<{w?: number}> = ({w = 300}) => (
   <Img src={staticFile('brand/iphone18-burgundy.png')} style={{width: w, height: (w * 718) / 586, display: 'block', filter: 'drop-shadow(0 40px 60px rgba(0,0,0,0.6))'}} />
@@ -348,17 +356,18 @@ const Devices: React.FC<SP> = ({t, a}) => {
   return (
     <Stage t={t} cy={900}>
       <Kicker t={t} at={a}>YA PHIR…</Kicker>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 290, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 150, lineHeight: 1, ...goldText}}>
-        <span style={{opacity: m1(mac * 2), display: 'inline-block', transform: `translateY(${(1 - m1(mac)) * 40}px)`}}>MacBook</span>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 290, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 150, lineHeight: 1}}>
+        <span style={{...goldText, opacity: m1(mac * 2), display: 'inline-block', transform: `translateY(${(1 - m1(mac)) * 40}px)`}}>MacBook</span>
         <span style={{opacity: m1(pad * 2), display: 'inline-block', marginLeft: 30, transform: `translateY(${(1 - m1(pad)) * 40}px)`}}>
-          <span style={{fontFamily: SANS, fontStyle: 'normal', fontSize: 70, color: C.dim, WebkitTextFillColor: C.dim}}>ya </span>iPad
+          <span style={{fontFamily: SANS, fontStyle: 'normal', fontSize: 70, color: C.dim}}>ya </span>
+          <span style={goldText}>iPad</span>
         </span>
       </div>
-      <div style={{position: 'absolute', left: 140, top: 640, transform: `translateX(${(1 - m1(mac)) * -900}px) rotate(${(1 - m1(mac)) * -10}deg)`}}>
-        <Laptop w={640} />
+      <div style={{position: 'absolute', left: 90, top: 560, transform: `translateX(${(1 - m1(mac)) * -1000}px) rotate(${(1 - m1(mac)) * -10}deg) translateY(${Math.sin(t * 1.1) * 6}px)`}}>
+        <MacImg w={820} />
       </div>
-      <div style={{position: 'absolute', left: 620, top: 900, transform: `translateX(${(1 - m1(pad)) * 900}px) rotate(${lerp(14, 6, m1(pad))}deg)`}}>
-        <Tablet w={300} />
+      <div style={{position: 'absolute', left: 640, top: 920, transform: `translateX(${(1 - m1(pad)) * 900}px) rotate(${lerp(14, 6, m1(pad))}deg) translateY(${Math.sin(t * 1.3 + 1) * 6}px)`}}>
+        <PadImg w={360} />
       </div>
       <div style={{position: 'absolute', left: 140, top: 1060, transform: `rotate(-8deg) translateY(${(1 - ap(t, a, 0.3)) * 400}px)`}}>
         <PhoneImg w={240} />
@@ -436,8 +445,8 @@ const Link: React.FC<SP> = ({t, a}) => {
 /** Slot machine: three reels stop on the three prizes. */
 const PRIZE = [
   {name: 'iPhone', at: 67, el: <PhoneImg w={190} />},
-  {name: 'MacBook', at: 68, el: <Laptop w={190} />},
-  {name: 'iPad', at: 70, el: <Tablet w={120} />},
+  {name: 'MacBook', at: 68, el: <MacImg w={250} />},
+  {name: 'iPad', at: 70, el: <PadImg w={190} />},
 ];
 const Draw: React.FC<SP> = ({t, a}) => {
   const ticket = sp(t, W(56) - 0.05, 260, 16);
