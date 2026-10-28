@@ -59,7 +59,7 @@ const FF: Scene[] = [
   {id: 'devices', a: W(21) - 0.06, b: W(31) - 0.08, dir: 1},
   {id: 'solution', a: W(36) - 0.08, b: W(40) - 0.08, dir: -1},
   {id: 'link', a: W(45) - 0.08, b: W(53) - 0.08, dir: 1},
-  {id: 'draw', a: W(56) - 0.08, b: W(71) - 0.08, dir: -1},
+  {id: 'draw', a: W(56) - 0.08, b: W(73) - 0.08, dir: -1},
   {id: 'steps', a: W(80) - 0.08, b: W(96) - 0.08, dir: 1},
   {id: 'insta', a: W(96) - 0.08, b: W(111) - 0.08, dir: -1},
   {id: 'wise', a: W(118) - 0.08, b: W(131) - 0.08, dir: 1},
@@ -114,12 +114,12 @@ const Sparks: React.FC<{t: number; n?: number; o?: number}> = ({t, n = 26, o = 1
 
 const Bubble: React.FC<{t: number; at: number; x: number; y: number; d?: number}> = ({t, at, x, y, d = 200}) => {
   const p = sp(t, at, 240, 18);
-  const s = 0.42;
+  const s = 0.25;
   return (
     <div style={{position: 'absolute', left: x, top: y, width: d, height: d, transform: `scale(${Math.min(1.05, p)})`, opacity: m1(p * 2)}}>
       <div style={{position: 'absolute', inset: -7, borderRadius: d, border: `3px solid ${C.gold}`}} />
       <div style={{position: 'relative', width: d, height: d, borderRadius: d, overflow: 'hidden', background: '#000'}}>
-        <div style={{position: 'absolute', left: d / 2 - 540 * s, top: d / 2 - 800 * s, width: 1080, height: 1920, transform: `scale(${s})`, transformOrigin: '0 0'}}>
+        <div style={{position: 'absolute', left: d / 2 - 560 * s, top: d / 2 - 930 * s, width: 1080, height: 1920, transform: `scale(${s})`, transformOrigin: '0 0'}}>
           <Speaker t={t} pip />
         </div>
       </div>
@@ -459,7 +459,12 @@ const Draw: React.FC<SP> = ({t, a}) => {
           const off = spinning ? -(((t - a) * 2400 + i * 300) % (476 * 3)) : (1 - m1(land)) * -80;
           return (
             <div key={pz.name} style={{flex: 1, borderRadius: 26, background: spinning ? 'rgba(247,243,238,0.06)' : 'rgba(255,138,0,0.12)', overflow: 'hidden', position: 'relative', border: `1.5px solid ${spinning ? C.line : C.gold}`}}>
-              <div style={{position: 'absolute', left: 0, right: 0, top: 0, transform: `translateY(${off}px)`, filter: spinning ? 'blur(6px)' : undefined}}>
+              {i === 2 && spinning && (
+                <div style={{position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 2}}>
+                  <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 260, lineHeight: 1, ...goldText, transform: `scale(${1 + 0.08 * Math.sin(t * 7)}) rotate(${Math.sin(t * 3) * 8}deg)`, filter: 'drop-shadow(0 0 30px rgba(255,138,0,0.6))'}}>?</div>
+                </div>
+              )}
+              <div style={{position: 'absolute', left: 0, right: 0, top: 0, transform: `translateY(${off}px)`, filter: spinning ? 'blur(6px)' : undefined, opacity: i === 2 && spinning ? 0 : 1}}>
                 {(spinning ? [0, 1, 2, 3, 4, 5].map((k) => PRIZE[(i + k) % 3]) : [pz]).map((q, k) => (
                   <div key={k} style={{height: 476, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 26}}>
                     <div style={{height: 260, display: 'grid', placeItems: 'center'}}>{q.el}</div>
@@ -513,7 +518,7 @@ const Steps: React.FC<SP> = ({t, a}) => (
         );
       })}
     </div>
-    <Bubble t={t} at={a + 0.2} x={810} y={260} d={190} />
+    <Bubble t={t} at={a + 0.2} x={790} y={240} d={220} />
   </Stage>
 );
 
@@ -613,6 +618,15 @@ const SCENES: Record<string, React.FC<SP>> = {wallet: Wallet, iphone: IPhone, de
 
 // ---------------------------------------------------------------- overlays on the speaker
 /** Big gold question mark on "Kya?" and the "karna kya hai?" pill. */
+const QMARKS = [
+  {x: 250, y: 560, s: 200, r: -18, d: 0},
+  {x: 760, y: 470, s: 260, r: 14, d: 0.08},
+  {x: 140, y: 860, s: 140, r: -8, d: 0.16},
+  {x: 880, y: 760, s: 170, r: 20, d: 0.12},
+  {x: 520, y: 330, s: 150, r: 4, d: 0.22},
+  {x: 360, y: 400, s: 110, r: -24, d: 0.28},
+  {x: 930, y: 1020, s: 120, r: 10, d: 0.32},
+];
 const Question: React.FC<{t: number}> = ({t}) => {
   const zones = [
     {a: W(40) - 0.08, b: W(45) - 0.08},
@@ -620,15 +634,23 @@ const Question: React.FC<{t: number}> = ({t}) => {
   ];
   const z = zones.find((q) => t >= q.a && t < q.b);
   if (!z) return null;
-  const p = sp(t, z.a, 280, 14);
+  const out = pt(t, z.b - 0.2, z.b, ease.in);
   return (
-    <div style={{position: 'absolute', right: 70, top: 220, fontFamily: SERIF, fontStyle: 'italic', fontSize: 340, lineHeight: 1, ...goldText, transform: `rotate(${lerp(-30, 10, m1(p))}deg) scale(${m1(p)})`, filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.6))'}}>?</div>
+    <AbsoluteFill style={{pointerEvents: 'none', opacity: 1 - out}}>
+      {QMARKS.map((q, i) => {
+        const p = sp(t, z.a + q.d, 380, 12);
+        const bob = Math.sin((t - z.a) * 3 + i) * 10;
+        return (
+          <div key={i} style={{position: 'absolute', left: q.x - q.s * 0.3, top: q.y - q.s * 0.5 + bob, fontFamily: SERIF, fontStyle: 'italic', fontSize: q.s, lineHeight: 1, ...(i % 3 === 1 ? {color: '#fff'} : goldText), transform: `rotate(${q.r + Math.sin(t * 2 + i) * 6}deg) scale(${p})`, filter: 'drop-shadow(0 14px 30px rgba(0,0,0,0.6))'}}>?</div>
+        );
+      })}
+    </AbsoluteFill>
   );
 };
 
 /** "Ji haan, bilkul sahi suna!": sparkle burst + gold frame pulse. */
 const Sahi: React.FC<{t: number}> = ({t}) => {
-  const a = W(71) - 0.08;
+  const a = W(73) - 0.08;
   if (t < a || t > W(76) - 0.08) return null;
   const burst = pt(t, W(73) - 0.05, W(73) + 1.2, ease.out);
   return (
