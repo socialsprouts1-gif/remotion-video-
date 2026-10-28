@@ -1,0 +1,23 @@
+{
+  "name": "edit8",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neuraxine: Luxury 2BHK animated walkthrough (9:16)",
+  "scripts": {
+    "align": "python3 scripts/align.py",
+    "edit": "python3 scripts/build_edit.py",
+    "score": "python3 scripts/make_score.py",
+    "render": "remotion render Edit out/property-walkthrough.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.6.3"
+  }
+}

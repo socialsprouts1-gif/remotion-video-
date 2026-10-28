@@ -1,0 +1,161 @@
+{
+ "fps": 30,
+ "intro": 4.0,
+ "outroAt": 54.7,
+ "duration": 57.9,
+ "frames": 1737,
+ "shots": [
+  {
+   "clip": "entrance",
+   "room": "foyer",
+   "label": "Entrance Foyer",
+   "detail": "Safety grille \u00b7 solid wood door",
+   "a": 4.85,
+   "b": 8.517,
+   "how": "fly"
+  },
+  {
+   "clip": "living",
+   "room": "living",
+   "label": "Living Room",
+   "detail": "L-shaped sofa \u00b7 split AC",
+   "a": 9.367,
+   "b": 15.267,
+   "how": "fly"
+  },
+  {
+   "clip": "dining",
+   "room": "dining",
+   "label": "Dining",
+   "detail": "Glass-top 4-seater",
+   "a": 14.917,
+   "b": 18.083,
+   "how": "xf"
+  },
+  {
+   "clip": "kitchen",
+   "room": "kitchen",
+   "label": "Modular Kitchen",
+   "detail": "Designer cabinets \u00b7 granite platform",
+   "a": 18.933,
+   "b": 25.767,
+   "how": "fly"
+  },
+  {
+   "clip": "utility",
+   "room": "utility",
+   "label": "Utility Balcony",
+   "detail": "Open-air dry space",
+   "a": 26.617,
+   "b": 30.05,
+   "how": "fly"
+  },
+  {
+   "clip": "bath",
+   "room": "bath",
+   "label": "Common Bath",
+   "detail": "Fully fitted washroom",
+   "a": 30.9,
+   "b": 33.4,
+   "how": "fly"
+  },
+  {
+   "clip": "bed1",
+   "room": "bed1",
+   "label": "Bedroom I",
+   "detail": "Double bed \u00b7 wardrobe",
+   "a": 34.25,
+   "b": 40.583,
+   "how": "fly"
+  },
+  {
+   "clip": "bed2a",
+   "room": "master",
+   "label": "Master Bedroom",
+   "detail": "Designer wardrobe \u00b7 wooden ceiling",
+   "a": 41.433,
+   "b": 44.1,
+   "how": "fly"
+  },
+  {
+   "clip": "bed2b",
+   "room": "master",
+   "label": "Master Bedroom",
+   "detail": "Designer wardrobe \u00b7 wooden ceiling",
+   "a": 43.75,
+   "b": 46.95,
+   "how": "xf"
+  },
+  {
+   "clip": "ensuite",
+   "room": "ensuite",
+   "label": "Ensuite Bath",
+   "detail": "Attached washroom",
+   "a": 46.6,
+   "b": 48.133,
+   "how": "xf"
+  },
+  {
+   "clip": "balcony",
+   "room": "balcony",
+   "label": "Private Balcony",
+   "detail": "Open city view",
+   "a": 47.783,
+   "b": 51.717,
+   "how": "xf"
+  },
+  {
+   "clip": "finish",
+   "room": "master",
+   "label": "Master Bedroom",
+   "detail": "Crafted storage",
+   "a": 51.367,
+   "b": 54.7,
+   "how": "xf"
+  }
+ ],
+ "flies": [
+  {
+   "a": 4.0,
+   "b": 4.85,
+   "from": "outside",
+   "to": "foyer"
+  },
+  {
+   "a": 8.517,
+   "b": 9.367,
+   "from": "foyer",
+   "to": "living"
+  },
+  {
+   "a": 18.083,
+   "b": 18.933,
+   "from": "dining",
+   "to": "kitchen"
+  },
+  {
+   "a": 25.767,
+   "b": 26.617,
+   "from": "kitchen",
+   "to": "utility"
+  },
+  {
+   "a": 30.05,
+   "b": 30.9,
+   "from": "utility",
+   "to": "bath"
+  },
+  {
+   "a": 33.4,
+   "b": 34.25,
+   "from": "bath",
+   "to": "bed1"
+  },
+  {
+   "a": 40.583,
+   "b": 41.433,
+   "from": "bed1",
+   "to": "master"
+  }
+ ]
+}
