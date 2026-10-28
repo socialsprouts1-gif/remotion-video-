@@ -17,7 +17,7 @@ for w in E["words"]:
 W = lambda l, k: lines[l][k]["s"]
 WE = lambda l, k: lines[l][k]["e"]
 L = E["lines"]
-END_AT = WE(8, 1) + 0.45
+END_AT = WE(8, 9) + 0.5
 
 mus = np.zeros(N)
 sfx = np.zeros(N)
@@ -83,6 +83,7 @@ def chime():
 scenes = [L[i] - 0.25 for i in range(1, 8)] + [W(6, 9) - 0.25, END_AT]
 for s in scenes: put(sfx, whoosh(), s - 0.25, 0.35)
 for s in [W(0, 19) + 0.35, W(1, 15), W(4, 26), W(6, 13) + 0.2, W(8, 0)]: put(sfx, thump(), s, 0.7)
+for s in [W(0, 13) - 0.15, W(8, 2) + 0.6, W(8, 6) - 0.1]: put(sfx, chime(), s, 0.25)
 pops = [W(0, 13), W(0, 15), W(0, 17), W(1, 6), W(1, 7) + .2, W(1, 8) + .2, W(1, 13), W(2, 4), W(2, 5), W(2, 7), W(2, 9),
         W(2, 17), W(2, 20), W(3, 4), W(3, 7), W(4, 6), W(4, 11), W(4, 18), W(4, 19) + .25, W(4, 23), W(5, 5), W(5, 6), W(5, 7),
         W(6, 8), W(6, 17), W(7, 8), W(7, 10), W(7, 15)]

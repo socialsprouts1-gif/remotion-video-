@@ -6,6 +6,6 @@ Agar koi customer appointment book karke nahi aata, ya enquiry karke reply karna
 Aur sabse important, aap aur aapka staff customers ko better service dene par focus kar sakte hain, instead of spending hours replying to WhatsApp messages.
 Kyunki salon business mein goal sirf enquiries lana nahi, zyada appointments book karna aur customers ko baar-baar wapas lana hai.
 Aapke salon ki sabse badi problem kya hai — missed enquiries, empty appointment slots, ya customer follow-ups?
-Comment karo!
+Comment karo "WhatsApp", aur saari details aapko DM kar dunga!
 
 Style reference: release clips-v10 (restaurant reel). Voice: AI voice (Piper hi_IN rohan); Devanagari text in vo/lines.txt and scripts/phrases.py.

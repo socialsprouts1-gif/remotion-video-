@@ -6,17 +6,29 @@ export type Theme = 'dark' | 'cream' | 'green';
 const abs = (x: number, y: number, extra: React.CSSProperties = {}): React.CSSProperties => ({position: 'absolute', left: x, top: y, ...extra});
 
 // ===== 0 · If we managed your salon ============================================
-const Polaroid: React.FC<{img: string; name: string; likes: number; bg: string; reel?: boolean}> = ({img, name, likes, bg, reel}) => (
-  <div style={{width: 230, background: '#fff', borderRadius: 14, padding: 14, paddingBottom: 18, boxShadow: '0 24px 50px rgba(0,0,0,0.5)'}}>
-    <div style={{height: 210, borderRadius: 8, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
-      <Img src={icon(img)} style={{width: 120, height: 120, filter: 'drop-shadow(0 10px 14px rgba(0,0,0,0.25))'}} />
+const IG_GRAD = 'linear-gradient(45deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5)';
+const Polaroid: React.FC<{img: string; name: string; likes: number; bg: string; reel?: boolean}> = ({img, likes, bg, reel}) => (
+  <div style={{width: 230, background: '#fff', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 50px rgba(0,0,0,0.5)', fontFamily: SANS}}>
+    <div style={{display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px'}}>
+      <div style={{width: 30, height: 30, borderRadius: 15, background: IG_GRAD, padding: 2.5}}>
+        <div style={{width: '100%', height: '100%', borderRadius: 15, background: C.blush, border: '2px solid #fff'}} />
+      </div>
+      <span style={{fontSize: 16, fontWeight: 700, color: C.ink}}>yoursalon</span>
+      <span style={{marginLeft: 'auto', color: '#999', fontWeight: 700}}>···</span>
+    </div>
+    <div style={{height: 196, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
+      <Img src={icon(img)} style={{width: 110, height: 110, filter: 'drop-shadow(0 10px 14px rgba(0,0,0,0.25))'}} />
       {reel && (
-        <div style={{position: 'absolute', top: 12, right: 12, background: 'rgba(0,0,0,0.55)', borderRadius: 8, padding: '4px 10px', color: '#fff', fontFamily: MONO, fontSize: 15, fontWeight: 700}}>▶ REEL</div>
+        <div style={{position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,0.55)', borderRadius: 8, padding: '4px 10px', color: '#fff', fontFamily: MONO, fontSize: 14, fontWeight: 700}}>▶ REEL</div>
       )}
     </div>
-    <div style={{fontFamily: MONO, fontSize: 15, color: '#9A948C', marginTop: 10}}>{name}</div>
-    <div style={{fontFamily: SANS, fontSize: 20, fontWeight: 700, color: C.ink, marginTop: 2}}>
-      <span style={{color: C.red}}>♥</span> {likes} <span style={{fontWeight: 400, color: '#9A948C'}}>likes</span>
+    <div style={{display: 'flex', gap: 12, padding: '10px 12px 2px'}}>
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 20.5 C5 15.5 2.5 12.5 2.5 8.8 A4.6 4.6 0 0 1 12 6.5 A4.6 4.6 0 0 1 21.5 8.8 C21.5 12.5 19 15.5 12 20.5 Z" fill={C.red} /></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M20.5 11.5 A8.5 8.5 0 1 1 17 4.6 L20.5 3.5 L19.6 7.2 A8.4 8.4 0 0 1 20.5 11.5 Z" fill="none" stroke={C.ink} strokeWidth="2" strokeLinejoin="round" /></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="none" stroke={C.ink} strokeWidth="2" strokeLinejoin="round" /></svg>
+    </div>
+    <div style={{fontSize: 17, fontWeight: 700, color: C.ink, padding: '4px 12px 12px'}}>
+      {likes} <span style={{fontWeight: 400, color: '#8a8a8a'}}>likes</span>
     </div>
   </div>
 );
@@ -69,14 +81,26 @@ export const S0: React.FC<{t: number}> = ({t}) => {
           <div key={i} style={abs(c.x, 980, {transform: `translateY(${(1 - s) * 260 + fall * 10}px) rotate(${c.rot + (1 - s) * 20}deg) scale(${lerp(0.5, 1, s)})`, opacity: ep(t, c.at, 0.2)})}>
             <Polaroid {...c} />
             {t > no + i * 0.12 && (
-              <svg width="258" height="320" viewBox="0 0 258 320" style={{position: 'absolute', left: 0, top: 0}}>
-                <path d="M20 30 L238 290" stroke={C.red} strokeWidth="12" strokeLinecap="round" strokeDasharray="340" strokeDashoffset={340 * (1 - ep(t, no + i * 0.12, 0.25))} />
-                <path d="M238 30 L20 290" stroke={C.red} strokeWidth="12" strokeLinecap="round" strokeDasharray="340" strokeDashoffset={340 * (1 - ep(t, no + i * 0.12 + 0.12, 0.25))} />
+              <svg width="230" height="330" viewBox="0 0 230 330" style={{position: 'absolute', left: 0, top: 0}}>
+                <path d="M18 30 L212 300" stroke={C.red} strokeWidth="12" strokeLinecap="round" strokeDasharray="340" strokeDashoffset={340 * (1 - ep(t, no + i * 0.12, 0.25))} />
+                <path d="M212 30 L18 300" stroke={C.red} strokeWidth="12" strokeLinecap="round" strokeDasharray="340" strokeDashoffset={340 * (1 - ep(t, no + i * 0.12 + 0.12, 0.25))} />
               </svg>
             )}
           </div>
         );
       })}
+      {t > W(0, 13) - 0.15 && (
+        <div style={abs(735, 560, {transform: `translateY(${Math.sin(t * 2) * 6}px)`})}>
+          <Pop t={t} at={W(0, 13) - 0.15} from={0.3} rot={-25} dy={80}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12}}>
+              <div style={{width: 170, height: 170, borderRadius: 46, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 0 8px rgba(214,41,118,0.25), 0 30px 60px rgba(0,0,0,0.55)'}}>
+                <Img src={icon('instagram-icon.svg')} style={{width: 130, height: 130}} />
+              </div>
+              <div style={{background: IG_GRAD, color: '#fff', borderRadius: 30, padding: '8px 22px', fontFamily: SANS, fontWeight: 800, fontSize: 30}}>Instagram</div>
+            </div>
+          </Pop>
+        </div>
+      )}
       <Stamp t={t} at={no + 0.35} text="NOT ENOUGH ×" color={C.red} rot={-10} style={{left: 290, top: 900}} fill />
     </>
   );
@@ -561,9 +585,14 @@ export const S7: React.FC<{t: number}> = ({t}) => {
   const active = tiles.reduce((a, x, i) => (t > x.at ? i : a), -1);
   const typeStart = W(7, 10) + 0.4;
   const msg = 'Weekdays pe slots khaali rehte hain';
-  const typed = msg.slice(0, Math.floor(clamp01((t - typeStart) / 2.4) * msg.length));
+  const cta = W(8, 0);
+  const sent = W(8, 2) + 0.6;
+  const typed =
+    t < cta
+      ? msg.slice(0, Math.floor(clamp01((t - typeStart) / 2.4) * msg.length))
+      : 'WhatsApp'.slice(0, Math.floor(clamp01((t - W(8, 2) + 0.15) / 0.45) * 8));
   const L = W(7, 0) - 0.2;
-  const sent = W(8, 0);
+  const dm = W(8, 6) - 0.1;
   return (
     <>
       <div style={abs(110, 650, {display: 'flex', gap: 30})}>
@@ -596,7 +625,31 @@ export const S7: React.FC<{t: number}> = ({t}) => {
           </div>
         </Card>
       </Pop>
-      <Stamp t={t} at={sent} text="COMMENT" color={C.ink} rot={-9} style={{left: 140, top: 1215}} fill size={50} />
+      <Stamp t={t} at={cta} text="COMMENT" color={C.ink} rot={-9} style={{left: 120, top: 1205}} fill size={50} />
+      {t > sent && (
+        <Pop t={t} at={sent} style={abs(560, 1215)} rot={6}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 12, background: '#fff', borderRadius: 30, padding: '12px 24px 12px 12px', boxShadow: '0 16px 34px rgba(40,30,20,0.16)', fontFamily: SANS, fontSize: 26, color: C.ink}}>
+            <Img src={icon('whatsapp-icon.svg')} style={{width: 40, height: 40}} />
+            <b>"WhatsApp"</b>
+          </div>
+        </Pop>
+      )}
+      {t > dm && (
+        <Pop t={t} at={dm} style={abs(110, 1330)} dy={-60}>
+          <div style={{width: 860, display: 'flex', alignItems: 'center', gap: 18, background: C.ink, borderRadius: 30, padding: '20px 26px', boxShadow: '0 24px 50px rgba(0,0,0,0.3)', fontFamily: SANS}}>
+            <div style={{width: 64, height: 64, borderRadius: 18, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <Img src={icon('instagram-icon.svg')} style={{width: 46, height: 46}} />
+            </div>
+            <div style={{flex: 1}}>
+              <div style={{color: '#fff', fontSize: 26}}>
+                <b>neuraxine</b> <span style={{opacity: 0.6}}>sent you a message · now</span>
+              </div>
+              <div style={{color: 'rgba(255,255,255,0.85)', fontSize: 24, marginTop: 4}}>Hi! Yeh rahi WhatsApp automation ki saari details</div>
+            </div>
+            <div style={{background: C.green, color: '#fff', borderRadius: 20, padding: '8px 16px', fontFamily: MONO, fontWeight: 800, fontSize: 18, letterSpacing: '0.1em'}}>DM</div>
+          </div>
+        </Pop>
+      )}
     </>
   );
 };

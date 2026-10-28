@@ -20,5 +20,6 @@ LINES = [
    P("zyada|ज़्यादा appointments|अपॉइंटमेंट्स book|बुक karna|करना aur|और customers|कस्टमर्स ko|को baar-baar|बार-बार wapas|वापस lana|लाना hai.|है।")],
   [P("Aapke|आपके salon|सैलून ki|की sabse|सबसे badi|बड़ी problem|प्रॉब्लम kya|क्या hai?|है?"),
    P("missed|मिस्ड enquiries,|एन्क्वायरीज़, empty|एम्प्टी appointment|अपॉइंटमेंट slots,|स्लॉट्स, ya|या customer|कस्टमर follow-ups?|फ़ॉलो-अप्स?")],
-  [P("Comment|कमेंट karo!|करो!")],
+  [P("Comment|कमेंट karo|करो \"WhatsApp\"|व्हाट्सऐप,"),
+   P("aur|और saari|सारी details|डिटेल्स aapko|आपको DM|डी_एम kar|कर dunga!|दूंगा।")],
 ]

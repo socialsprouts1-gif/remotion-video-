@@ -14,7 +14,7 @@ type Scene = {
   body: (t: number, at: number) => React.ReactNode;
 };
 
-const END_AT = WE(8, 1) + 0.45;
+const END_AT = WE(8, 9) + 0.5;
 const SCENES: Scene[] = [
   {at: 0, theme: 'dark', mark: 'SALON', title: [[['If we managed your']], [['salon', true]]], trans: 'none', body: (t) => <S0 t={t} />},
   {at: LINE[1] - 0.25, theme: 'cream', mark: 'WHATSAPP', badge: '01', title: [[['Automate '], ['every', true]], [['enquiry']]], trans: 'wipe', body: (t) => <S1 t={t} />},
@@ -156,7 +156,7 @@ WORDS.forEach((w, i) => {
   if (!last || !prev || prev.line !== w.line || /[,.?!]$/.test(prev.w) || last.ws.length >= 3) CHUNKS.push({ws: [w], s: w.s});
   else last.ws.push(w);
 });
-const KEY = /^(whatsapp|ai|automation|appointments?|follow-ups|enquiries|enquiry|automated|book|comment)[,.?!]*$/i;
+const KEY = /^"?(whatsapp|instagram|dm|ai|automation|appointments?|follow-ups|enquiries|enquiry|automated|book|comment)"?[,.?!]*$/i;
 const Captions: React.FC<{t: number; theme: Theme}> = ({t, theme}) => {
   if (t > END_AT) return null;
   let ci = -1;
@@ -208,7 +208,7 @@ const SceneLayer: React.FC<{s: Scene; t: number; next?: Scene}> = ({s, t, next})
   const local = t - s.at;
   // being covered by the next scene: push in + blur
   const cover = next ? clamp01((t - next.at) / TRANS) : 0;
-  const push = 1 + local * 0.006 + cover * 0.05;
+  const push = 1 + Math.min(local * 0.006, 0.025) + cover * 0.05;
   const floatY = Math.sin(local * 0.9) * 6;
   let clip = 'none';
   if (s.trans !== 'none' && local < TRANS) {
