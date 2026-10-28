@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Audio, continueRender, delayRender, OffthreadVideo, Sequence, spring, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, continueRender, delayRender, Img, OffthreadVideo, Sequence, spring, staticFile, useCurrentFrame} from 'remotion';
 import {ease, lerp, pt, rand} from './anim';
 import edit from './edit.json';
 
@@ -155,7 +155,7 @@ const Captions: React.FC<{t: number; small?: boolean}> = ({t, small}) => {
   const pop = sp(t, c.s - 0.03, 420, 22);
   const fs = small ? 52 : 86;
   return (
-    <div style={{position: 'absolute', left: 40, right: 40, top: small ? 1700 : 1240, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center', gap: small ? 10 : 14, transform: `scale(${lerp(0.82, 1, m1(pop))})`, opacity: m1(pop * 3)}}>
+    <div style={{position: 'absolute', left: 40, right: 40, top: small ? 1700 : 1100, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center', gap: small ? 10 : 14, transform: `scale(${lerp(0.82, 1, m1(pop))})`, opacity: m1(pop * 3)}}>
       {c.words.map((w, i) => {
         const on = i === cur;
         const seen = i <= cur;
@@ -243,6 +243,11 @@ const Rupee: React.FC<{size?: number; color?: string}> = ({size = 40, color = C.
 );
 
 // ---------------------------------------------------------------- devices (drawn, no brand marks)
+/** Real iPhone 18 Pro Max (Burgundy) product image supplied by the client (checkerboard removed). 586x718. */
+const PhoneImg: React.FC<{w?: number}> = ({w = 300}) => (
+  <Img src={staticFile('brand/iphone18-burgundy.png')} style={{width: w, height: (w * 718) / 586, display: 'block', filter: 'drop-shadow(0 40px 60px rgba(0,0,0,0.6))'}} />
+);
+
 const PhoneBack: React.FC<{w?: number; color?: string}> = ({w = 300, color = C.burg}) => {
   const h = w * 2.07;
   return (
@@ -302,7 +307,7 @@ const Wallet: React.FC<SP> = ({t, a}) => {
         <div style={{background: C.cream, borderRadius: 120, padding: '40px 70px', display: 'flex', alignItems: 'center', gap: 30, boxShadow: '0 30px 60px rgba(0,0,0,0.5)'}}>
           <span style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 84, color: C.gold2}}>mann mein…</span>
           <div style={{transform: 'rotate(8deg)'}}>
-            <PhoneBack w={90} />
+            <PhoneImg w={120} />
           </div>
         </div>
       </div>
@@ -319,16 +324,17 @@ const IPhone: React.FC<SP> = ({t, a}) => {
   return (
     <Stage t={t} cy={900}>
       <Kicker t={t} at={a + 0.05}>THE DREAM</Kicker>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 280, textAlign: 'center', fontFamily: SANS, fontWeight: 900, fontSize: 150, letterSpacing: '-0.05em', lineHeight: 1, ...goldText, opacity: m1(big * 2), transform: `scale(${lerp(1.3, 1, m1(big))})`}}>iPhone 18</div>
-      <div style={{position: 'absolute', left: 390, top: 520, perspective: 1600}}>
-        <div style={{transform: `rotateY(${spin}deg) rotateX(6deg) translateY(${(1 - m1(p)) * 500}px)`, transformStyle: 'preserve-3d', position: 'relative'}}>
-          <PhoneBack w={300} />
-          <div style={{position: 'absolute', inset: 0, borderRadius: 54, overflow: 'hidden', pointerEvents: 'none'}}>
-            <div style={{position: 'absolute', top: -200, bottom: -200, width: 120, left: lerp(-200, 500, shine), transform: 'rotate(20deg)', background: 'linear-gradient(90deg, transparent, rgba(255,230,210,0.35), transparent)'}} />
+      <div style={{position: 'absolute', left: 0, right: 0, top: 280, textAlign: 'center', fontFamily: SANS, fontWeight: 900, fontSize: 112, letterSpacing: '-0.05em', lineHeight: 1, ...goldText, opacity: m1(big * 2), transform: `scale(${lerp(1.3, 1, m1(big))})`}}>iPhone 18 Pro Max</div>
+      <div style={{position: 'absolute', left: 540 - 290, top: 470, width: 580, perspective: 1800}}>
+        <div style={{transform: `rotateY(${spin * 0.35}deg) translateY(${(1 - m1(p)) * 600 + Math.sin(t * 1.2) * 8}px) scale(${lerp(0.85, 1, m1(p))})`, position: 'relative'}}>
+          <PhoneImg w={580} />
+          {/* light sweep, masked to the phone itself */}
+          <div style={{position: 'absolute', inset: 0, WebkitMaskImage: `url(${staticFile('brand/iphone18-burgundy.png')})`, WebkitMaskSize: '100% 100%', maskImage: `url(${staticFile('brand/iphone18-burgundy.png')})`, maskSize: '100% 100%', overflow: 'hidden', pointerEvents: 'none'}}>
+            <div style={{position: 'absolute', top: -300, bottom: -300, width: 160, left: lerp(-300, 900, shine), transform: 'rotate(20deg)', background: 'linear-gradient(90deg, transparent, rgba(255,235,225,0.32), transparent)'}} />
           </div>
         </div>
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1240, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 26, opacity: m1(color * 2), transform: `translateY(${(1 - m1(color)) * 40}px)`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1250, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 26, opacity: m1(color * 2), transform: `translateY(${(1 - m1(color)) * 40}px)`}}>
         <div style={{width: 70, height: 70, borderRadius: 70, background: `linear-gradient(145deg, ${C.burg2}, ${C.burg})`, boxShadow: `0 0 0 5px ${C.bg}, 0 0 0 8px ${C.gold}`}} />
         <span style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 120, color: C.cream}}>Burgundy</span>
       </div>
@@ -355,7 +361,7 @@ const Devices: React.FC<SP> = ({t, a}) => {
         <Tablet w={300} />
       </div>
       <div style={{position: 'absolute', left: 140, top: 1060, transform: `rotate(-8deg) translateY(${(1 - ap(t, a, 0.3)) * 400}px)`}}>
-        <PhoneBack w={170} />
+        <PhoneImg w={240} />
       </div>
     </Stage>
   );
@@ -429,7 +435,7 @@ const Link: React.FC<SP> = ({t, a}) => {
 
 /** Slot machine: three reels stop on the three prizes. */
 const PRIZE = [
-  {name: 'iPhone', at: 67, el: <PhoneBack w={110} />},
+  {name: 'iPhone', at: 67, el: <PhoneImg w={190} />},
   {name: 'MacBook', at: 68, el: <Laptop w={190} />},
   {name: 'iPad', at: 70, el: <Tablet w={120} />},
 ];
@@ -522,56 +528,97 @@ const Steps: React.FC<SP> = ({t, a}) => (
   </Stage>
 );
 
-const HL = ['Giveaway', 'Details', 'Diwali', 'Trading'];
+const HL = [
+  {img: 'hl-community', name: 'community'},
+  {img: 'hl-forex', name: 'Forex Expo', uae: true},
+  {img: 'hl-deeptalks', name: 'DeeP Talks'},
+  {img: 'hl-ytlive', name: 'YT Live Join…'},
+];
+const Verified: React.FC<{size?: number}> = ({size = 38}) => (
+  <svg width={size} height={size} viewBox="0 0 40 40" style={{display: 'block', flexShrink: 0}}>
+    <path d="M20 2l4.2 3.1 5.2-.3 1.7 4.9 4.4 2.8-1.2 5.1 2.1 4.8-3.6 3.8-.4 5.2-5.1 1.3-3 4.3-4.9-1.8-4.9 1.8-3-4.3-5.1-1.3-.4-5.2L2.4 22.4l2.1-4.8-1.2-5.1 4.4-2.8 1.7-4.9 5.2.3z" fill="#0095F6" />
+    <path d="M13 20.5l4.6 4.6L27.5 15" fill="none" stroke="#fff" strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const UAE: React.FC = () => (
+  <span style={{display: 'inline-flex', width: 30, height: 20, marginLeft: 6, verticalAlign: 'middle', borderRadius: 3, overflow: 'hidden'}}>
+    <span style={{width: 8, background: '#EF3340'}} />
+    <span style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+      <span style={{flex: 1, background: '#009739'}} />
+      <span style={{flex: 1, background: '#fff'}} />
+      <span style={{flex: 1, background: '#000'}} />
+    </span>
+  </span>
+);
 const Insta: React.FC<SP> = ({t, a}) => {
   const card = sp(t, a + 0.02, 220, 20);
   const handle = 'deepakwadhwa.official';
   const typed = handle.slice(0, Math.max(0, Math.floor((t - W(97) + 0.1) / 0.035)));
   const hl = (i: number) => sp(t, W(104) - 0.05 + i * 0.08, 300, 16);
-  const pick = t > W(108) - 0.1;
+  const lit = t > W(105) - 0.1 ? Math.min(3, Math.floor((t - W(105) + 0.1) / 0.45)) : -1;
+  const stat = (n: string, l: string) => (
+    <div style={{textAlign: 'left'}}>
+      <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 40, color: '#111', lineHeight: 1.1}}>{n}</div>
+      <div style={{fontFamily: SANS, fontSize: 28, color: '#333'}}>{l}</div>
+    </div>
+  );
   return (
     <Stage t={t} cy={900}>
       <Kicker t={t} at={a}>INSTAGRAM PE JAIYE</Kicker>
-      <div style={{position: 'absolute', left: 60, right: 60, top: 300, borderRadius: 50, background: '#FFFFFF', padding: '50px 46px', boxShadow: '0 60px 120px rgba(0,0,0,0.6)', transform: `translateY(${(1 - m1(card)) * 900}px)`}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: 40}}>
-          <div style={{width: 210, height: 210, borderRadius: 210, padding: 8, background: 'linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7)', flexShrink: 0}}>
-            <div style={{width: '100%', height: '100%', borderRadius: 210, border: '6px solid #fff', overflow: 'hidden', position: 'relative', boxSizing: 'border-box', background: '#000'}}>
-              <div style={{position: 'absolute', left: 97 - 540 * 0.34, top: 97 - 800 * 0.34, width: 1080, height: 1920, transform: 'scale(0.34)', transformOrigin: '0 0'}}>
-                <Speaker t={t} pip />
-              </div>
+      <div style={{position: 'absolute', left: 50, right: 50, top: 270, borderRadius: 46, background: '#FFFFFF', padding: '40px 40px 44px', boxShadow: '0 60px 120px rgba(0,0,0,0.6)', transform: `translateY(${(1 - m1(card)) * 900}px)`}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 10, marginBottom: 26}}>
+          <span style={{fontFamily: SANS, fontWeight: 800, fontSize: 44, color: '#111', letterSpacing: '-0.02em'}}>
+            {typed}
+            <span style={{opacity: typed.length < handle.length && Math.sin(t * 14) > 0 ? 1 : 0, color: '#0095F6'}}>|</span>
+          </span>
+          {typed.length >= handle.length && <Verified size={40} />}
+        </div>
+        <div style={{display: 'flex', alignItems: 'center', gap: 36}}>
+          <div style={{width: 196, height: 196, borderRadius: 196, padding: 7, background: 'linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7)', flexShrink: 0}}>
+            <div style={{width: '100%', height: '100%', borderRadius: 196, border: '6px solid #fff', overflow: 'hidden', boxSizing: 'border-box'}}>
+              <Img src={staticFile('brand/dw-profile.png')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
             </div>
           </div>
           <div style={{flex: 1}}>
-            <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 42, color: '#111', letterSpacing: '-0.02em', minHeight: 52}}>
-              {typed}
-              <span style={{opacity: typed.length < handle.length && Math.sin(t * 14) > 0 ? 1 : 0, color: '#3897F0'}}>|</span>
-            </div>
-            <div style={{fontFamily: SANS, fontSize: 30, color: '#555', marginTop: 8}}>Deepak Wadhwa</div>
-            <div style={{display: 'flex', gap: 14, marginTop: 22}}>
-              <div style={{flex: 1, height: 74, borderRadius: 18, background: '#3897F0', display: 'grid', placeItems: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 30, color: '#fff'}}>Follow</div>
-              <div style={{flex: 1, height: 74, borderRadius: 18, background: '#EFEFEF', display: 'grid', placeItems: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 30, color: '#111'}}>Message</div>
+            <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 34, color: '#111', marginBottom: 14}}>Deepak Wadhwa</div>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              {stat('512', 'posts')}
+              {stat('1.4M', 'followers')}
+              {stat('47', 'following')}
             </div>
           </div>
         </div>
-        <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 54}}>
+        <div style={{fontFamily: SANS, fontSize: 28, color: '#111', lineHeight: 1.35, marginTop: 22}}>
+          Trader | Mentor | Speaker
+          <br />
+          Founder TRADERSloop | oldBULL | 12xJoshTalks
+        </div>
+        <div style={{display: 'flex', gap: 14, marginTop: 24}}>
+          <div style={{flex: 1, height: 74, borderRadius: 18, background: '#4A5DF9', display: 'grid', placeItems: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 30, color: '#fff'}}>Follow</div>
+          <div style={{flex: 1, height: 74, borderRadius: 18, background: '#EFEFEF', display: 'grid', placeItems: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 30, color: '#111'}}>Message</div>
+        </div>
+        <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 36}}>
           {HL.map((h, i) => {
             const p = hl(i);
-            const on = pick && i === 1;
+            const on = i === lit;
             return (
-              <div key={h} style={{width: 190, textAlign: 'center', transform: `scale(${lerp(0.4, on ? 1.12 : 1, m1(p))})`, opacity: m1(p * 2)}}>
-                <div style={{width: 150, height: 150, margin: '0 auto', borderRadius: 150, padding: 6, background: on ? 'linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7)' : '#DBDBDB'}}>
-                  <div style={{width: '100%', height: '100%', borderRadius: 150, border: '5px solid #fff', boxSizing: 'border-box', background: `radial-gradient(circle at 40% 35%, ${[C.gold, '#2a2a2a', C.flame, C.gold2][i]}, #111)`, display: 'grid', placeItems: 'center'}}>
-                    <div style={{width: 40, height: 40, borderRadius: 40, background: C.flame, boxShadow: `0 0 30px ${C.gold}`}} />
+              <div key={h.name} style={{width: 220, textAlign: 'center', transform: `scale(${lerp(0.4, on ? 1.1 : 1, m1(p))})`, opacity: m1(p * 2)}}>
+                <div style={{width: 160, height: 160, margin: '0 auto', borderRadius: 160, padding: 6, background: on ? 'linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7)' : '#DBDBDB'}}>
+                  <div style={{width: '100%', height: '100%', borderRadius: 160, border: '5px solid #fff', boxSizing: 'border-box', overflow: 'hidden'}}>
+                    <Img src={staticFile(`brand/${h.img}.png`)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
                   </div>
                 </div>
-                <div style={{fontFamily: SANS, fontSize: 28, fontWeight: on ? 800 : 500, color: '#111', marginTop: 12}}>{h}</div>
+                <div style={{fontFamily: SANS, fontSize: 26, fontWeight: on ? 800 : 500, color: '#111', marginTop: 12, whiteSpace: 'nowrap'}}>
+                  {h.name}
+                  {h.uae && <UAE />}
+                </div>
               </div>
             );
           })}
         </div>
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1060, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 120, ...goldText, opacity: ap(t, W(104) - 0.05)}}>Highlights</div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1210, textAlign: 'center', fontFamily: SANS, fontWeight: 700, fontSize: 52, color: C.cream, opacity: ap(t, W(107) - 0.05)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1300, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 120, ...goldText, opacity: ap(t, W(104) - 0.05)}}>Highlights</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1440, textAlign: 'center', fontFamily: SANS, fontWeight: 700, fontSize: 52, color: C.cream, opacity: ap(t, W(107) - 0.05)}}>
         mein saari <span style={goldText}>details</span>
       </div>
     </Stage>
@@ -772,7 +819,6 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
           }}
         >
           <S t={t} a={s.a} b={s.b} />
-          <Captions t={t} small />
         </AbsoluteFill>
       )}
       <AbsoluteFill style={{background: C.gold, opacity: flash * 0.3, mixBlendMode: 'screen', pointerEvents: 'none'}} />
