@@ -163,46 +163,66 @@ const Grain: React.FC<{frame: number}> = ({frame}) => (
   </AbsoluteFill>
 );
 
-// ---------------------------------------------------------------- reframes: a new framing on each sentence
-const SENT = WORDS.filter((w, i) => i === 0 || /[.?!…]$/.test(WORDS[i - 1].w)).map((w) => w.s);
-const FRAMES = [
-  {z: 1.03, x: 50, y: 40},
-  {z: 1.15, x: 52, y: 20},
-  {z: 1.08, x: 46, y: 38},
-  {z: 1.18, x: 50, y: 18},
+// ---------------------------------------------------------------- colour story: each chapter of the talk gets its own look
+// sat/con/bri/sep/hue drive the CSS filter; tint is a soft-light wash; glow is a warm bloom; leak marks the chapter change.
+type Look = {at: number; sat: number; con: number; bri: number; sep: number; hue: number; tint: [number, number, number, number]; glow: number};
+const LOOKS: Look[] = [
+  {at: 0, sat: 1.0, con: 1.08, bri: 1.0, sep: 0.08, hue: 0, tint: [255, 170, 90, 0.18], glow: 0.25}, // warm, honest opening
+  {at: W(28), sat: 1.28, con: 1.12, bri: 1.04, sep: 0.0, hue: -6, tint: [255, 120, 60, 0.22], glow: 0.4}, // ideas + excitement: vivid, warm
+  {at: W(46), sat: 1.05, con: 1.1, bri: 1.0, sep: 0.05, hue: 10, tint: [120, 90, 255, 0.14], glow: 0.2}, // chasing others: cooler shift
+  {at: W(60), sat: 0.55, con: 1.05, bri: 0.94, sep: 0.25, hue: 0, tint: [90, 140, 170, 0.22], glow: 0.1}, // months pass: faded, cold
+  {at: W(81) - 0.3, sat: 0.0, con: 1.35, bri: 0.85, sep: 0.0, hue: 0, tint: [0, 0, 0, 0.0], glow: 0.0}, // the scary part: black & white
+  {at: W(101), sat: 0.95, con: 1.12, bri: 1.03, sep: 0.0, hue: -4, tint: [40, 160, 170, 0.2], glow: 0.2}, // realisation: clean teal & orange
+  {at: W(136), sat: 1.15, con: 1.1, bri: 1.05, sep: 0.15, hue: -8, tint: [255, 190, 90, 0.26], glow: 0.55}, // potential -> reality: golden
+  {at: W(152), sat: 0.9, con: 1.06, bri: 0.95, sep: 0.2, hue: 0, tint: [255, 160, 100, 0.2], glow: 0.35}, // sign-off: soft warm
 ];
+const lookAt = (t: number) => {
+  let i = 0;
+  LOOKS.forEach((l, k) => (t >= l.at - 0.3 ? (i = k) : null));
+  const cur = LOOKS[i];
+  const prev = LOOKS[Math.max(0, i - 1)];
+  const k = i === 0 ? 1 : pt(t, cur.at - 0.3, cur.at + 0.5, ease.inOut);
+  const m = (a: number, b: number) => lerp(a, b, k);
+  return {
+    sat: m(prev.sat, cur.sat), con: m(prev.con, cur.con), bri: m(prev.bri, cur.bri), sep: m(prev.sep, cur.sep), hue: m(prev.hue, cur.hue), glow: m(prev.glow, cur.glow),
+    tint: prev.tint.map((v, j) => m(v, cur.tint[j])) as [number, number, number, number],
+    leak: i === 0 ? 0 : Math.sin(Math.min(1, Math.max(0, (t - cur.at + 0.3) / 1.0)) * Math.PI),
+    idx: i,
+  };
+};
 
-// ---------------------------------------------------------------- film
+// ---------------------------------------------------------------- film (original frame: no zoom, no crop, no bars)
 export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const dim = emphLevel(t);
   const sig = pt(t, W(152) - 0.3, W(152) + 0.4, ease.inOut);
-  // slow cinematic drift, a gentle push on each emphasis moment, then settle for the sign-off
-  const frameIdx = SENT.filter((x) => t >= x - 0.02).length;
-  const lastCut = SENT.filter((x) => t >= x - 0.02).slice(-1)[0] ?? 0;
-  const prevZ = frameIdx > 1 ? FRAMES[(frameIdx - 2) % FRAMES.length] : FRAMES[0];
-  const curZ = FRAMES[(frameIdx - 1 + FRAMES.length) % FRAMES.length];
-  const k = pt(t, lastCut - 0.02, lastCut + 0.35, ease.out);
-  const shot = {z: lerp(prevZ.z, curZ.z, k), x: lerp(prevZ.x, curZ.x, k), y: lerp(prevZ.y, curZ.y, k)};
-  const z = shot.z + 0.015 * Math.sin(t * 0.15) + 0.06 * dim + 0.04 * sig;
+  const L = lookAt(t);
   const fadeIn = pt(t, 0, 0.6, ease.out);
   const fadeOut = pt(t, edit.speech + 0.5, edit.duration, ease.inOut);
+  const filter = `saturate(${L.sat * (1 - 0.3 * dim)}) contrast(${L.con}) brightness(${L.bri * (1 - 0.4 * Math.max(dim, sig * 0.85))}) sepia(${L.sep}) hue-rotate(${L.hue}deg)`;
+  const [r, g, b, a] = L.tint;
+  const leakX = 15 + ((L.idx * 37) % 70);
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      <AbsoluteFill style={{transform: `scale(${z})`, transformOrigin: `${shot.x}% ${shot.y}%`}}>
-        <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: `contrast(1.1) saturate(${0.86 - 0.35 * dim}) brightness(${1 - 0.45 * Math.max(dim, sig * 0.9)})`}} />
-      </AbsoluteFill>
-      {/* grade: teal shadows / warm highlights, vignette, bottom fade for the captions */}
-      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,30,40,0.18), rgba(40,25,10,0.12))', mixBlendMode: 'soft-light'}} />
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse 75% 75% at 50% 42%, transparent 50%, rgba(0,0,0,0.6) 100%)'}} />
-      <AbsoluteFill style={{background: 'linear-gradient(180deg, transparent 62%, rgba(0,0,0,0.55) 100%)'}} />
+      <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'contain', filter}} />
+      {/* bloom: a blurred, brightened copy screened on top gives highlights a soft filmic glow */}
+      {L.glow > 0.02 && (
+        <AbsoluteFill style={{opacity: L.glow * 0.5, mixBlendMode: 'screen'}}>
+          <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'contain', filter: `${filter} blur(18px) brightness(0.9) contrast(1.6)`}} />
+        </AbsoluteFill>
+      )}
+      {/* colour wash for the chapter (soft-light keeps skin natural) */}
+      <AbsoluteFill style={{background: `rgba(${r},${g},${b},${a})`, mixBlendMode: 'soft-light'}} />
+      {/* split-tone: cool shadows bottom-left, warm light top-right */}
+      <AbsoluteFill style={{background: 'linear-gradient(225deg, rgba(255,180,110,0.16), transparent 45%, rgba(20,60,90,0.2))', mixBlendMode: 'soft-light', opacity: 1 - (L.idx === 4 ? 1 : 0)}} />
+      {/* light leak on each chapter change */}
+      {L.leak > 0.01 && <AbsoluteFill style={{background: `radial-gradient(ellipse 45% 70% at ${leakX}% 30%, rgba(255,150,70,0.55), rgba(255,80,40,0.15) 45%, transparent 75%)`, mixBlendMode: 'screen', opacity: L.leak * 0.8}} />}
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 80% 80% at 50% 45%, transparent 55%, rgba(0,0,0,0.55) 100%)'}} />
       {t < W(152) - 0.15 && (dim < 0.5 ? <Captions t={t} /> : null)}
       <Emphasis t={t} />
       <Signature t={t} />
       <Grain frame={frame} />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: 64, background: '#000'}} />
-      <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 64, background: '#000'}} />
       <AbsoluteFill style={{background: '#000', opacity: Math.max(1 - fadeIn, fadeOut)}} />
       <Audio src={staticFile('audio/voice.wav')} />
       {withMusic && <Audio src={staticFile('audio/score.wav')} volume={0.55} />}
