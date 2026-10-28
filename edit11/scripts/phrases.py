@@ -1,0 +1,27 @@
+# Each phrase: list of (caption word, Devanagari spoken form). Lines group phrases; one line = one scene beat.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Agar|अगर hum|हम aapke|आपके real|रियल estate|एस्टेट business|बिज़नेस ki|की marketing|मार्केटिंग aur|और WhatsApp|व्हाट्सऐप enquiries|एन्क्वायरीज़ handle|हैंडल karte,|करते,"),
+   P("toh|तो sirf|सिर्फ़ Instagram|इंस्टाग्राम par|पर property|प्रॉपर्टी ke|के photos|फ़ोटोज़ aur|और reels|रील्स post|पोस्ट nahi|नहीं karte.|करते।")],
+  [P("Sabse|सबसे pehle|पहले aapke|आपके business|बिज़नेस ke|के liye|लिए WhatsApp|व्हाट्सऐप automation|ऑटोमेशन setup|सेटअप karte,|करते,"),
+   P("taaki|ताकि koi|कोई bhi|भी buyer|बायर enquiry|एन्क्वायरी miss|मिस na|न ho,|हो,"),
+   P("chahe|चाहे raat|रात ke|के gyarah|ग्यारह baje|बजे aaye.|आए।")],
+  [P("Jab|जब bhi|भी koi|कोई buyer|बायर 2BHK,|टू_बी_एच_के, 3BHK,|थ्री_बी_एच_के, plot|प्लॉट ya|या office|ऑफ़िस space|स्पेस ke|के liye|लिए message|मैसेज kare,|करे,"),
+   P("AI|ए_आई turant|तुरंत reply|रिप्लाई karta,|करता,"),
+   P("budget|बजट aur|और location|लोकेशन poochta,|पूछता,"),
+   P("aur|और matching|मैचिंग properties|प्रॉपर्टीज़ share|शेयर karta.|करता।")],
+  [P("Phir|फिर buyer|बायर ko|को site|साइट visit|विज़िट book|बुक karne|करने mein|में help|हेल्प karta,|करता,"),
+   P("bina|बिना aapki|आपकी sales|सेल्स team|टीम ko|को baar-baar|बार-बार call|कॉल kiye.|किए।")],
+  [P("Agar|अगर koi|कोई buyer|बायर site|साइट visit|विज़िट book|बुक karke|करके nahi|नहीं aata,|आता,"),
+   P("ya|या brochure|ब्रोशर lekar|लेकर reply|रिप्लाई karna|करना band|बंद kar|कर deta|देता hai,|है,"),
+   P("toh|तो automated|ऑटोमेटेड follow-ups|फ़ॉलो-अप्स se|से usse|उसे dobara|दोबारा connect|कनेक्ट karte.|करते।")],
+  [P("Aur|और sabse|सबसे important,|इम्पॉर्टेंट,"),
+   P("aap|आप aur|और aapki|आपकी team|टीम sirf|सिर्फ़ serious|सीरियस buyers|बायर्स par|पर focus|फ़ोकस kar|कर sakte|सकते hain,|हैं,"),
+   P("instead|इंस्टेड of|ऑफ़ spending|स्पेंडिंग hours|आवर्स replying|रिप्लाइंग to|टू WhatsApp|व्हाट्सऐप messages.|मैसेजेज़।")],
+  [P("Kyunki|क्योंकि real|रियल estate|एस्टेट mein|में goal|गोल sirf|सिर्फ़ leads|लीड्स lana|लाना nahi,|नहीं,"),
+   P("zyada|ज़्यादा site|साइट visits|विज़िट्स book|बुक karna|करना aur|और deals|डील्स close|क्लोज़ karna|करना hai.|है।")],
+  [P("Aapke|आपके real|रियल estate|एस्टेट business|बिज़नेस ki|की sabse|सबसे badi|बड़ी problem|प्रॉब्लम kya|क्या hai?|है?"),
+   P("fake|फ़ेक leads,|लीड्स, missed|मिस्ड enquiries,|एन्क्वायरीज़, ya|या site|साइट visit|विज़िट no-shows?|नो-शोज़?")],
+  [P("Comment|कमेंट karo|करो \"WhatsApp\"|व्हाट्सऐप,"),
+   P("aur|और saari|सारी details|डिटेल्स aapko|आपको DM|डी_एम kar|कर dunga!|दूंगा।")],
+]

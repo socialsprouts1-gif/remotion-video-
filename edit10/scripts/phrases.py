@@ -1,0 +1,25 @@
+# Each phrase: list of (caption word, Devanagari spoken form). Lines group phrases; one line = one scene beat.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Agar|अगर hum|हम aapke|आपके salon|सैलून ki|की marketing|मार्केटिंग aur|और WhatsApp|व्हाट्सऐप enquiries|एन्क्वायरीज़ handle|हैंडल karte,|करते,"),
+   P("toh|तो sirf|सिर्फ़ Instagram|इंस्टाग्राम par|पर photos|फ़ोटोज़ aur|और reels|रील्स post|पोस्ट nahi|नहीं karte.|करते।")],
+  [P("Sabse|सबसे pehle|पहले aapke|आपके salon|सैलून ke|के liye|लिए WhatsApp|व्हाट्सऐप automation|ऑटोमेशन setup|सेटअप karte,|करते,"),
+   P("taaki|ताकि koi|कोई bhi|भी customer|कस्टमर enquiry|एन्क्वायरी miss|मिस na|न ho.|हो।")],
+  [P("Jab|जब bhi|भी koi|कोई customer|कस्टमर haircut,|हेयरकट, hair|हेयर spa,|स्पा, facial|फ़ेशियल ya|या bridal|ब्राइडल makeup|मेकअप ke|के liye|लिए message|मैसेज kare,|करे,"),
+   P("AI|ए_आई automatically|ऑटोमैटिकली reply|रिप्लाई karta|करता"),
+   P("aur|और services|सर्विसेज़ ki|की details|डिटेल्स share|शेयर karta.|करता।")],
+  [P("Phir|फिर customer|कस्टमर ko|को appointment|अपॉइंटमेंट book|बुक karne|करने mein|में help|हेल्प karta,|करता,"),
+   P("bina|बिना aapke|आपके staff|स्टाफ़ ko|को baar-baar|बार-बार manually|मैनुअली reply|रिप्लाई kiye.|किए।")],
+  [P("Agar|अगर koi|कोई customer|कस्टमर appointment|अपॉइंटमेंट book|बुक karke|करके nahi|नहीं aata,|आता,"),
+   P("ya|या enquiry|एन्क्वायरी karke|करके reply|रिप्लाई karna|करना band|बंद kar|कर deta|देता hai,|है,"),
+   P("toh|तो automated|ऑटोमेटेड follow-ups|फ़ॉलो-अप्स se|से usse|उसे dobara|दोबारा connect|कनेक्ट karne|करने ki|की koshish|कोशिश karte.|करते।")],
+  [P("Aur|और sabse|सबसे important,|इम्पॉर्टेंट,"),
+   P("aap|आप aur|और aapka|आपका staff|स्टाफ़ customers|कस्टमर्स ko|को better|बेटर service|सर्विस dene|देने par|पर focus|फ़ोकस kar|कर sakte|सकते hain,|हैं,"),
+   P("instead|इंस्टेड of|ऑफ़ spending|स्पेंडिंग hours|आवर्स replying|रिप्लाइंग to|टू WhatsApp|व्हाट्सऐप messages.|मैसेजेज़।")],
+  [P("Kyunki|क्योंकि salon|सैलून business|बिज़नेस mein|में goal|गोल sirf|सिर्फ़ enquiries|एन्क्वायरीज़ lana|लाना nahi,|नहीं,"),
+   P("zyada|ज़्यादा appointments|अपॉइंटमेंट्स book|बुक karna|करना aur|और customers|कस्टमर्स ko|को baar-baar|बार-बार wapas|वापस lana|लाना hai.|है।")],
+  [P("Aapke|आपके salon|सैलून ki|की sabse|सबसे badi|बड़ी problem|प्रॉब्लम kya|क्या hai?|है?"),
+   P("missed|मिस्ड enquiries,|एन्क्वायरीज़, empty|एम्प्टी appointment|अपॉइंटमेंट slots,|स्लॉट्स, ya|या customer|कस्टमर follow-ups?|फ़ॉलो-अप्स?")],
+  [P("Comment|कमेंट karo|करो \"WhatsApp\"|व्हाट्सऐप,"),
+   P("aur|और saari|सारी details|डिटेल्स aapko|आपको DM|डी_एम kar|कर dunga!|दूंगा।")],
+]
