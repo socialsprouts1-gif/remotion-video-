@@ -1,0 +1,22 @@
+{
+  "name": "edit11",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real estate WhatsApp automation reel (motion graphics, reference style clips-v10)",
+  "scripts": {
+    "vo": "python3 scripts/build_vo.py",
+    "score": "python3 scripts/make_score.py",
+    "render": "remotion render Edit out/real-estate-whatsapp-reel.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.6.3"
+  }
+}
