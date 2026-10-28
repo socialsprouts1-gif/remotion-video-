@@ -1,0 +1,10 @@
+{
+  "survey": 1, "grid": 8, "send": 11, "green": 15, "yellow": 24, "red": 32, "nahi": 38,
+  "socho": 39, "chat": 41, "enquiry": 47, "noreply": 52, "lost": 57, "contact": 66,
+  "solution": 69, "brand": 78, "sub": 81, "flow": 86, "help": 91,
+  "f1": 94, "f2": 98, "f3": 102, "f4": 107, "f5": 112,
+  "busy": 117, "robot": 123, "easy": 130,
+  "offer": 131, "slots": 135, "gift": 143,
+  "late": 152, "miss": 159, "compose": 162, "type": 165, "send2": 166, "karo": 167,
+  "outro": 168, "smarter": 172, "logo": 174
+}
