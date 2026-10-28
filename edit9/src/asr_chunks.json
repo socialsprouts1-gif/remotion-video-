@@ -1,380 +1,116 @@
 [
  {
   "a": 1.03,
-  "b": 1.48,
-  "heard": "200",
-  "script": "Dosto, kisi"
- },
- {
-  "a": 1.64,
-  "b": 3.06,
-  "heard": "Kishi کو پیسے دینے سے",
-  "script": "ko paise"
- },
- {
-  "a": 3.18,
-  "b": 3.39,
-  "heard": "bhe",
-  "script": "dene"
- },
- {
-  "a": 3.53,
-  "b": 3.88,
-  "heard": "pitha r",
-  "script": "se better"
- },
- {
-  "a": 4.03,
-  "b": 4.8,
-  "heard": "Jai Jai",
-  "script": "hai ki jaakar"
- },
- {
-  "a": 4.92,
-  "b": 5.24,
-  "heard": "You are",
-  "script": "kahin jua"
- },
- {
-  "a": 5.36,
   "b": 6.02,
-  "heard": "Kila A",
-  "script": "khel aaiye,"
+  "heard": "dosto qishee qo paise dene se bhahatar hai faaqe qaheen fooaa gel aaye",
+  "script": "Dosto, kisi ko paise dene se better hai ki jaakar kahin jua khel aaiye,"
  },
  {
   "a": 6.31,
   "b": 8.12,
-  "heard": "ya que si file star hotel me",
-  "script": "ya kisi five-star hotel mein"
+  "heard": "yaa qisee 5 * hutal men",
+  "script": "ya kisi five-star hotel mein apne"
  },
  {
   "a": 8.49,
-  "b": 9.45,
-  "heard": "apaneu upar arap na",
-  "script": "apne upar aur apne"
- },
- {
-  "a": 9.57,
-  "b": 9.79,
-  "heard": "Ne,",
-  "script": ""
- },
- {
-  "a": 9.95,
-  "b": 10.2,
-  "heard": "okay okay",
-  "script": "bachchon ke"
- },
- {
-  "a": 10.32,
-  "b": 10.58,
-  "heard": "Uppart",
-  "script": "upar"
+  "b": 11.05,
+  "heard": "apane upar aur apane bachchhon qe upar qahach qar diyaa।",
+  "script": "upar aur apne bachchon ke upar kharch kar dijiye. Kyunki dosto, yahi toh aap log karte"
  },
  {
   "a": 11.96,
-  "b": 13.45,
-  "heard": "Because friends you do this",
-  "script": "kharch kar dijiye. Kyunki dosto, yahi toh aap log karte"
- },
- {
-  "a": 13.59,
   "b": 13.93,
-  "heard": "Thin",
-  "script": "hain."
+  "heard": "qyoqi dostu yahee to aap lor qarate hain",
+  "script": "hain. Aap log kisi ko bhi jaane-anjaane mein paise de dete hain, bina yeh soche"
  },
  {
   "a": 14.48,
-  "b": 14.84,
-  "heard": "Aapulok",
-  "script": "Aap log"
- },
- {
-  "a": 14.99,
-  "b": 16.32,
-  "heard": "Kisi Kobi Jhani Me",
-  "script": "kisi ko bhi jaane-anjaane mein"
- },
- {
-  "a": 16.48,
   "b": 19.29,
-  "heard": "انجانی میں پیسا دیدیتے ہیں یہ سو",
-  "script": ""
+  "heard": "aap lor qisee qo bhee faane men anfaane men paisaa de dete hain ye soche barayar",
+  "script": "ki kya hum waqai kisi ko apna portfolio manage karne ke liye paise de rahe hain?"
  },
  {
-  "a": 20.08,
-  "b": 20.96,
-  "heard": "۔",
-  "script": ""
- },
- {
-  "a": 21.08,
-  "b": 22.41,
-  "heard": "Paiyam ki si kodere ya",
-  "script": "paise de dete hain, bina yeh soche ki kya hum waqai kisi ko apna"
- },
- {
-  "a": 22.55,
+  "a": 19.87,
   "b": 23.81,
-  "heard": "Fully of Manage",
-  "script": "portfolio manage karne ke liye"
+  "heard": "qi qyaa ye paisaa vaattaa hee ham qisee qo de rahe hain yaa paॉrtphaॉlyo menef qarane qe",
+  "script": "Dosto, market mein yeh sab scams chal rahe hain. Kai jagah toh aisa bhi dekha gaya"
  },
  {
   "a": 24.27,
-  "b": 25.06,
-  "heard": "(B) Dostoye",
-  "script": "paise de rahe hain? Dosto, market"
- },
- {
-  "a": 25.27,
-  "b": 26.88,
-  "heard": "game",
-  "script": "mein"
- },
- {
-  "a": 27.12,
   "b": 28.95,
-  "heard": "Kaya jagat tu asa dhikha kaya",
-  "script": "yeh sab scams chal rahe hain. Kai jagah toh aisa bhi dekha gaya"
+  "heard": "doston ye sab sqain chal rahaa hai bafaar men qahee faraa to aisaa degaa rayaa hai",
+  "script": "hai ki meri photo laga kar Telegram par bahut saare scams chal rahe hain."
  },
  {
   "a": 29.29,
-  "b": 30.77,
-  "heard": "k m e v t",
-  "script": "hai ki meri photo"
- },
- {
-  "a": 30.93,
-  "b": 33.14,
-  "heard": "Telegrams ve ve ve ve ve ve ve ve ve ve ve ve",
-  "script": "laga kar Telegram par bahut saare scams chal rahe hain."
- },
- {
-  "a": 33.14,
-  "b": 34.15,
-  "heard": "1/4th of the upper part",
-  "script": "Toh dosto, yeh paisa"
- },
- {
-  "a": 34.31,
-  "b": 34.77,
-  "heard": "dhaha ab",
-  "script": "aapka hai,"
- },
- {
-  "a": 34.9,
-  "b": 35.14,
-  "heard": "kebber",
-  "script": "aapke bachchon"
- },
- {
-  "a": 35.32,
   "b": 35.8,
-  "heard": "Jogai",
-  "script": "ka"
+  "heard": "to dosto ye paisaa aapaqaa hai aapaqe bachcho qaa hai",
+  "script": "Toh dosto, yeh paisa aapka hai, aapke bachchon ka hai. Kyunki jab aap loss"
  },
  {
   "a": 36.19,
-  "b": 37.85,
-  "heard": "Because when you take loss, friends",
-  "script": "hai. Kyunki jab aap loss lete hain na, dosto,"
- },
- {
-  "a": 37.98,
-  "b": 38.15,
-  "heard": "please",
-  "script": "aur in"
- },
- {
-  "a": 38.33,
-  "b": 39.38,
-  "heard": "game",
-  "script": "scams mein"
- },
- {
-  "a": 39.69,
-  "b": 40.41,
-  "heard": "phone pacine man",
-  "script": "phans jaate hain, toh apni khoon-paseene ki mehnat"
- },
- {
-  "a": 40.59,
   "b": 41.36,
-  "heard": "gare ge ke mai",
-  "script": "aur gaadhe ki kamai kisi ko"
+  "heard": "to qi fab aap lof lete hai n tosto ye sqaim men pas faate hain aur apane gum paseene mahanat r",
+  "script": "lete hain na, dosto, aur in scams mein phans jaate hain, toh apni khoon-paseene ki mehnat"
  },
  {
   "a": 41.69,
-  "b": 43.0,
-  "heard": "15d",
-  "script": "de dete hain, yeh"
- },
- {
-  "a": 43.16,
   "b": 43.36,
-  "heard": "okay",
-  "script": "sochkar ki"
+  "heard": "qiseen qo de dete hain ye soch qe",
+  "script": "aur gaadhe ki kamai kisi ko de dete hain, yeh sochkar ki woh hamare paison"
  },
  {
   "a": 43.65,
-  "b": 46.55,
-  "heard": ",",
-  "script": ""
- },
- {
-  "a": 46.55,
-  "b": 48.49,
-  "heard": "s",
-  "script": "woh hamare paison ko"
- },
- {
-  "a": 48.61,
   "b": 49.99,
-  "heard": "now you pay why do you take money?",
-  "script": "multiply karke wapas karega. Arey dosto, agar use paise multiply karna"
+  "heard": "to vo aapaqaa paisaa qyon letaa",
+  "script": "ko multiply karke wapas karega. Arey dosto, agar use paise multiply karna hi aata, toh woh"
  },
  {
-  "a": 50.59,
-  "b": 52.95,
-  "heard": "khot karol pati arapatin na yimanjata",
-  "script": "hi aata, toh woh aapse paise kyun leta? Woh khud crorepati ya arabpati nahi ban jaata?"
- },
- {
-  "a": 53.08,
-  "b": 53.61,
-  "heard": "samay na musik",
-  "script": "Yeh baat samajhna mushkil"
- },
- {
-  "a": 53.76,
+  "a": 50.36,
   "b": 54.59,
-  "heard": "its not here",
-  "script": "nahi hai."
+  "heard": "vo gud qarod pati arap pati naheen ban faataa ye baat samajhanaa mushaqil naheen hain",
+  "script": "aapse paise kyun leta? Woh khud crorepati ya arabpati nahi ban jaata? Yeh baat samajhna mushkil"
  },
  {
   "a": 55.17,
-  "b": 55.52,
-  "heard": "Kokiya",
-  "script": "Kyunki"
- },
- {
-  "a": 55.64,
-  "b": 56.0,
-  "heard": "pesa",
-  "script": "yeh paisa aapka hai,"
- },
- {
-  "a": 56.15,
-  "b": 56.33,
-  "heard": "(Bur",
-  "script": ""
- },
- {
-  "a": 56.51,
-  "b": 56.84,
-  "heard": "Bye",
-  "script": "aapke"
- },
- {
-  "a": 57.27,
-  "b": 57.5,
-  "heard": "okay",
-  "script": "bachchon ka hai."
- },
- {
-  "a": 57.66,
   "b": 58.05,
-  "heard": "Joker",
-  "script": "Toh"
+  "heard": "qyoqi ye paisaa aapaqaa hai, aapaqe bachchon qaa hai",
+  "script": "nahi hai. Kyunki yeh paisa aapka hai, aapke bachchon ka hai."
  },
  {
   "a": 58.39,
   "b": 59.23,
-  "heard": "Pripyatarkesh",
-  "script": "kripya karke"
+  "heard": "pripyaa taraqe",
+  "script": "Toh kripya karke kisi ko bhi apne paise mat dijiye. Aur jahan meri photo lagi ho,"
  },
  {
   "a": 59.61,
-  "b": 62.7,
-  "heard": "Kisi ko Pesa na Dhe. Jaha Mere Photo Lahyo. Vahat",
-  "script": "kisi ko bhi apne paise mat dijiye. Aur jahan meri photo lagi ho, wahan toh bilkul"
- },
- {
-  "a": 62.7,
-  "b": 63.95,
-  "heard": "raha",
-  "script": "bhi paise mat dijiye,"
- },
- {
-  "a": 64.07,
   "b": 65.58,
-  "heard": "kasi sa kui pa sa ma ile te",
-  "script": "kyunki dosto, hum kisi se koi paisa nahi lete hain."
+  "heard": "fahaan meree photo laree ho vahaan to bilqul hee naa den qyoqi dosto ham qisee se qoee paisaa naheen l",
+  "script": "wahan toh bilkul bhi paise mat dijiye, kyunki dosto, hum kisi se koi paisa nahi lete"
  },
  {
   "a": 65.98,
-  "b": 68.83,
-  "heard": "پیسا دیتے ہیں کہ یہ دیرھی کیسنام",
-  "script": ""
- },
- {
-  "a": 68.83,
-  "b": 70.54,
-  "heard": "पेपपपप",
-  "script": ""
- },
- {
-  "a": 70.54,
   "b": 72.53,
-  "heard": "तो लो वो वो व",
-  "script": "Paise dete"
+  "heard": "paisaa dete var ye deg lie qis naam se deg lie qyaa vaattaa hee bheepaq vaafavaa qo paisaa dene hain y",
+  "script": "hain. Paise dete waqt yeh zaroor dekh lijiye ki aap kis naam par paise de rahe"
  },
  {
   "a": 72.94,
   "b": 73.8,
-  "heard": "ยิ ด อ",
-  "script": ""
+  "heard": "yadi aisaa hai",
+  "script": "hain. Kya waqai aap Deepak Wadhwa ko paise de rahe"
  },
  {
-  "a": 74.41,
-  "b": 75.09,
-  "heard": "GAM HONORM",
-  "script": "waqt yeh zaroor dekh lijiye ki aap kis naam par paise de rahe hain."
- },
- {
-  "a": 75.21,
+  "a": 74.12,
   "b": 75.53,
-  "heard": "Chute",
-  "script": "Kya"
+  "heard": "to sqaim hoonaa nischit hai",
+  "script": "hain, ya kisi Shyamlal, Biharilal ko? Agar aisa hai, toh scam hona nishchit hai."
  },
  {
   "a": 75.94,
-  "b": 77.37,
-  "heard": "۔ ۔ ۔ ۔ ۔",
-  "script": "waqai aap"
- },
- {
-  "a": 77.98,
-  "b": 78.57,
-  "heard": "PC Pehak",
-  "script": "Deepak Wadhwa ko paise de rahe hain, ya kisi"
- },
- {
-  "a": 78.74,
-  "b": 79.05,
-  "heard": "saswap",
-  "script": "Shyamlal, Biharilal ko? Agar aisa hai, toh scam hona nishchit hai. Apne"
- },
- {
-  "a": 79.17,
-  "b": 79.37,
-  "heard": "Okay,",
-  "script": "paison ko bachaiye,"
- },
- {
-  "a": 79.55,
   "b": 79.71,
-  "heard": "Jogai",
-  "script": "kyunki in paison par haq sirf aapke bachchon ka hai."
+  "heard": "apane paise qo bachaaeeye qo qi ye paise pe haqsh sirp aapaqe bachchhon qaa rahe hai",
+  "script": "Apne paison ko bachaiye, kyunki in paison par haq sirf aapke bachchon ka hai."
  }
 ]
