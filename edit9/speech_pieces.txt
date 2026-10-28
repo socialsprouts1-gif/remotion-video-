@@ -1,0 +1,38 @@
+# start end | words actually spoken (from Whisper medium + base, reconciled with the script)
+1.03 3.48 | Dosto, kisi ko paise dene se behtar hai
+3.48 6.02 | ki jaakar kahin jua khel aaiye,
+6.31 8.12 | ya kisi five-star hotel mein
+8.49 11.05 | apne upar aur apne bachchon ke upar kharch kar dijiye.
+11.96 13.93 | Kyunki dosto, yahi toh aap log karte hain.
+14.48 17.18 | Aap log kisi ko bhi jaane-anjaane mein
+17.18 19.29 | paise de dete hain, yeh soche bagair
+19.87 21.03 | ki kya yeh paisa waqai
+21.03 23.81 | hum kisi ko de rahe hain, portfolio manage karne ke liye?
+24.27 27.01 | Dosto, yeh sab scam chal raha hai bazaar mein.
+27.01 28.95 | Kai jagah toh aisa dekha gaya hai
+29.29 30.85 | ki meri photo laga ke bhi
+30.85 33.14 | Telegram pe bahut saare scam chal rahe hain.
+33.14 34.26 | Toh yeh paisa aapka hai,
+34.26 35.80 | aapke bachchon ka hai.
+36.19 38.26 | Kyunki jab aap loss lete hain na, dosto,
+38.26 39.64 | in scams mein phans jaate hain,
+39.64 41.36 | apni khoon-paseene ki mehnat, gaadhe ki kamai
+41.69 43.36 | kisi ko de dete hain, yeh soch ke
+43.65 46.54 | ki woh hamare paise ko multiply karke wapas karega.
+46.54 48.54 | Dosto, agar use multiply karna hi aata, toh woh
+48.54 49.99 | aapse paisa kyun leta?
+50.36 53.02 | Woh khud crorepati, arabpati nahi ban jaata?
+53.02 54.59 | Yeh baat samajhna mushkil nahi hai.
+55.17 58.05 | Kyunki yeh paisa aapka hai, aapke bachchon ka hai.
+58.39 59.23 | Kripya karke
+59.61 62.70 | kisi ko paisa na dein. Jahan meri photo lagi ho, wahan
+62.70 63.74 | toh bilkul na dein, kyunki dosto,
+63.74 65.58 | hum kisi se koi paisa nahi lete hain.
+65.98 67.54 | Paisa dete waqt yeh dekh lijiye
+67.54 68.82 | ki kis naam se de rahe hain.
+68.82 70.54 | Kya waqai Deepak Wadhwa ko paisa de rahe hain,
+70.54 72.53 | ya kisi Shyamlal, Biharilal ko?
+72.94 73.80 | Yadi aisa hai,
+74.12 75.53 | toh scam hona nishchit hai.
+75.94 77.93 | Apne paise ko bachaiye, kyunki in paison pe
+77.93 79.71 | haq sirf aapke bachchon ka hai.

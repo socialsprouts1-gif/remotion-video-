@@ -255,7 +255,7 @@ def stamp_hit(t0, g=0.16):
     place(thud(0.18), t0, gain=0.14)
     place(paper(0.18), t0, gain=0.12)
 
-ins = [W[3], W[56], W[85], W[122], W[136], W[162], W[195], W[234], W[249]]
+ins = [W[3], W[51], W[84], W[120], W[132], W[157], W[186], W[219], W[233]]
 for i, c in enumerate(ins):
     place(whoosh(0.28, 500, 8000, 0.8), c - 0.28, gain=0.1, pan=0.3 if i % 2 else -0.3)
     place(thud(0.07), c - 0.08, gain=0.07)
@@ -267,43 +267,43 @@ for i in (11, 16, 23):
 for k in range(5):
     place(tick(k % 2 == 0), W[11] + k * 0.05, gain=0.04)
 # portfolio DMs pop in
-for tt in (W[56] + 0.32, W[58] - 0.1, W[61] - 0.1):
+for tt in (W[51] + 0.32, W[62] - 0.1, W[65] - 0.1):
     place(blip(1300, 0.05), tt, gain=0.05)
-place(bubble(), W[64] - 0.1, gain=0.08)
+place(bubble(), W[65] - 0.1, gain=0.08)
 # market scams: alarm
 place(riser(1.0, 300, 4000), W[67] - 1.0, gain=0.04)
 for k in range(3):
-    place(ping(1400, 900), W[72] - 0.1 + k * 0.22, gain=0.04)
+    place(ping(1400, 900), W[70] - 0.1 + k * 0.22, gain=0.04)
 # telegram posts + FAKE stamp
 for k in range(3):
-    place(blip(1100 + k * 150, 0.05), W[85] + 0.27 + k * 0.4, gain=0.05)
+    place(blip(1100 + k * 150, 0.05), W[84] + 0.27 + k * 0.4, gain=0.05)
 stamp_hit(W[91] - 0.1)
 # kamai flies away
-place(whoosh(0.8, 300, 3000, 0.7), W[131] - 0.1, gain=0.07)
+place(whoosh(0.8, 300, 3000, 0.7), W[127] - 0.1, gain=0.07)
 # multiply counter then the broken promise
-t = W[143] - 0.1
-while t < W[145]:
+t = W[140] - 0.1
+while t < W[142]:
     place(tick(), t, gain=0.03)
     t += 0.06
-place(glitch(0.3), W[145], gain=0.08)
-stamp_hit(W[146] + 0.05, 0.13)
+place(glitch(0.3), W[142], gain=0.08)
+stamp_hit(W[143] + 0.05, 0.13)
 # crorepati
-place(bell(81, 0.5), W[164] - 0.05, gain=0.05, verb=0.5)
-place(bell(76, 0.5), W[166] - 0.05, gain=0.05, verb=0.5)
-place(thud(0.12), W[167] - 0.08, gain=0.09)
+place(bell(81, 0.5), W[159] - 0.05, gain=0.05, verb=0.5)
+place(bell(76, 0.5), W[160] - 0.05, gain=0.05, verb=0.5)
+place(thud(0.12), W[161] - 0.08, gain=0.09)
 # mat dijiye
-place(bubble(False), W[193] - 0.1, gain=0.08)
-stamp_hit(W[203] - 0.1, 0.13)
-place(ding(), W[210] - 0.05, gain=0.05)
+place(bubble(False), W[184] - 0.1, gain=0.08)
+stamp_hit(W[193] - 0.1, 0.13)
+place(ding(), W[198] - 0.05, gain=0.05)
 # UPI name swaps
 for i in (237, 246, 247):
     place(keyclick() * 2, W[i] - 0.1, gain=0.08)
-place(glitch(0.25), W[246] - 0.1, gain=0.07)
+place(glitch(0.25), W[230] - 0.1, gain=0.07)
 # SCAM stamp: the biggest hit
-place(riser(1.2, 200, 5000), W[253] - 1.2, gain=0.05)
-stamp_hit(W[253] - 0.06, 0.24)
+place(riser(1.2, 200, 5000), W[237] - 1.2, gain=0.05)
+stamp_hit(W[237] - 0.06, 0.24)
 # resolve: shield, end card
-place(pad([57, 64, 69, 72], SPEECH - W[257] + TL["endCard"], attack=0.6, release=1.2, harm=4), W[257], gain=0.06, verb=0.7)
+place(pad([57, 64, 69, 72], SPEECH - W[241] + TL["endCard"], attack=0.6, release=1.2, harm=4), W[241], gain=0.06, verb=0.7)
 place(impact(0.7, 2.2), SPEECH, gain=0.14, verb=0.5)
 
 # ------------------------------------------------------------------ room + master

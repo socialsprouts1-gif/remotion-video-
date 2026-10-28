@@ -57,14 +57,14 @@ const redText: React.CSSProperties = {background: RED_GRAD, WebkitBackgroundClip
 type Scene = {id: string; a: number; b: number; dir: number};
 const FF: Scene[] = [
   {id: 'better', a: W(3) - 0.08, b: W(29) - 0.08, dir: 1},
-  {id: 'portfolio', a: W(56) - 0.08, b: W(67) - 0.08, dir: -1},
-  {id: 'telegram', a: W(85) - 0.08, b: W(99) - 0.08, dir: 1},
-  {id: 'kamai', a: W(122) - 0.08, b: W(136) - 0.08, dir: -1},
-  {id: 'multiply', a: W(136) - 0.08, b: W(147) - 0.08, dir: 1},
-  {id: 'crorepati', a: W(162) - 0.08, b: W(170) - 0.08, dir: -1},
-  {id: 'nomoney', a: W(195) - 0.08, b: W(218) - 0.08, dir: 1},
-  {id: 'upi', a: W(234) - 0.08, b: W(249) - 0.08, dir: -1},
-  {id: 'scam', a: W(249) - 0.08, b: W(257) - 0.08, dir: 1},
+  {id: 'portfolio', a: W(51) - 0.08, b: W(67) - 0.08, dir: -1},
+  {id: 'telegram', a: W(84) - 0.08, b: W(97) - 0.08, dir: 1},
+  {id: 'kamai', a: W(120) - 0.08, b: W(132) - 0.08, dir: -1},
+  {id: 'multiply', a: W(132) - 0.08, b: W(144) - 0.08, dir: 1},
+  {id: 'crorepati', a: W(157) - 0.08, b: W(164) - 0.08, dir: -1},
+  {id: 'nomoney', a: W(186) - 0.08, b: W(206) - 0.08, dir: 1},
+  {id: 'upi', a: W(219) - 0.08, b: W(233) - 0.08, dir: -1},
+  {id: 'scam', a: W(233) - 0.08, b: W(241) - 0.08, dir: 1},
 ];
 const sceneAt = (t: number) => FF.find((f) => t >= f.a && t < f.b);
 const RETURNS = FF.filter((f) => !FF.some((g) => Math.abs(g.a - f.b) < 0.02)).map((f) => f.b);
@@ -108,7 +108,7 @@ const Bubble: React.FC<{t: number; at: number; x: number; y: number; d?: number;
 
 // ---------------------------------------------------------------- captions (bold word highlight, just below centre)
 const GOLD_W = new Set(['paise', 'paisa', 'portfolio', 'bachchon', 'multiply', 'crorepati', 'arabpati', 'kamai', 'mehnat', 'deepak', 'wadhwa', 'bachaiye', 'haq', 'telegram', 'photo']);
-const RED_W = new Set(['scams', 'scam', 'jua', 'loss', 'phans', 'mat', 'nahi', 'shyamlal', 'biharilal', 'nishchit']);
+const RED_W = new Set(['scams', 'scam', 'jua', 'loss', 'phans', 'mat', 'nahi', 'shyamlal', 'biharilal', 'nishchit', 'na', 'dein', 'bagair']);
 type Chunk = {words: Word[]; s: number; e: number};
 const CHUNKS: Chunk[] = (() => {
   const out: Chunk[] = [];
@@ -284,10 +284,10 @@ const Portfolio: React.FC<SP> = ({t, a}) => {
   const ph = sp(t, a + 0.02, 220, 20);
   const msgs = [
     {at: a + 0.4, txt: 'Sir, aap paise bhejiye 🙏', me: false},
-    {at: W(58) - 0.1, txt: 'Aapka portfolio hum manage karenge', me: false},
-    {at: W(61) - 0.1, txt: 'Guaranteed 20% monthly return 📈', me: false},
+    {at: W(62) - 0.1, txt: 'Aapka portfolio hum manage karenge', me: false},
+    {at: W(65) - 0.1, txt: 'Guaranteed 20% monthly return 📈', me: false},
   ];
-  const q = sp(t, W(64) - 0.1, 300, 14);
+  const q = sp(t, W(65) - 0.1, 300, 14);
   return (
     <Stage t={t} cy={900}>
       <Kicker t={t} at={a}>KISKO DE RAHE HAIN?</Kicker>
@@ -362,7 +362,7 @@ const Telegram: React.FC<SP> = ({t, a}) => {
       </div>
       <Stamp t={t} at={W(91) - 0.1} text="FAKE" x={540} y={860} size={190} />
       <div style={{position: 'absolute', left: 0, right: 0, top: 1490, textAlign: 'center', opacity: ap(t, W(93) - 0.1)}}>
-        <div style={{fontFamily: SANS, fontWeight: 850, fontSize: 58, color: C.cream, letterSpacing: '-0.02em'}}>Meri photo laga kar</div>
+        <div style={{fontFamily: SANS, fontWeight: 850, fontSize: 58, color: C.cream, letterSpacing: '-0.02em'}}>Meri photo laga ke</div>
         <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 92, ...redText, lineHeight: 1.05}}>Telegram scams</div>
       </div>
     </Stage>
@@ -370,14 +370,14 @@ const Telegram: React.FC<SP> = ({t, a}) => {
 };
 
 const Kamai: React.FC<SP> = ({t, a}) => {
-  const fly = pt(t, W(131) - 0.1, W(134) + 0.3, ease.inOut);
+  const fly = pt(t, W(127) - 0.1, W(130) + 0.3, ease.inOut);
   return (
     <Stage t={t} cy={980}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 260, textAlign: 'center'}}>
-        <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 56, color: C.dim, opacity: ap(t, W(123) - 0.05)}}>apni</div>
-        <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 150, ...goldText, lineHeight: 1.02, opacity: ap(t, W(124) - 0.05), transform: `translateY(${(1 - ap(t, W(124) - 0.05, 0.4)) * 40}px)`}}>khoon-paseene</div>
-        <div style={{fontFamily: SANS, fontWeight: 850, fontSize: 70, color: C.cream, letterSpacing: '-0.03em', opacity: ap(t, W(126) - 0.05)}}>ki mehnat</div>
-        <div style={{fontFamily: SANS, fontWeight: 850, fontSize: 70, color: C.cream, letterSpacing: '-0.03em', opacity: ap(t, W(128) - 0.05)}}>aur gaadhe ki kamai</div>
+        <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 56, color: C.dim, opacity: ap(t, W(120) - 0.05)}}>apni</div>
+        <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 150, ...goldText, lineHeight: 1.02, opacity: ap(t, W(121) - 0.05), transform: `translateY(${(1 - ap(t, W(121) - 0.05, 0.4)) * 40}px)`}}>khoon-paseene</div>
+        <div style={{fontFamily: SANS, fontWeight: 850, fontSize: 70, color: C.cream, letterSpacing: '-0.03em', opacity: ap(t, W(123) - 0.05)}}>ki mehnat</div>
+        <div style={{fontFamily: SANS, fontWeight: 850, fontSize: 70, color: C.cream, letterSpacing: '-0.03em', opacity: ap(t, W(124) - 0.05)}}>aur gaadhe ki kamai</div>
       </div>
       <Icon3D t={t} at={a + 0.1} n="money_bag.png" size={330} x={lerp(540, 860, fly)} y={lerp(1180, 1050, fly)} rot={lerp(0, 25, fly)} />
       {fly > 0 &&
@@ -389,22 +389,22 @@ const Kamai: React.FC<SP> = ({t, a}) => {
             </div>
           );
         })}
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1450, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 100, ...redText, opacity: ap(t, W(131) - 0.05)}}>kisi ko de dete hain</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1450, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 100, ...redText, opacity: ap(t, W(127) - 0.05)}}>kisi ko de dete hain</div>
     </Stage>
   );
 };
 
 const Multiply: React.FC<SP> = ({t, a}) => {
-  const grow = pt(t, W(143) - 0.1, W(145), ease.inOut);
+  const grow = pt(t, W(140) - 0.1, W(142), ease.inOut);
   const val = Math.round(lerp(1, 10, grow));
-  const crack = pt(t, W(145), W(146) + 0.3, ease.inOut);
+  const crack = pt(t, W(142), W(143) + 0.3, ease.inOut);
   const fmt = (lakh: number) => (lakh >= 10 ? '10,00,000' : `${lakh},00,000`);
   return (
     <Stage t={t} cy={900}>
       <Kicker t={t} at={a}>YEH SOCHKAR…</Kicker>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 330, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 50, color: C.dim, opacity: ap(t, a + 0.1)}}>&ldquo;woh hamare paison ko</div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 400, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 160, ...goldText, lineHeight: 1, opacity: m1(sp(t, W(143) - 0.08) * 2), transform: `scale(${lerp(1.3, 1, m1(sp(t, W(143) - 0.08)))})`}}>multiply</div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 580, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 50, color: C.dim, opacity: ap(t, W(144) - 0.05)}}>karke wapas karega&rdquo;</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 330, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 50, color: C.dim, opacity: ap(t, a + 0.1)}}>&ldquo;woh hamare paise ko</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 400, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 160, ...goldText, lineHeight: 1, opacity: m1(sp(t, W(140) - 0.08) * 2), transform: `scale(${lerp(1.3, 1, m1(sp(t, W(140) - 0.08)))})`}}>multiply</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 580, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 50, color: C.dim, opacity: ap(t, W(141) - 0.05)}}>karke wapas karega&rdquo;</div>
       <div style={{position: 'absolute', left: 80, right: 80, top: 760, borderRadius: 40, background: 'rgba(18,18,18,0.9)', border: `2px solid ${C.line}`, padding: '50px 40px', textAlign: 'center', transform: `rotate(${crack * -3}deg)`}}>
         <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 30, letterSpacing: '0.2em', color: C.dim}}>AAPKA PAISA</div>
         <div style={{fontFamily: SANS, fontWeight: 900, fontSize: 130, letterSpacing: '-0.04em', color: crack > 0.4 ? C.red : C.cream, marginTop: 10, fontVariantNumeric: 'tabular-nums'}}>
@@ -420,7 +420,7 @@ const Multiply: React.FC<SP> = ({t, a}) => {
           <path d="M 60 60 L 860 360" stroke={C.red} strokeWidth={14} strokeLinecap="round" strokeDasharray={`${crack * 860} 2000`} />
         </svg>
       </div>
-      <Stamp t={t} at={W(146) + 0.05} text="JHOOTHA VAADA" x={540} y={1330} size={86} rot={-6} />
+      <Stamp t={t} at={W(143) + 0.05} text="JHOOTHA VAADA" x={540} y={1330} size={86} rot={-6} />
     </Stage>
   );
 };
@@ -429,13 +429,13 @@ const Crorepati: React.FC<SP> = ({t, a}) => (
   <Stage t={t} cy={900}>
     <div style={{position: 'absolute', left: 0, right: 0, top: 380, textAlign: 'center'}}>
       <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 64, color: C.cream, opacity: ap(t, a + 0.02)}}>Woh khud</div>
-      <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 190, ...goldText, lineHeight: 1, opacity: m1(sp(t, W(164) - 0.08) * 2), transform: `scale(${lerp(1.3, 1, m1(sp(t, W(164) - 0.08)))})`}}>crorepati</div>
-      <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 56, color: C.dim, opacity: ap(t, W(165) - 0.05)}}>ya</div>
-      <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 190, ...goldText, lineHeight: 1, opacity: m1(sp(t, W(166) - 0.08) * 2), transform: `scale(${lerp(1.3, 1, m1(sp(t, W(166) - 0.08)))})`}}>arabpati</div>
+      <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 190, ...goldText, lineHeight: 1, opacity: m1(sp(t, W(159) - 0.08) * 2), transform: `scale(${lerp(1.3, 1, m1(sp(t, W(159) - 0.08)))})`}}>crorepati</div>
+      <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 56, color: C.dim, opacity: ap(t, W(160) - 0.05)}}>·</div>
+      <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 190, ...goldText, lineHeight: 1, opacity: m1(sp(t, W(160) - 0.08) * 2), transform: `scale(${lerp(1.3, 1, m1(sp(t, W(160) - 0.08)))})`}}>arabpati</div>
     </div>
-    <Icon3D t={t} at={W(164) - 0.05} n="money_bag.png" size={190} x={540} y={250} rot={-8} />
-    <Icon3D t={t} at={W(166) - 0.05} n="bank.png" size={170} x={540} y={1330} rot={6} />
-    <div style={{position: 'absolute', left: 0, right: 0, top: 1120, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 20, opacity: ap(t, W(167) - 0.08), transform: `translateY(${(1 - ap(t, W(167) - 0.08, 0.4)) * 30}px)`}}>
+    <Icon3D t={t} at={W(159) - 0.05} n="money_bag.png" size={190} x={540} y={250} rot={-8} />
+    <Icon3D t={t} at={W(160) - 0.05} n="bank.png" size={170} x={540} y={1330} rot={6} />
+    <div style={{position: 'absolute', left: 0, right: 0, top: 1120, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 20, opacity: ap(t, W(161) - 0.08), transform: `translateY(${(1 - ap(t, W(161) - 0.08, 0.4)) * 30}px)`}}>
       <span style={{fontFamily: SANS, fontWeight: 900, fontSize: 92, letterSpacing: '-0.04em', ...redText}}>nahi ban jaata?</span>
       <Img src={icon('thinking_face.png')} style={{width: 140, height: 140}} />
     </div>
@@ -444,8 +444,8 @@ const Crorepati: React.FC<SP> = ({t, a}) => (
 
 const NoMoney: React.FC<SP> = ({t, a}) => {
   const card = sp(t, a + 0.02, 220, 20);
-  const pay = sp(t, W(203) - 0.1, 300, 18);
-  const truth = sp(t, W(210) - 0.08, 280, 18);
+  const pay = sp(t, W(193) - 0.1, 300, 18);
+  const truth = sp(t, W(198) - 0.08, 280, 18);
   return (
     <Stage t={t} cy={900}>
       <Kicker t={t} at={a}>JAHAN MERI PHOTO HO</Kicker>
@@ -466,7 +466,7 @@ const NoMoney: React.FC<SP> = ({t, a}) => {
         </div>
         <div style={{marginTop: 18, height: 96, borderRadius: 22, background: pay > 0 ? '#E6E6E6' : '#1A73E8', display: 'grid', placeItems: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 36, color: pay > 0 ? '#999' : '#fff', textDecoration: pay > 0.5 ? 'line-through' : 'none'}}>Pay now</div>
       </div>
-      <Stamp t={t} at={W(203) - 0.1} text="MAT DIJIYE" x={540} y={860} size={110} />
+      <Stamp t={t} at={W(193) - 0.1} text="NA DEIN" x={540} y={860} size={110} />
       {/* the truth */}
       <div style={{position: 'absolute', left: 80, right: 80, top: 1060, textAlign: 'center', opacity: m1(truth * 2), transform: `translateY(${(1 - m1(truth)) * 60}px)`}}>
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14}}>
@@ -476,7 +476,7 @@ const NoMoney: React.FC<SP> = ({t, a}) => {
         <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 120, ...goldText, lineHeight: 1.05, marginTop: 20}}>Hum kisi se</div>
         <div style={{fontFamily: SANS, fontWeight: 900, fontSize: 96, letterSpacing: '-0.04em', color: C.cream, lineHeight: 1.05}}>koi paisa nahi lete</div>
         <div style={{display: 'flex', justifyContent: 'center', marginTop: 26}}>
-          <Img src={icon('shield.png')} style={{width: 160, height: 160, transform: `scale(${m1(sp(t, W(215) - 0.1, 300, 12))})`}} />
+          <Img src={icon('shield.png')} style={{width: 160, height: 160, transform: `scale(${m1(sp(t, W(203) - 0.1, 300, 12))})`}} />
         </div>
       </div>
     </Stage>
@@ -485,12 +485,12 @@ const NoMoney: React.FC<SP> = ({t, a}) => {
 
 const Upi: React.FC<SP> = ({t, a}) => {
   const ph = sp(t, a + 0.02, 220, 20);
-  const showDW = t >= W(237) - 0.1;
-  const swap1 = t >= W(246) - 0.1;
-  const swap2 = t >= W(247) - 0.1;
+  const showDW = t >= W(221) - 0.1;
+  const swap1 = t >= W(230) - 0.1;
+  const swap2 = t >= W(231) - 0.1;
   const name = swap2 ? 'Biharilal Verma' : swap1 ? 'Shyamlal Kumar' : showDW ? 'Deepak Wadhwa ?' : '';
   const bad = swap1;
-  const flip = swap2 ? sp(t, W(247) - 0.1, 400, 18) : swap1 ? sp(t, W(246) - 0.1, 400, 18) : sp(t, W(237) - 0.1, 400, 18);
+  const flip = swap2 ? sp(t, W(231) - 0.1, 400, 18) : swap1 ? sp(t, W(230) - 0.1, 400, 18) : sp(t, W(221) - 0.1, 400, 18);
   return (
     <Stage t={t} cy={900} danger={bad}>
       <Kicker t={t} at={a} danger={bad}>
@@ -522,17 +522,17 @@ const Upi: React.FC<SP> = ({t, a}) => {
 };
 
 const ScamStamp: React.FC<SP> = ({t, a}) => {
-  const hit = sp(t, W(253) - 0.06, 520, 16);
-  const shake = t > W(253) - 0.06 && t < W(253) + 0.25 ? Math.sin(t * 90) * 10 * (1 - pt(t, W(253), W(253) + 0.25)) : 0;
+  const hit = sp(t, W(237) - 0.06, 520, 16);
+  const shake = t > W(237) - 0.06 && t < W(237) + 0.25 ? Math.sin(t * 90) * 10 * (1 - pt(t, W(237), W(237) + 0.25)) : 0;
   return (
     <Stage t={t} cy={900} danger>
       <AbsoluteFill style={{transform: `translate(${shake}px, ${shake * 0.6}px)`}}>
-        <div style={{position: 'absolute', left: 0, right: 0, top: 330, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 64, color: C.cream, opacity: ap(t, a + 0.02)}}>Agar aisa hai, toh</div>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 330, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 64, color: C.cream, opacity: ap(t, a + 0.02)}}>Yadi aisa hai, toh</div>
         <Icon3D t={t} at={a + 0.1} n="police_car_light.png" size={220} x={540} y={600} />
         <div style={{position: 'absolute', left: 0, right: 0, top: 760, display: 'flex', justifyContent: 'center'}}>
           <div style={{transform: `rotate(-8deg) scale(${lerp(2.6, 1, m1(hit))})`, opacity: m1(hit * 3), border: `22px solid ${C.red}`, borderRadius: 40, padding: '10px 60px', fontFamily: SANS, fontWeight: 900, fontSize: 280, letterSpacing: '0.04em', color: C.red, lineHeight: 1, boxShadow: '0 0 120px rgba(255,59,48,0.45)', textShadow: '0 0 40px rgba(255,59,48,0.5)'}}>SCAM</div>
         </div>
-        <div style={{position: 'absolute', left: 0, right: 0, top: 1170, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 130, ...redText, opacity: ap(t, W(254) - 0.05), transform: `translateY(${(1 - ap(t, W(254) - 0.05, 0.4)) * 30}px)`}}>hona nishchit hai.</div>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1170, textAlign: 'center', fontFamily: SERIF, fontStyle: 'italic', fontSize: 130, ...redText, opacity: ap(t, W(238) - 0.05), transform: `translateY(${(1 - ap(t, W(238) - 0.05, 0.4)) * 30}px)`}}>hona nishchit hai.</div>
       </AbsoluteFill>
     </Stage>
   );
@@ -543,16 +543,16 @@ const SCENES: Record<string, React.FC<SP>> = {better: Better, portfolio: Portfol
 // ---------------------------------------------------------------- overlays on the speaker (icons only, no extra text)
 type Pop = {at: number; until: number; n: string; x: number; y: number; size: number; rot?: number};
 const POPS: Pop[] = [
-  {at: 72, until: 76, n: 'police_car_light.png', x: 860, y: 420, size: 200},
-  {at: 72, until: 76, n: 'warning.png', x: 200, y: 520, size: 170, rot: -10},
-  {at: 110, until: 115, n: 'chart_decreasing.png', x: 860, y: 460, size: 200, rot: 8},
-  {at: 119, until: 122, n: 'locked.png', x: 200, y: 520, size: 160},
-  {at: 152, until: 162, n: 'thinking_face.png', x: 860, y: 430, size: 210},
-  {at: 160, until: 162, n: 'red_question_mark.png', x: 210, y: 480, size: 180, rot: -14},
-  {at: 193, until: 195, n: 'prohibited.png', x: 860, y: 450, size: 220},
-  {at: 227, until: 234, n: 'red_question_mark.png', x: 860, y: 430, size: 190, rot: 12},
-  {at: 258, until: 270, n: 'shield.png', x: 860, y: 430, size: 220},
-  {at: 268, until: 271, n: 'baby.png', x: 200, y: 520, size: 180, rot: -8},
+  {at: 70, until: 76, n: 'police_car_light.png', x: 860, y: 420, size: 200},
+  {at: 70, until: 76, n: 'warning.png', x: 200, y: 520, size: 170, rot: -10},
+  {at: 109, until: 114, n: 'chart_decreasing.png', x: 860, y: 460, size: 200, rot: 8},
+  {at: 117, until: 120, n: 'locked.png', x: 200, y: 520, size: 160},
+  {at: 147, until: 157, n: 'thinking_face.png', x: 860, y: 430, size: 210},
+  {at: 155, until: 157, n: 'red_question_mark.png', x: 210, y: 480, size: 180, rot: -14},
+  {at: 184, until: 186, n: 'prohibited.png', x: 860, y: 450, size: 220},
+  {at: 213, until: 219, n: 'red_question_mark.png', x: 860, y: 430, size: 190, rot: 12},
+  {at: 242, until: 252, n: 'shield.png', x: 860, y: 430, size: 220},
+  {at: 252, until: 255, n: 'baby.png', x: 200, y: 520, size: 180, rot: -8},
 ];
 const Pops: React.FC<{t: number}> = ({t}) => (
   <>
@@ -573,9 +573,9 @@ const Pops: React.FC<{t: number}> = ({t}) => (
 /** Red alert pulse on the frame edges during the scam beats on camera. */
 const AlertEdge: React.FC<{t: number}> = ({t}) => {
   const zones = [
-    [W(67), W(85)],
-    [W(115), W(122)],
-    [W(193), W(195)],
+    [W(67), W(84)],
+    [W(114), W(120)],
+    [W(184), W(186)],
   ];
   const v = Math.max(0, ...zones.map(([a, b]) => pt(t, a - 0.2, a + 0.2) * (1 - pt(t, b - 0.3, b))));
   if (v <= 0) return null;
@@ -621,7 +621,7 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   const x = s ? pt(t, s.b - 0.1, s.b, ease.in) : 0;
   const toFace = s ? !FF.some((g) => Math.abs(g.a - s.b) < 0.02) : false;
   const flash = Math.max(0, ...FF.map((f) => 1 - Math.min(1, Math.abs(t - f.a) / 0.05)), ...RETURNS.map((r) => 1 - Math.min(1, Math.abs(t - r) / 0.05)));
-  const alert = Math.max(0, ...[[W(67), W(85)], [W(115), W(122)]].map(([a2, b2]) => pt(t, a2 - 0.2, a2 + 0.3) * (1 - pt(t, b2 - 0.3, b2))));
+  const alert = Math.max(0, ...[[W(67), W(84)], [W(114), W(120)]].map(([a2, b2]) => pt(t, a2 - 0.2, a2 + 0.3) * (1 - pt(t, b2 - 0.3, b2))));
   return (
     <AbsoluteFill style={{background: '#000'}}>
       <AbsoluteFill>
