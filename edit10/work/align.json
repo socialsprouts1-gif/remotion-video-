@@ -1,0 +1,446 @@
+[
+{
+"w": "Humne",
+"s": 0.24,
+"e": 0.48,
+"spoken": null
+},
+{
+"w": "Akola",
+"s": 0.48,
+"e": 0.75,
+"spoken": null
+},
+{
+"w": "mein",
+"s": 0.75,
+"e": 0.91,
+"spoken": null
+},
+{
+"w": "ek",
+"s": 0.91,
+"e": 0.97,
+"spoken": null
+},
+{
+"w": "survey",
+"s": 0.97,
+"e": 1.29,
+"spoken": null
+},
+{
+"w": "kiya,",
+"s": 1.29,
+"e": 1.5,
+"spoken": null
+},
+{
+"w": "jismein",
+"s": 1.5,
+"e": 1.83,
+"spoken": null
+},
+{
+"w": "humne",
+"s": 1.83,
+"e": 2.08,
+"spoken": null
+},
+{
+"w": "100",
+"s": 2.08,
+"e": 2.39,
+"spoken": "sau"
+},
+{
+"w": "businesses",
+"s": 2.39,
+"e": 2.89,
+"spoken": null
+},
+{
+"w": "ko",
+"s": 2.89,
+"e": 2.99,
+"spoken": null
+},
+{
+"w": "message",
+"s": 2.99,
+"e": 3.75,
+"spoken": null
+},
+{
+"w": "kiya.",
+"s": 3.95,
+"e": 4.1,
+"spoken": null
+},
+{
+"w": "Unmein",
+"s": 4.1,
+"e": 4.27,
+"spoken": null
+},
+{
+"w": "se",
+"s": 4.27,
+"e": 4.54,
+"spoken": null
+},
+{
+"w": "20",
+"s": 4.54,
+"e": 4.88,
+"spoken": "bees"
+},
+{
+"w": "businesses",
+"s": 4.88,
+"e": 5.45,
+"spoken": null
+},
+{
+"w": "ne",
+"s": 5.45,
+"e": 5.95,
+"spoken": null
+},
+{
+"w": "2",
+"s": 5.97,
+"e": 6.21,
+"spoken": "do"
+},
+{
+"w": "hours",
+"s": 6.21,
+"e": 6.32,
+"spoken": null
+},
+{
+"w": "ke",
+"s": 6.32,
+"e": 6.46,
+"spoken": null
+},
+{
+"w": "andar",
+"s": 6.46,
+"e": 7.46,
+"spoken": null
+},
+{
+"w": "reply",
+"s": 7.85,
+"e": 8.1,
+"spoken": null
+},
+{
+"w": "kiya,",
+"s": 8.1,
+"e": 8.29,
+"spoken": null
+},
+{
+"w": "30",
+"s": 8.29,
+"e": 8.44,
+"spoken": "tees"
+},
+{
+"w": "businesses",
+"s": 8.44,
+"e": 9.22,
+"spoken": null
+},
+{
+"w": "ne",
+"s": 9.3,
+"e": 9.49,
+"spoken": null
+},
+{
+"w": "ek",
+"s": 9.49,
+"e": 9.55,
+"spoken": null
+},
+{
+"w": "din",
+"s": 9.55,
+"e": 9.79,
+"spoken": null
+},
+{
+"w": "ke",
+"s": 9.79,
+"e": 9.88,
+"spoken": null
+},
+{
+"w": "andar",
+"s": 9.88,
+"e": 10.41,
+"spoken": null
+},
+{
+"w": "reply",
+"s": 10.56,
+"e": 10.97,
+"spoken": null
+},
+{
+"w": "kiya,",
+"s": 10.97,
+"e": 11.23,
+"spoken": null
+},
+{
+"w": "aur",
+"s": 11.23,
+"e": 11.36,
+"spoken": null
+},
+{
+"w": "kaafi",
+"s": 11.36,
+"e": 12.32,
+"spoken": null
+},
+{
+"w": "businesses",
+"s": 13.44,
+"e": 13.99,
+"spoken": null
+},
+{
+"w": "ne",
+"s": 13.99,
+"e": 14.18,
+"spoken": null
+},
+{
+"w": "toh",
+"s": 15.49,
+"e": 16.03,
+"spoken": null
+},
+{
+"w": "reply",
+"s": 16.03,
+"e": 17.34,
+"spoken": null
+},
+{
+"w": "hi",
+"s": 18.06,
+"e": 18.43,
+"spoken": null
+},
+{
+"w": "nahi",
+"s": 18.43,
+"e": 18.92,
+"spoken": null
+},
+{
+"w": "kiya.",
+"s": 21.87,
+"e": 22.24,
+"spoken": null
+},
+{
+"w": "Ab",
+"s": 23.74,
+"e": 23.9,
+"spoken": null
+},
+{
+"w": "socho,",
+"s": 23.9,
+"e": 24.74,
+"spoken": null
+},
+{
+"w": "aapka",
+"s": 27.63,
+"e": 27.79,
+"spoken": null
+},
+{
+"w": "potential",
+"s": 27.79,
+"e": 28.15,
+"spoken": null
+},
+{
+"w": "customer",
+"s": 28.15,
+"e": 28.67,
+"spoken": null
+},
+{
+"w": "aapko",
+"s": 28.67,
+"e": 28.83,
+"spoken": null
+},
+{
+"w": "WhatsApp",
+"s": 28.83,
+"e": 29.65,
+"spoken": null
+},
+{
+"w": "par",
+"s": 34.92,
+"e": 35.96,
+"spoken": null
+},
+{
+"w": "enquiry",
+"s": 36.15,
+"e": 36.87,
+"spoken": null
+},
+{
+"w": "bhejta",
+"s": 36.87,
+"e": 37.42,
+"spoken": null
+},
+{
+"w": "hai",
+"s": 37.42,
+"e": 37.5,
+"spoken": null
+},
+{
+"w": "aur",
+"s": 37.5,
+"e": 37.72,
+"spoken": null
+},
+{
+"w": "aap",
+"s": 37.72,
+"e": 37.88,
+"spoken": null
+},
+{
+"w": "usko",
+"s": 37.88,
+"e": 38.02,
+"spoken": null
+},
+{
+"w": "reply",
+"s": 38.02,
+"e": 38.35,
+"spoken": null
+},
+{
+"w": "hi",
+"s": 38.35,
+"e": 38.72,
+"spoken": null
+},
+{
+"w": "nahi",
+"s": 38.72,
+"e": 39.12,
+"spoken": null
+},
+{
+"w": "kar",
+"s": 39.12,
+"e": 39.26,
+"spoken": null
+},
+{
+"w": "paate,",
+"s": 39.26,
+"e": 39.81,
+"spoken": null
+},
+{
+"w": "toh",
+"s": 39.81,
+"e": 40.0,
+"spoken": null
+},
+{
+"w": "chances",
+"s": 40.0,
+"e": 40.45,
+"spoken": null
+},
+{
+"w": "hain",
+"s": 43.83,
+"e": 43.99,
+"spoken": null
+},
+{
+"w": "ki",
+"s": 43.99,
+"e": 44.69,
+"spoken": null
+},
+{
+"w": "woh",
+"s": 44.92,
+"e": 45.04,
+"spoken": null
+},
+{
+"w": "kisi",
+"s": 45.04,
+"e": 45.31,
+"spoken": null
+},
+{
+"w": "aur",
+"s": 45.31,
+"e": 45.39,
+"spoken": null
+},
+{
+"w": "business",
+"s": 45.7,
+"e": 46.16,
+"spoken": null
+},
+{
+"w": "ko",
+"s": 46.16,
+"e": 46.84,
+"spoken": null
+},
+{
+"w": "contact",
+"s": 48.61,
+"e": 48.89,
+"spoken": null
+},
+{
+"w": "kar",
+"s": 48.89,
+"e": 48.98,
+"spoken": null
+},
+{
+"w": "lega.",
+"s": 48.98,
+"e": 49.72,
+"spoken": null
+},
+{
+"w": "Isi",
+"s": 49.72,
+"e": 50.57,
+"spoken": null
+}
+]
