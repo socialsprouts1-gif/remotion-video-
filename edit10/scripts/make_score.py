@@ -228,101 +228,30 @@ def glitch(d=0.2):
     return np.round(x * 3) / 3 * (np.sin(2 * np.pi * 31 * t) > 0) * np.exp(-t / (d / 2.5))
 
 
-# ---- music: light, bright bed under the voice (104 bpm); thins out while the problem is told
-BEAT = 60 / 104
+# ---- music: a quiet, warm bed (soft keys + light kick), no blips or stingers. Thins out while the problem is told.
+BEAT = 60 / 96
 BAR = 4 * BEAT
-bright = [([60, 64, 67, 71], 36), ([57, 60, 64, 67], 33), ([53, 57, 60, 64], 41), ([55, 59, 62, 67], 43)]
-tense = [([57, 60, 64], 33), ([53, 57, 60], 29), ([57, 60, 64], 33), ([52, 56, 59], 28)]
+bright = [[60, 64, 67, 71], [57, 60, 64, 67], [53, 57, 60, 64], [55, 59, 62, 67]]
+tense = [[57, 60, 64], [53, 57, 60], [57, 60, 64], [52, 56, 59]]
 nb = int(SPEECH / BAR) + 1
 for k in range(nb):
     t0 = k * BAR
     problem = Q["socho"] - 0.3 <= t0 < Q["brand"] - 0.5
-    notes, root = (tense if problem else bright)[k % 4]
-    place(ep(notes, BAR), t0, gain=0.028 if not problem else 0.022, verb=0.5)
-    for bt in range(4):
+    place(ep((tense if problem else bright)[k % 4], BAR), t0, gain=0.022, verb=0.45)
+    if problem:
+        continue
+    for bt in (0, 2):
         tb = t0 + bt * BEAT
-        if tb > SPEECH - 0.2:
-            break
-        if Q["brand"] - 1.7 < tb < Q["brand"]:      # drop the drums under the riser
-            continue
-        place(kick(0.4), tb, gain=(0.03 if bt % 2 == 0 else 0.02) * (0.6 if problem else 1))
-        if not problem:
-            place(hat(), tb + BEAT * 0.5, gain=0.009, pan=0.3)
-            place(pluck(root + 24 + (7 if bt == 2 else 0), 0.25, 0.15), tb, gain=0.011, pan=-0.2)
+        if tb < SPEECH - 0.2:
+            place(kick(0.35), tb, gain=0.018)
 
-# ---- scene 1-3: survey grid (dots pop on the same (row + col) * 0.035 s delay as the picture)
-for r in range(10):
-    for c in range(10):
-        if (r + c) % 2 == 0:
-            place(blip(1800 + 60 * (r + c), 0.02), Q["grid"] - 0.05 + (r + c) * 0.035, gain=0.012, pan=(c - 4.5) / 6)
-place(whoosh(0.4, 600, 7000, 0.7), Q["send"] - 0.15, gain=0.05)
-for i in range(0, 20, 3):
-    place(pluck(84 + [0, 4, 7, 12, 16, 19, 24][i // 3], 0.12, 0.2), Q["green"] + i * 0.025, gain=0.035, pan=0.2)
-for i in range(0, 30, 5):
-    place(pluck(76 + [0, 3, 7, 10, 12, 15][i // 5], 0.12, 0.2), Q["yellow"] + i * 0.018, gain=0.03, pan=-0.2)
-place(glitch(0.5), Q["red"] - 0.02, gain=0.05)
-place(thud(0.2), Q["nahi"] - 0.03, gain=0.12)
-place(impact(0.5, 1.2), Q["nahi"] - 0.03, gain=0.07, verb=0.4)
-
-# ---- scene 4: the unanswered enquiry
-place(whoosh(0.35, 500, 6000, 0.8), Q["chat"] - 0.35, gain=0.06)
-place(ping(1568, 2093), Q["enquiry"] - 0.05, gain=0.09, verb=0.3)
-for k in range(5):
-    place(tick(k % 2 == 0), Q["noreply"] - 0.05 + k * 0.28, gain=0.06)
-place(bubble(False), Q["lost"] - 0.05, gain=0.06)
-walk0, walk1 = Q["lost"] + 0.3, Q["contact"] - 0.1
-for k in range(int((walk1 - walk0) / 0.22)):
-    place(thud(0.03), walk0 + k * 0.22, gain=0.035, pan=-0.5 + k * 0.1)
-for k, m in enumerate([67, 63, 58]):
-    place(pluck(m, 0.25, 0.1), Q["contact"] + k * 0.11, gain=0.05)
-
-# ---- scene 5: Neura Chat
-place(riser(1.6), Q["brand"] - 1.6, gain=0.08)
-place(impact(0.9, 2.0), Q["brand"] - 0.03, gain=0.14, verb=0.5)
-place(bell(84, 0.6) + 0.5 * bell(91, 0.6), Q["brand"] - 0.03, gain=0.05, verb=0.5)
-place(bubble(), Q["sub"] - 0.08, gain=0.06)
-for k, at in enumerate([Q["flow"] - 0.05, Q["flow"] + 0.3, Q["help"]]):
-    place(bubble(), at, gain=0.05, pan=-0.4 + 0.4 * k)
-
-# ---- scene 6: features — pop on arrival, tick on the check
-for k, n in enumerate(["f1", "f2", "f3", "f4", "f5"]):
-    place(bubble(k % 2 == 0), Q[n] - 0.1, gain=0.055, pan=0.15 * (k - 2))
-    place(pluck(79 + [0, 2, 4, 7, 9][k], 0.18, 0.25), Q[n] + 0.37, gain=0.04, pan=0.3)
-    place(tick(True), Q[n] + 0.37, gain=0.04)
-
-# ---- scene 7: busy
-for k in range(6):
-    place(bell(96, 0.05), Q["busy"] + 0.2 + k * 0.06, gain=0.025, pan=0.4)
-place(blip(880, 0.08) + blip(1320, 0.08), Q["robot"] - 0.1, gain=0.04)
-for k in range(int((Q["easy"] - Q["robot"]) / 0.16)):
-    place(tick(k % 2 == 0), Q["robot"] + 0.16 * (k + 1), gain=0.018, pan=0.4)
-place(ding(), Q["easy"] - 0.05, gain=0.05)
-
-# ---- scene 8: offer
-place(whoosh(0.4, 500, 7000, 0.75), Q["offer"] - 0.35, gain=0.06)
-for i in range(20):
-    place(blip(1200 + 40 * i, 0.025), Q["slots"] + 0.05 + i * 0.045, gain=0.016, pan=(i % 10 - 4.5) / 6)
-for k, m in enumerate([84, 88, 91, 96, 100]):
-    place(bell(m, 0.3), Q["gift"] - 0.08 + k * 0.05, gain=0.03, verb=0.5, pan=-0.3 + 0.15 * k)
-
-# ---- scene 9: late reply = lead miss, then type "Automation" and send
-place(thud(0.15), Q["late"] - 0.05, gain=0.09)
-place(glitch(0.35), Q["miss"] - 0.06, gain=0.04)
-place(whoosh(0.35, 500, 6000, 0.8), Q["compose"] - 0.35, gain=0.06)
+# ---- the few sounds a person would add
+place(ping(1568, 2093), Q["enquiry"] - 0.1, gain=0.06, verb=0.2)          # message notification
 ty0, ty1 = Q["type"], WE[QW["type"]]
-for k in range(10):                                   # one click per letter, same cadence as the picture
-    place(keyclick() * 1.6, ty0 + (ty1 - ty0) * k / 10, gain=0.07, pan=0.1)
-place(whoosh(0.25, 1500, 9000, 0.5), Q["send2"] - 0.05, gain=0.06)
-place(bubble(), Q["send2"] + 0.02, gain=0.08)
-place(ding(), Q["karo"] + 0.1, gain=0.045)
-
-# ---- scene 10 + end card
-place(whoosh(0.35, 500, 7000, 0.8), Q["outro"] - 0.3, gain=0.05)
-for k, m in enumerate([88, 91, 95, 100, 103, 107]):
-    place(bell(m, 0.35), Q["smarter"] - 0.04 + k * 0.07, gain=0.028, verb=0.6, pan=-0.4 + 0.16 * k)
-place(impact(0.6, 1.2), Q["smarter"] - 0.04, gain=0.06)
-place(impact(0.8, 1.8), SPEECH, gain=0.14, verb=0.45)
-place(pad([60, 67, 72, 76], TL["endCard"], attack=0.2, release=0.6, harm=4), SPEECH, gain=0.15, verb=0.6)
+for k in range(10):                                                         # typing "Automation"
+    place(keyclick(), ty0 + (ty1 - ty0) * k / 10 + 0.01 * (k % 3), gain=0.05, pan=0.1)
+place(whoosh(0.22, 1500, 8000, 0.5), Q["send2"] - 0.04, gain=0.035)        # send
+place(pad([60, 67, 72, 76], TL["endCard"], attack=0.3, release=0.6, harm=4), SPEECH, gain=0.1, verb=0.5)
 
 # ------------------------------------------------------------------ room + master
 def ir(d=3.2):

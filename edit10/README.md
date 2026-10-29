@@ -1,7 +1,11 @@
 # edit10: Neura Chat, Akola survey (talking head, 9:16)
 
 One uncut 53 s take (`IMG_9754.mp4`, release `onetake-v1`) with a cleaned, re-synced voice track, word-timed
-karaoke captions and motion graphics that start on the word that names them.
+captions and a few graphics that start on the word that names them.
+
+Style is deliberately hand-edited, not template: hard punch-in jump cuts, plain bold captions (2-3 words, key
+words green), flat stickers (survey bar, checklist, yellow offer tag), a real-looking WhatsApp notification and
+compose bar. No emoji art, glows or particles; sound is a quiet bed plus a notification ping, typing and send.
 
 Render: `renders/neura-chat-akola-survey.mp4` (1080x1920, 30 fps, 55.1 s incl. 2.8 s end card).
 
