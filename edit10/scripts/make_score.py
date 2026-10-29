@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Music bed + sound effects for the talking-head short (voice comes from the clips).
+"""Festive music bed + SFX for the CoinDCX Diwali giveaway reel (voice comes from the clips).
 
 Everything is synthesised (no samples, no licences). Timing comes from
 src/timeline.json — the same file the picture reads — so sound and image stay locked.
@@ -227,84 +227,105 @@ def glitch(d=0.2):
     return np.round(x * 3) / 3 * (np.sin(2 * np.pi * 31 * t) > 0) * np.exp(-t / (d / 2.5))
 
 
-# ---- music: serious, tense bed (minor pads, low pulse, clock tick); stingers on every scam beat
-BEAT = 60 / 92
+# ---- music: upbeat festive groove in D major (bright plucks, bells, four-on-floor at low level under the voice)
+BEAT = 60 / 112
 BAR = 4 * BEAT
-chords = [([57, 60, 64], 33), ([53, 57, 60], 29), ([55, 58, 62], 31), ([52, 56, 59], 28)]
+chords = [([62, 66, 69], 38), ([59, 62, 66], 35), ([55, 59, 62], 31), ([57, 61, 64], 33)]
+arp = [0, 1, 2, 1, 2, 0, 1, 2]
+gone = [(W[48] - 0.12, W[60] - 0.12), (W[69] - 0.1, W[79] - 0.12)]  # full-graphic scenes: lift the groove
 nb = int(SPEECH / BAR) + 1
 for k in range(nb):
     t0 = k * BAR
-    if t0 > SPEECH - 0.3:
+    if t0 > SPEECH - 0.2:
         break
     notes, root = chords[k % 4]
-    place(pad(notes, BAR + 0.5, attack=0.6, release=1.0, harm=3), t0, gain=0.035, verb=0.6)
-    place(drone(BAR, notes=(root, root + 7), air=0.15), t0, gain=0.03)
-    for bt in range(4):
-        tb = t0 + bt * BEAT
-        if tb > SPEECH - 0.3:
+    place(pad(notes, BAR + 0.4, attack=0.3, release=0.8, harm=4), t0, gain=0.03, verb=0.5)
+    place(pluck(root, 0.5, 0.4), t0, gain=0.07)
+    place(pluck(root, 0.3, 0.4), t0 + BEAT * 2.5, gain=0.05)
+    for s in range(8):
+        ts = t0 + s * BEAT / 2
+        if ts > SPEECH - 0.2:
             break
-        place(kick(0.5), tb, gain=0.04 if bt in (0, 2) else 0.022)
-        place(tick(bt % 2 == 0), tb + BEAT * 0.5, gain=0.014, pan=0.25)
+        lift = any(a <= ts < b for a, b in gone)
+        place(pluck(notes[arp[s]] + 12, 0.16, 0.6), ts, gain=0.022 * (1.5 if lift else 1), pan=-0.35 if s % 2 else 0.35, verb=0.35)
+        if s % 2 == 0:
+            place(kick(0.55), ts, gain=0.05 if lift else 0.035)
+        else:
+            place(hat(), ts, gain=0.03, pan=0.2)
+        if s in (2, 6):
+            place(fft_band(rng.standard_normal(int(0.12 * SR)), 900, 6000) * np.exp(-tax(0.12) / 0.03), ts, gain=0.02 if not lift else 0.035)
 
-def paper(d=0.22):
-    t = tax(d)
-    return fft_band(rng.standard_normal(len(t)), 1500, 9000) * np.exp(-t / 0.05) * np.clip(t / 0.01, 0, 1)
+def pop(t0, g=0.08, up=True):
+    place(bubble(up), t0, gain=g)
+    place(thud(0.08), t0, gain=g * 0.9)
 
-def stamp_hit(t0, g=0.16):
-    place(impact(0.8, 1.4), t0, gain=g, verb=0.4)
-    place(thud(0.18), t0, gain=0.14)
-    place(paper(0.18), t0, gain=0.12)
+def sparkle(t0, g=0.035):
+    for j in range(6):
+        place(bell(86 + (j * 5) % 12, 0.18), t0 + j * 0.045, gain=g, pan=(j % 3 - 1) * 0.5, verb=0.6)
 
-ins = [W[3], W[51], W[84], W[120], W[132], W[157], W[186], W[219], W[233]]
-for i, c in enumerate(ins):
-    place(whoosh(0.28, 500, 8000, 0.8), c - 0.28, gain=0.1, pan=0.3 if i % 2 else -0.3)
-    place(thud(0.07), c - 0.08, gain=0.07)
-for i in (29, 67, 99, 147, 170, 218, 257):
-    place(whoosh(0.22, 5000, 700, 0.6), W[i] - 0.2, gain=0.05)
-# better: dice rattle / hotel / kids
-for i in (11, 16, 23):
-    place(bubble(), W[i] - 0.08, gain=0.07)
-for k in range(5):
-    place(tick(k % 2 == 0), W[11] + k * 0.05, gain=0.04)
-# portfolio DMs pop in
-for tt in (W[51] + 0.32, W[62] - 0.1, W[65] - 0.1):
-    place(blip(1300, 0.05), tt, gain=0.05)
-place(bubble(), W[65] - 0.1, gain=0.08)
-# market scams: alarm
-place(riser(1.0, 300, 4000), W[67] - 1.0, gain=0.04)
-for k in range(3):
-    place(ping(1400, 900), W[70] - 0.1 + k * 0.22, gain=0.04)
-# telegram posts + FAKE stamp
-for k in range(3):
-    place(blip(1100 + k * 150, 0.05), W[84] + 0.27 + k * 0.4, gain=0.05)
-stamp_hit(W[91] - 0.1)
-# kamai flies away
-place(whoosh(0.8, 300, 3000, 0.7), W[127] - 0.1, gain=0.07)
-# multiply counter then the broken promise
-t = W[140] - 0.1
-while t < W[142]:
+# hook: question sting
+place(whoosh(0.35, 600, 7000, 0.8), W[1] - 0.35, gain=0.08)
+place(thud(0.1), W[1] - 0.05, gain=0.08)
+place(bell(81, 0.4), W[2] - 0.05, gain=0.04, verb=0.5)
+# hook -> framed card
+place(whoosh(0.3, 5000, 600, 0.6), W[4] - 0.3, gain=0.06)
+place(bell(78, 0.6), W[11] - 0.06, gain=0.05, verb=0.6)  # surprise gift
+pop(W[11] - 0.08, 0.06)
+sparkle(W[19] + 0.05, 0.03)  # gift bursts
+# products: whoosh + slam on each spoken name
+place(whoosh(0.3, 500, 8000, 0.8), W[21] - 0.4, gain=0.08)
+for n, i in enumerate((22, 28, 32, 36, 41)):
+    place(whoosh(0.28, 400, 7000, 0.85), W[i] - 0.33, gain=0.09, pan=0.4)
+    place(impact(0.6, 1.0), W[i] - 0.08, gain=0.08, verb=0.3)
+    place(bell(74 + [0, 2, 4, 7, 9][n], 0.35), W[i] - 0.06, gain=0.035, verb=0.5)
+for j in range(5):
+    place(blip(1200 + j * 160, 0.04), W[46] - 0.1 + j * 0.06, gain=0.04)
+# bumper giveaway
+place(whoosh(0.4, 6000, 500, 0.5), W[48] - 0.4, gain=0.07)
+pop(W[49] - 0.08, 0.07)
+place(riser(1.6, 200, 6000), W[58] - 1.6, gain=0.05)
+place(impact(1.0, 2.2), W[58] - 0.08, gain=0.2, verb=0.5)
+sparkle(W[58], 0.045)
+for j in range(14):
+    place(keyclick(), W[58] + 0.05 + rnd(j) * 1.4, gain=0.05, pan=rnd(j * 3) * 2 - 1)  # confetti
+# ek, do, paanch... nahi
+for i in (65, 66, 67):
+    place(thud(0.1), W[i] - 0.08, gain=0.1)
+    place(blip(900, 0.05), W[i] - 0.07, gain=0.04)
+place(whoosh(0.25, 3000, 400, 0.4), W[68] - 0.08, gain=0.08)
+place(glitch(0.2), W[68] - 0.02, gain=0.05)
+# 27 WINNERS: counter roll + big hit
+place(riser(0.9, 300, 5000), W[69] - 1.0, gain=0.04)
+place(impact(1.1, 2.4), W[69] - 0.1, gain=0.22, verb=0.5)
+t = W[69] - 0.1
+while t < W[69] + 0.5:
     place(tick(), t, gain=0.03)
-    t += 0.06
-place(glitch(0.3), W[142], gain=0.08)
-stamp_hit(W[143] + 0.05, 0.13)
-# crorepati
-place(bell(81, 0.5), W[159] - 0.05, gain=0.05, verb=0.5)
-place(bell(76, 0.5), W[160] - 0.05, gain=0.05, verb=0.5)
-place(thud(0.12), W[161] - 0.08, gain=0.09)
-# mat dijiye
-place(bubble(False), W[184] - 0.1, gain=0.08)
-stamp_hit(W[193] - 0.1, 0.13)
-place(ding(), W[198] - 0.05, gain=0.05)
-# UPI name swaps
-for i in (237, 246, 247):
-    place(keyclick() * 2, W[i] - 0.1, gain=0.08)
-place(glitch(0.25), W[230] - 0.1, gain=0.07)
-# SCAM stamp: the biggest hit
-place(riser(1.2, 200, 5000), W[237] - 1.2, gain=0.05)
-stamp_hit(W[237] - 0.06, 0.24)
-# resolve: shield, end card
-place(pad([57, 64, 69, 72], SPEECH - W[241] + TL["endCard"], attack=0.6, release=1.2, harm=4), W[241], gain=0.06, verb=0.7)
-place(impact(0.7, 2.2), SPEECH, gain=0.14, verb=0.5)
+    t += 0.045
+for j in range(27):
+    place(blip(1500 + (j % 9) * 90, 0.03), W[71] + j * 0.035, gain=0.022, pan=((j % 9) / 4 - 1))
+sparkle(W[76] - 0.05, 0.04)  # sunehra mauka
+# steps
+place(whoosh(0.3, 500, 7000, 0.8), W[79] - 0.42, gain=0.07)
+pop(W[84] - 0.08, 0.07)
+place(ding(), W[86] - 0.05, gain=0.05)
+place(whoosh(0.3, 800, 6000, 0.7), W[88] - 0.35, gain=0.06, pan=0.4)
+for k in range(4):
+    place(blip(1000 + k * 120, 0.04), W[90] - 0.1 + k * 0.35, gain=0.04)
+# ending
+place(whoosh(0.35, 5000, 600, 0.6), W[97] - 0.4, gain=0.06)
+place(whoosh(0.25, 600, 6000, 0.8), W[99] - 0.35, gain=0.05)
+t = W[99]
+while t < W[110] - 0.2:
+    place(keyclick(), t, gain=0.025)
+    t += 0.13 + rnd(t) * 0.12
+place(whoosh(0.3, 700, 7000, 0.8), W[110] - 0.4, gain=0.06)
+for j in range(5):
+    pop(W[110] + j * 0.08, 0.04)
+place(bell(86, 0.5), W[123] - 0.05, gain=0.04, verb=0.6)
+# end card
+place(impact(0.8, 2.4), SPEECH, gain=0.15, verb=0.5)
+place(pad([62, 66, 69, 74], TL["endCard"], attack=0.05, release=1.0, harm=4), SPEECH, gain=0.06, verb=0.7)
+sparkle(SPEECH + 0.3, 0.04)
 
 # ------------------------------------------------------------------ room + master
 def ir(d=3.2):

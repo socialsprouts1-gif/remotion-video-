@@ -1,0 +1,14 @@
+# start end | words actually spoken (Whisper medium + base, reconciled with the script)
+0.37 1.50 | Ek sawaal hai dosto,
+1.76 5.92 | ki is Diwali aap logon ko ek surprise gift mil jaaye, toh aap log kya choose karenge?
+5.92 7.72 | Kya iPhone Duo ko choose karenge?
+8.04 9.71 | Kya MacBook ko choose karenge?
+10.37 11.72 | iPad ko choose karenge,
+12.06 16.00 | AirPods ko choose karenge, ya JBL ke Bluetooth speakers ko choose karenge?
+16.46 20.04 | Dosto, CoinDCX ke saath milkar main lekar aaya hoon ek bumper giveaway!
+20.30 23.08 | Aur sun lijiye, ki keval ek, do, paanch nahi,
+23.08 26.34 | 27 winners ko prizes jeetne ka ek sunehra mauka hai.
+26.65 29.28 | Participate karne ke liye mere link se account kholiye
+29.68 32.88 | aur Instagram Highlights pe jaake saari details dekh lijiye.
+32.88 36.26 | Toh dosto, comment karke bataiye ki aap logon ko sabse zyada kaunsa gift
+36.26 39.39 | pasand hai, aur aap is Diwali par apne ghar kaunsa gift le jaana chahenge?
