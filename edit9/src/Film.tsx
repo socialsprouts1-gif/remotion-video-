@@ -649,7 +649,7 @@ const Intro: React.FC<{t: number}> = ({t}) => {
       })}
       {/* Deepak, background removed */}
       <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, transformOrigin: '50% 100%', transform: `translateY(${470 + (1 - m1(enter)) * 300}px) scale(${zoom * 1.1})`}}>
-        <Img src={staticFile(`clips/cut/f${String(fi).padStart(4, '0')}.webp`)} style={{width: 1080, height: 1920, filter: `contrast(1.07) saturate(1.08) drop-shadow(0 0 26px ${red ? 'rgba(255,60,40,0.6)' : 'rgba(255,140,0,0.55)'}) drop-shadow(0 30px 50px rgba(0,0,0,0.6))`}} />
+        <Img src={staticFile(`clips/cut3/f${String(fi).padStart(4, '0')}.webp`)} style={{width: 1080, height: 1920, filter: `contrast(1.07) saturate(1.08) drop-shadow(0 0 26px ${red ? 'rgba(255,60,40,0.6)' : 'rgba(255,140,0,0.55)'}) drop-shadow(0 30px 50px rgba(0,0,0,0.6))`}} />
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 380, background: `linear-gradient(180deg, transparent, ${C.bg} 75%)`}} />
       {/* kinetic words: exactly what he says */}
