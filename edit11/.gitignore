@@ -1,0 +1,10 @@
+public/clips/
+node_modules
+out/
+footage/
+work/*.wav
+work/*.task
+work/*.png
+work/*.jpg
+work/*.log
+scripts/__pycache__/
