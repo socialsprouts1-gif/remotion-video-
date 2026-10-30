@@ -630,6 +630,7 @@ const Intro: React.FC<{t: number}> = ({t}) => {
   const red = !!P.red;
   return (
     <AbsoluteFill style={{opacity: 1 - out, transform: `translate(${shx}px, ${shy}px)`}}>
+      <AbsoluteFill style={{background: C.bg, transform: 'scale(1.1)'}} />
       <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 55% at 50% 52%, ${red ? `rgba(255,50,30,${0.4 + 0.2 * pulse})` : `rgba(255,120,0,${0.42 + 0.18 * pulse})`} 0%, ${red ? '#2A0604' : '#2A1204'} 45%, ${C.bg} 100%)`}} />
       <AbsoluteFill style={{background: `repeating-conic-gradient(from ${t * 28}deg at 50% 62%, rgba(255,170,60,0.12) 0deg 7deg, transparent 7deg 18deg)`}} />
       <Marquee t={t} y={300} dir={-1} text="PAISA KISKO DE RAHE HAIN? •" o={0.5} />
@@ -658,7 +659,7 @@ const Intro: React.FC<{t: number}> = ({t}) => {
           const s2 = sp(t, w.s - 0.06, 460, 17);
           if (s2 <= 0) return null;
           return (
-            <span key={w.i} style={{display: 'inline-block', fontFamily: big ? SERIF : SANS, fontStyle: big ? 'italic' : 'normal', fontWeight: big ? 400 : 900, fontSize: big ? 170 : 88, lineHeight: big ? 1.0 : 1.15, letterSpacing: big ? '0' : '-0.03em', textTransform: big ? 'none' : 'uppercase', paddingRight: big ? '0.1em' : 0, ...(big ? (red ? redText : goldText) : {color: C.cream}), transform: `scale(${lerp(big ? 2.2 : 1.6, 1, m1(s2))})`, opacity: m1(s2 * 3), filter: 'drop-shadow(0 10px 26px rgba(0,0,0,0.7))'}}>
+            <span key={w.i} style={{display: 'inline-block', fontFamily: big ? SERIF : SANS, fontStyle: big ? 'italic' : 'normal', fontWeight: big ? 400 : 900, fontSize: big ? 170 : 88, lineHeight: big ? 1.0 : 1.15, letterSpacing: big ? '0' : '-0.03em', textTransform: big ? 'none' : 'uppercase', paddingRight: big ? '0.2em' : 0, ...(big ? (red ? redText : goldText) : {color: C.cream}), transform: `scale(${lerp(big ? 2.2 : 1.6, 1, m1(s2))})`, opacity: m1(s2 * 3), filter: 'drop-shadow(0 10px 26px rgba(0,0,0,0.7))'}}>
               {clean(w.w).replace(/[,.]/g, '')}
             </span>
           );
