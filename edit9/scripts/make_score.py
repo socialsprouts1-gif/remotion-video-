@@ -259,7 +259,7 @@ ins = [W[3], W[51], W[84], W[120], W[132], W[157], W[186], W[219], W[233]]
 for i, c in enumerate(ins):
     place(whoosh(0.28, 500, 8000, 0.8), c - 0.28, gain=0.1, pan=0.3 if i % 2 else -0.3)
     place(thud(0.07), c - 0.08, gain=0.07)
-for i in (29, 67, 99, 147, 170, 218, 257):
+for i in [k for k in (29, 67, 99, 147, 170, 218, 257) if k in W]:
     place(whoosh(0.22, 5000, 700, 0.6), W[i] - 0.2, gain=0.05)
 # better: dice rattle / hotel / kids
 for i in (11, 16, 23):
@@ -305,6 +305,17 @@ stamp_hit(W[237] - 0.06, 0.24)
 # resolve: shield, end card
 place(pad([57, 64, 69, 72], SPEECH - W[241] + TL["endCard"], attack=0.6, release=1.2, harm=4), W[241], gain=0.06, verb=0.7)
 place(impact(0.7, 2.2), SPEECH, gain=0.14, verb=0.5)
+
+# fast intro: whoosh + hit on every phrase, punch on each key word
+for i in (6, 10, 14, 19, 26):
+    place(whoosh(0.25, 500, 8000, 0.85), W[i] - 0.33, gain=0.09, pan=0.3)
+    place(thud(0.09), W[i] - 0.08, gain=0.09)
+for i in (3, 6, 11, 16, 23, 26):
+    place(impact(0.5, 0.9), W[i] - 0.06, gain=0.07, verb=0.3)
+place(riser(0.8, 300, 6000), W[29] - 0.9, gain=0.05)
+place(whoosh(0.35, 6000, 500, 0.5), W[29] - 0.35, gain=0.08)
+# name highlight
+place(ding(), W[221] - 0.06, gain=0.06)
 
 # ------------------------------------------------------------------ room + master
 def ir(d=3.2):
