@@ -1,5 +1,5 @@
 import React from 'react';
-import {Img} from 'remotion';
+import {Img, staticFile} from 'remotion';
 import {Bubble, C, Check, MONO, Phone, Pop, SANS, SERIF, W, WaHeader, clamp01, ep, eio, icon, lerp, rnd, sp} from './ui';
 import {Chip, Headline, Icon3D, Label, TCard, TH, Theme, Tok, abs, fl} from './kit';
 
@@ -69,22 +69,96 @@ const Calendar: React.FC<{t: number; th: Tok; gapNote?: boolean}> = ({t, th, gap
   );
 };
 
-// ===== 0 · reels are not members (dark) ======================================
-const REELS = [
-  ['flexed_biceps', '#F7D9C4'],
-  ['woman_lifting_weights', '#D8E8F5'],
-  ['running_shoe', '#E5F2DD'],
-  ['person_lifting_weights', '#F2E3F5'],
-  ['green_apple', '#FBEBC8'],
-  ['woman_running', '#DDEFEA'],
+// ===== real 3D gym objects (rendered with three.js, scripts/3d) ================
+export const g3 = (n: string) => staticFile(`gym3d/${n}.png`);
+export const Gym3D: React.FC<{n: string; size: number; t: number; seed?: number; style?: React.CSSProperties; at?: number}> = ({n, size, t, seed = 0, style, at}) => {
+  const s = at === undefined ? 1 : sp(t, at);
+  if (at !== undefined && t < at) return null;
+  return (
+    <div style={{position: 'absolute', width: size, height: size, ...style, transform: `scale(${lerp(0.3, 1, s)}) rotate(${(1 - Math.min(1, s)) * 30}deg)`, opacity: at === undefined ? 1 : ep(t, at, 0.2)}}>
+      <div style={{position: 'absolute', left: size * 0.2, right: size * 0.2, bottom: size * 0.04, height: size * 0.1, borderRadius: '50%', background: 'rgba(0,0,0,0.28)', filter: `blur(${size * 0.04}px)`, transform: `scaleX(${1 - Math.sin(t * 1.3 + seed) * 0.08})`}} />
+      <Img src={g3(n)} style={{width: size, height: size, transform: `translateY(${Math.sin(t * 1.3 + seed) * size * 0.03}px) rotate(${Math.sin(t * 0.8 + seed) * 3}deg)`}} />
+    </div>
+  );
+};
+
+// ===== 0 · interactive hook: 3D dumbbell drop + poll, then reels != members (dark)
+const REELS: [string, string, boolean][] = [
+  ['dumbbell', '#E9E4DA', true],
+  ['flexed_biceps', '#F7D9C4', false],
+  ['kettlebell', '#E3EFE6', true],
+  ['boxing_glove', '#F5DEDE', false],
+  ['plate', '#E5E9F3', true],
+  ['shaker', '#F3EEDD', true],
 ];
+const LAND = 0.78;
 export const S0: React.FC<P> = ({t, th}) => {
   const igAt = W(0, 13);
   const no = W(0, 18);
   const ph = sp(t, igAt - 0.4, 0.9);
+  const pollAt = W(0, 3) - 0.1;
+  const tapAt = W(0, 9);
+  const leave = ep(t, W(0, 11) - 0.2, 0.6); // hook clears for the reels phone
+  // dumbbell drop: gravity fall, squash on landing, small settle bounce
+  const fall = clamp01(t / LAND);
+  const dy = t < LAND ? lerp(-700, 0, fall * fall) : -Math.abs(Math.sin((t - LAND) * 9)) * 60 * Math.exp(-(t - LAND) * 5);
+  const squash = t > LAND ? 1 - 0.18 * Math.exp(-(t - LAND) * 14) : 1;
+  const spin = Math.floor((t < LAND ? t * 60 : LAND * 60 + (t - LAND) * 12)) % 48;
+  const shake = t > LAND ? Math.sin((t - LAND) * 70) * 14 * Math.exp(-(t - LAND) * 9) : 0;
+  const pct = ep(t, tapAt + 0.15, 0.9);
   return (
-    <>
+    <div style={{position: 'absolute', inset: 0, transform: `translate(${shake}px, ${shake * 0.6}px)`}}>
       <Headline t={t} at={0.1} th={th} a={[[['If we managed your ']], [['gym', true]]]} />
+      {/* dumbbell */}
+      {leave < 1 && (
+        <div style={abs(250, 650, {width: 580, height: 420, opacity: 1 - leave, transform: `translateY(${-leave * 200}px) scale(${1 - leave * 0.3})`})}>
+          <div style={{position: 'absolute', left: 120, right: 120, bottom: 70, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.55)', filter: 'blur(14px)', transform: `scaleX(${lerp(0.3, 1, fall)})`, opacity: lerp(0.2, 1, fall)}} />
+          <Img src={staticFile(`gym3d/dumbbell_spin/${String(spin).padStart(2, '0')}.png`)} style={{position: 'absolute', left: 0, top: -60, width: 580, height: 580, transform: `translateY(${dy}px) scaleY(${squash}) scaleX(${2 - squash})`, transformOrigin: '50% 75%'}} />
+          {t > LAND &&
+            Array.from({length: 10}).map((_, k) => {
+              const a = Math.PI + (k / 9) * Math.PI;
+              const p = ep(t, LAND, 0.7);
+              return <div key={k} style={{position: 'absolute', left: 290 + Math.cos(a) * 220 * p - 10, top: 360 + Math.sin(a) * 50 * p, width: 20, height: 20, borderRadius: 10, background: 'rgba(255,255,255,0.35)', opacity: 1 - p, transform: `scale(${1 + p})`}} />;
+            })}
+        </div>
+      )}
+      {/* poll sticker */}
+      {t > pollAt && leave < 1 && (
+        <div style={abs(170, 1040, {opacity: 1 - leave, transform: `translateX(${-leave * 300}px) rotate(${-3 - leave * 10}deg)`})}>
+          <Pop t={t} at={pollAt} from={0.5} rot={-12}>
+            <div style={{width: 740, background: '#fff', borderRadius: 32, padding: '26px 26px 22px', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', fontFamily: SANS}}>
+              <div style={{textAlign: 'center', fontWeight: 800, fontSize: 32, color: C.ink, marginBottom: 18}}>Aapke gym mein zyada kya hai?</div>
+              {[
+                {img: 'chart_increasing', txt: 'Reels pe views', v: 78, win: false},
+                {img: 'flexed_biceps', txt: 'Renew karne wale members', v: 22, win: true},
+              ].map((o, i) => {
+                const voted = t > tapAt;
+                return (
+                  <div key={i} style={{position: 'relative', height: 76, borderRadius: 20, background: '#F1EFEA', marginTop: i ? 12 : 0, overflow: 'hidden', border: voted && o.win ? `3px solid ${C.green}` : '3px solid transparent'}}>
+                    {voted && <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: `${o.v * pct}%`, background: o.win ? 'rgba(31,157,85,0.25)' : 'rgba(0,0,0,0.08)'}} />}
+                    <div style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 12, height: '100%', padding: '0 20px'}}>
+                      <Img src={fl(o.img)} style={{width: 44, height: 44}} />
+                      <span style={{fontWeight: 700, fontSize: 27, color: C.ink, flex: 1}}>{o.txt}</span>
+                      {voted && <b style={{fontSize: 28, color: o.win ? C.green : '#6B655C'}}>{Math.round(o.v * pct)}%</b>}
+                    </div>
+                  </div>
+                );
+              })}
+              <div style={{textAlign: 'center', marginTop: 14, fontFamily: MONO, fontWeight: 700, fontSize: 18, letterSpacing: '0.14em', color: t > tapAt ? C.green : '#8C8780'}}>
+                {t > tapAt ? 'Sach batana: aapka bhi yahi haal hai?' : 'TAP TO VOTE'}
+              </div>
+            </div>
+          </Pop>
+          {/* finger: hovers, then taps the members option */}
+          {t > pollAt + 0.5 && t < tapAt + 0.9 && (
+            <div style={{position: 'absolute', left: lerp(760, 560, eio(t, pollAt + 0.6, tapAt - pollAt - 0.7)), top: lerp(380, 180, eio(t, pollAt + 0.6, tapAt - pollAt - 0.7)), transform: `scale(${t > tapAt - 0.08 && t < tapAt + 0.12 ? 0.85 : 1})`, opacity: 1 - ep(t, tapAt + 0.5, 0.3)}}>
+              {t > tapAt && <div style={{position: 'absolute', left: -6, top: -26, width: 70, height: 70, borderRadius: 35, border: `5px solid ${C.green}`, transform: `scale(${lerp(0.3, 2, ep(t, tapAt, 0.5))})`, opacity: 1 - ep(t, tapAt, 0.5)}} />}
+              <Img src={fl('index_pointing_up')} style={{width: 120, height: 120, filter: 'drop-shadow(0 12px 18px rgba(0,0,0,0.45))', transform: 'rotate(-18deg)'}} />
+            </div>
+          )}
+        </div>
+      )}
+      {/* reels phone */}
       <div style={abs(300, 720, {transform: `translateY(${(1 - ph) * 300}px)`, opacity: ep(t, igAt - 0.4, 0.3)})}>
         <Phone w={480} h={640} dark>
           <div style={{position: 'absolute', inset: 0, background: '#fff', fontFamily: SANS}}>
@@ -94,12 +168,12 @@ export const S0: React.FC<P> = ({t, th}) => {
               <span style={{marginLeft: 'auto', fontSize: 17, color: '#888'}}>Reels</span>
             </div>
             <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 3, padding: 3}}>
-              {REELS.map(([n, bg], i) => {
+              {REELS.map(([n, bg, is3d], i) => {
                 const at = igAt + 0.2 + i * 0.18;
                 const views = Math.round(lerp(0, 4 + rnd(i) * 18, ep(t, at, 2.5)) * 10) / 10;
                 return (
                   <div key={i} style={{height: 230, background: bg, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: ep(t, at, 0.3) * (t > no ? 0.35 : 1), transform: `scale(${lerp(0.7, 1, sp(t, at))})`}}>
-                    <Img src={fl(n)} style={{width: 100, height: 100}} />
+                    <Img src={is3d ? g3(n) : fl(n)} style={{width: is3d ? 150 : 100, height: is3d ? 150 : 100}} />
                     <div style={{position: 'absolute', left: 8, bottom: 8, fontWeight: 700, fontSize: 16, color: '#111'}}>▶ {views}K</div>
                   </div>
                 );
@@ -113,7 +187,7 @@ export const S0: React.FC<P> = ({t, th}) => {
           VIEWS ≠ MEMBERS
         </div>
       )}
-    </>
+    </div>
   );
 };
 
@@ -126,6 +200,8 @@ export const S1: React.FC<P> = ({t, th}) => {
   const pri = W(1, 8);
   return (
     <>
+      <Gym3D n="kettlebell" size={190} t={t} seed={1} at={W(1, 3)} style={{left: 10, top: 1270}} />
+      <Gym3D n="plate" size={190} t={t} seed={2} at={W(1, 5)} style={{left: 880, top: 1260}} />
       <Headline t={t} at={L} th={th} a={[[['Har member, ']], [['gym se juda.', true]]]} />
       <svg width="1080" height="1920" style={{position: 'absolute', left: 0, top: 0}}>
         {ORBIT.map((_, i) => {
@@ -223,6 +299,7 @@ export const S3: React.FC<P> = ({t, th}) => {
   const booked = W(3, 19);
   return (
     <>
+      <Gym3D n="shaker" size={190} t={t} seed={3} at={W(3, 1)} style={{left: 860, top: 470}} />
       <Headline t={t} at={W(3, 0) - 0.2} th={th} a={[[['Turant ']], [['reply.', true]]]} />
       <Pop t={t} at={W(3, 1)} style={abs(110, 700)} dy={50}>
         <TCard th={th} style={{width: 860, padding: '22px 28px'}}>
@@ -261,6 +338,7 @@ export const S4: React.FC<P> = ({t, th}) => {
   const planAt = W(4, 8);
   return (
     <>
+      <Gym3D n="dumbbell" size={230} t={t} seed={4} at={W(4, 3)} style={{left: 820, top: 400}} />
       <Headline t={t} at={W(4, 0) - 0.2} th={th} a={[[['Joined. ']], [['Roz gym.', true]]]} />
       <Pop t={t} at={planAt - 0.1} style={abs(110, 690)} dy={40}>
         <div style={{display: 'flex', alignItems: 'center', gap: 16, background: '#fff', borderRadius: 26, padding: '14px 24px 14px 16px', boxShadow: '0 20px 40px rgba(0,0,0,0.18)', width: 828}}>
@@ -363,6 +441,7 @@ export const S7: React.FC<P> = ({t, th}) => {
   const days = Math.max(10, Math.round(lerp(14, 10, ep(t, W(7, 8), 0.8))));
   return (
     <>
+      <Gym3D n="plate" size={180} t={t} seed={5} at={W(7, 1)} style={{left: 20, top: 440}} />
       <Headline t={t} at={W(7, 0) - 0.2} th={th} a={[[['Wapas aayi. ']], [['Streak on.', true]]]} />
       <div style={abs(110, 690, {transform: `scale(${t > remAt ? lerp(1, 0.86, ep(t, remAt, 0.6)) : 1})`, transformOrigin: '50% 0'})}>
         <Calendar t={t} th={TH.cream} />
@@ -392,6 +471,7 @@ export const S8: React.FC<P> = ({t, th}) => {
   const frAt = W(8, 9);
   return (
     <>
+      <Img src={fl('boxing_glove')} style={{position: 'absolute', left: 860, top: 1120, width: 150, height: 150, transform: `scale(${sp(t, W(8, 9) + 0.4)}) rotate(${Math.sin(t * 2) * 8}deg)`}} />
       <Headline t={t} at={renAt - 0.2} th={th} a={[[['Renewed. ']], [['+1 friend.', true]]]} />
       <Pop t={t} at={renAt + 0.05} style={abs(110, 700)} dy={50}>
         <TCard th={th} style={{width: 860, padding: '24px 28px', display: 'flex', alignItems: 'center', gap: 20}}>
@@ -441,6 +521,7 @@ export const S9: React.FC<P> = ({t, th}) => {
   const months = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
   return (
     <>
+      <Gym3D n="kettlebell" size={190} t={t} seed={6} at={W(9, 9) + 0.8} style={{left: 850, top: 470}} />
       <Headline t={t} at={W(9, 0) - 0.2} th={th} a={[[['Goal: ']], [['har mahine wapas.', true]]]} />
       <div style={abs(110, 720, {width: 860, height: 520, display: 'flex', alignItems: 'flex-end', gap: 26})}>
         {months.map((m, i) => {

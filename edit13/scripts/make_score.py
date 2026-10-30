@@ -83,6 +83,10 @@ def chime():
 scenes = [L[i] - 0.4 for i in range(1, 11)] + [END_AT]
 for s_ in scenes: put(sfx, whoosh(0.6), s_ - 0.05, 0.4)
 for s_ in [W(0, 18), W(5, 5), W(10, 8)]: put(sfx, thump(), s_, 0.7)
+put(sfx, thump(), 0.78, 1.0); put(sfx, thump(), 0.80, 0.5)  # dumbbell lands
+put(sfx, whoosh(0.5), 0.2, 0.3)  # falling
+put(sfx, pop(1200), W(0, 9), 0.35); put(sfx, chime(), W(0, 9) + 0.15, 0.2)  # poll tap
+put(sfx, pop(900), W(0, 3) - 0.1, 0.25)  # poll appears
 for s_ in [W(3, 19), W(6, 14), W(8, 0), W(8, 9), END_AT + 1.4]: put(sfx, chime(), s_, 0.3)
 pops = [W(1, 1), W(1, 3), W(1, 5), W(1, 7), W(1, 8), W(2, 7), W(2, 13), W(3, 3), W(3, 4), W(3, 7), W(4, 8), W(5, 6), W(6, 2), W(6, 11),
         W(7, 11), W(7, 14), W(8, 4), W(9, 5), W(9, 9), W(10, 10) + 0.65, W(10, 13) - 0.1]

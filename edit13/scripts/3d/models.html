@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:transparent}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script></head>
+<body><script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const W=900;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setSize(W,W); r.setPixelRatio(1); r.setClearColor(0x000000,0);
+r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=0.85; r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const scene=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r); scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture; scene.environmentIntensity=0.7;
+const key=new THREE.DirectionalLight(0xffffff,2.2); key.position.set(3,5,4); scene.add(key);
+const rim=new THREE.DirectionalLight(0xbfe8d0,1.2); rim.position.set(-4,2,-3); scene.add(rim);
+const cam=new THREE.PerspectiveCamera(28,1,0.1,100);
+const GREEN=0x0F7A3C;
+const rubber=new THREE.MeshPhysicalMaterial({color:0x161616,roughness:0.55,metalness:0.0,clearcoat:0.35,clearcoatRoughness:0.5});
+const chrome=new THREE.MeshPhysicalMaterial({color:0xdadada,roughness:0.18,metalness:1.0});
+const knurl=new THREE.MeshPhysicalMaterial({color:0xbdbdbd,roughness:0.45,metalness:1.0});
+const greenPaint=new THREE.MeshPhysicalMaterial({color:GREEN,roughness:0.38,metalness:0.05,clearcoat:1,clearcoatRoughness:0.2});
+const greenRubber=new THREE.MeshPhysicalMaterial({color:GREEN,roughness:0.6,metalness:0,clearcoat:0.2});
+const cyl=(rt,rb,h,seg,m)=>new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);
+function dumbbell(){const g=new THREE.Group();
+  const h=cyl(0.085,0.085,1.5,48,knurl); h.rotation.z=Math.PI/2; g.add(h);
+  for(const s of[-1,1]){
+    const head=cyl(0.44,0.44,0.56,6,rubber); head.rotation.z=Math.PI/2; head.position.x=s*1.0; g.add(head);
+    const col=cyl(0.17,0.17,0.12,48,chrome); col.rotation.z=Math.PI/2; col.position.x=s*0.66; g.add(col);
+    const cap=cyl(0.2,0.2,0.05,48,chrome); cap.rotation.z=Math.PI/2; cap.position.x=s*1.3; g.add(cap);
+    const em=cyl(0.13,0.13,0.06,48,greenPaint); em.rotation.z=Math.PI/2; em.position.x=s*1.31; g.add(em);
+  } return g;}
+function kettlebell(){const g=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.SphereGeometry(0.85,96,96),greenPaint); body.scale.set(1,0.93,1); g.add(body);
+  const base=cyl(0.5,0.5,0.06,64,greenPaint); base.position.y=-0.79; g.add(base);
+  const tor=new THREE.Mesh(new THREE.TorusGeometry(0.5,0.12,32,96,Math.PI),greenPaint); tor.position.y=0.78; g.add(tor);
+  for(const s of[-1,1]){const p=cyl(0.12,0.15,0.34,32,greenPaint); p.position.set(s*0.5,0.66,0); p.rotation.z=s*0.12; g.add(p);}
+  const band=new THREE.Mesh(new THREE.TorusGeometry(0.86,0.02,16,128),chrome); band.rotation.x=Math.PI/2; band.position.y=-0.1; band.scale.set(1,1,1); g.add(band);
+  return g;}
+function plate(){const g=new THREE.Group(); const sh=new THREE.Shape(); sh.absarc(0,0,1,0,Math.PI*2,false);
+  const hole=new THREE.Path(); hole.absarc(0,0,0.13,0,Math.PI*2,true); sh.holes.push(hole);
+  for(const a of[90,210,330]){const rad=a*Math.PI/180; const p=new THREE.Path(); p.absellipse(Math.cos(rad)*0.66,Math.sin(rad)*0.66,0.19,0.09,0,Math.PI*2,true,rad+Math.PI/2); sh.holes.push(p);}
+  const geo=new THREE.ExtrudeGeometry(sh,{depth:0.26,bevelEnabled:true,bevelThickness:0.05,bevelSize:0.035,bevelSegments:6,curveSegments:96}); geo.center();
+  g.add(new THREE.Mesh(geo,greenRubber));
+  const hub=cyl(0.24,0.24,0.4,64,chrome); hub.rotation.x=Math.PI/2; g.add(hub);
+  const inner=cyl(0.135,0.135,0.42,48,new THREE.MeshStandardMaterial({color:0x111111})); inner.rotation.x=Math.PI/2; g.add(inner);
+  return g;}
+function shaker(){const g=new THREE.Group();
+  const body=cyl(0.46,0.38,1.45,96,greenPaint); g.add(body);
+  const cap=cyl(0.48,0.48,0.36,96,rubber); cap.position.y=0.9; g.add(cap);
+  const top=cyl(0.36,0.48,0.1,96,rubber); top.position.y=1.13; g.add(top);
+  const sp=cyl(0.09,0.12,0.16,48,rubber); sp.position.set(0.15,1.25,0); g.add(sp);
+  const loop=new THREE.Mesh(new THREE.TorusGeometry(0.16,0.045,16,64),rubber); loop.position.set(-0.28,1.24,0); loop.rotation.y=Math.PI/2; g.add(loop);
+  return g;}
+const MAKERS={dumbbell,kettlebell,plate,shaker};
+const VIEW={dumbbell:[0,0.9,5.9],kettlebell:[0,1.0,5.6],plate:[0,0.3,5.0],shaker:[0,0.8,5.7]};
+let obj=null;
+window.setup=(name)=>{if(obj)scene.remove(obj); obj=MAKERS[name](); scene.add(obj); const v=VIEW[name]; cam.position.set(...v); cam.lookAt(0,name==='shaker'?0.2:0,0);};
+window.shot=(rx,ry,rz)=>{obj.rotation.set(rx,ry,rz); r.render(scene,cam); return r.domElement.toDataURL('image/png');};
+window.ready=true;
+</script></body></html>
