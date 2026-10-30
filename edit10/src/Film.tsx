@@ -55,12 +55,12 @@ const FULL: Rect = {x: 0, y: 0, w: 1080, h: 1920, r: 0, o: 1, z: 1.04};
 const CLOSE: Rect = {x: 0, y: 0, w: 1080, h: 1920, r: 0, o: 1, z: 1.18};
 const FRAME: Rect = {x: 120, y: 700, w: 840, h: 1020, r: 46, o: 1, z: 1.06};
 const SPLIT: Rect = {x: 70, y: 1010, w: 940, h: 760, r: 42, o: 1, z: 1.16};
+const INTRO: Rect = {x: 0, y: 0, w: 1080, h: 1920, r: 0, o: 0, z: 1.04};
 const GONE: Rect = {x: 390, y: 1560, w: 300, h: 300, r: 150, o: 0, z: 1.1};
-type Mode = 'full' | 'close' | 'frame' | 'split' | 'gone';
-const RECTS: Record<Mode, Rect> = {full: FULL, close: CLOSE, frame: FRAME, split: SPLIT, gone: GONE};
+type Mode = 'intro' | 'full' | 'close' | 'frame' | 'split' | 'gone';
+const RECTS: Record<Mode, Rect> = {intro: INTRO, full: FULL, close: CLOSE, frame: FRAME, split: SPLIT, gone: GONE};
 const LAYOUT: {at: number; m: Mode}[] = [
-  {at: 0, m: 'full'},
-  {at: W(4) - 0.1, m: 'frame'}, // "ki is Diwali… surprise gift"
+  {at: 0, m: 'intro'}, // cut-out Deepak over a live animated background
   {at: W(21) - 0.12, m: 'split'}, // the five products
   {at: W(48) - 0.12, m: 'gone'}, // CoinDCX x Deepak: bumper giveaway
   {at: W(60) - 0.12, m: 'close'}, // "Aur sun lijiye…"
@@ -90,7 +90,7 @@ const Speaker: React.FC<{t: number}> = ({t}) => {
   return (
     <div style={{position: 'absolute', left: R.x, top: R.y, width: R.w, height: R.h, borderRadius: R.r, overflow: 'hidden', opacity: R.o, boxShadow: framed ? '0 40px 90px rgba(0,0,0,0.6)' : 'none', background: '#000'}}>
       <div style={{position: 'absolute', inset: 0, transform: `scale(${R.z + drift})`, transformOrigin: '50% 34%'}}>
-        <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 36%', filter: 'contrast(1.08) saturate(1.05) brightness(0.97)'}} />
+        <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 47%', filter: 'contrast(1.08) saturate(1.05) brightness(0.97)'}} />
       </div>
       <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.35), transparent 22%, transparent 62%, rgba(0,0,0,0.6))'}} />
     </div>
@@ -159,7 +159,7 @@ const CHUNKS: Chunk[] = (() => {
   WORDS.forEach((w, i) => {
     cur.push(w);
     const nx = WORDS[i + 1];
-    if (/[.,?!]$/.test(w.w) || cur.length >= 5 || !nx || nx.s - w.e > 0.3) {
+    if (/[.,?!]$/.test(w.w) || cur.length >= 3 || !nx || nx.s - w.e > 0.3) {
       out.push({words: cur, s: cur[0].s, e: 0});
       cur = [];
     }
@@ -169,13 +169,16 @@ const CHUNKS: Chunk[] = (() => {
 })();
 const Captions: React.FC<{t: number}> = ({t}) => {
   const m = modeNow(t);
-  if (m === 'gone' || t < W(4) - 0.1) return null;
+  if (m === 'gone' || m === 'intro') return null;
   const c = CHUNKS.find((x) => t >= x.s - 0.04 && t < x.e);
   if (!c) return null;
+  const len = c.words.map((w) => w.w).join(' ').length;
+  const fit = Math.min(1, 19 / Math.max(1, len));
   const R = rectAt(t);
-  const y = m === 'full' || m === 'close' ? 1260 : R.y + R.h - 230;
+  // sits under his chin, centred on the card, never over the mouth
+  const y = m === 'full' || m === 'close' ? 1450 : R.y + R.h - 165;
   return (
-    <div style={{position: 'absolute', left: Math.max(60, R.x + 30), right: Math.max(60, 1080 - R.x - R.w + 30), top: y, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', columnGap: 14, rowGap: 0}}>
+    <div style={{position: 'absolute', left: 40, right: 40, top: y, display: 'flex', justifyContent: 'center', alignItems: 'baseline', flexWrap: 'nowrap', columnGap: 34}}>
       {c.words.map((w, i) => {
         const k = key(w.w);
         const serif = SERIF_W.has(k);
@@ -187,14 +190,16 @@ const Captions: React.FC<{t: number}> = ({t}) => {
             style={{
               fontFamily: serif ? SERIF : SANS,
               fontStyle: serif ? 'italic' : 'normal',
+              paddingRight: serif ? '0.12em' : 0,
               fontWeight: serif ? 400 : 800,
-              fontSize: serif ? 76 : 58,
+              fontSize: (serif ? 96 : 72) * Math.max(0.72, fit),
+              whiteSpace: 'nowrap',
               letterSpacing: serif ? '0' : '-0.02em',
               lineHeight: 1.12,
               display: 'inline-block',
-              ...(GOLD_W.has(k) ? goldText : {color: on ? '#FFFFFF' : 'rgba(255,255,255,0.86)'}),
+              ...(GOLD_W.has(k) || on ? goldText : {color: '#FFFFFF'}),
               opacity: p,
-              transform: `translateY(${(1 - p) * 18}px) scale(${on ? 1.05 : 1})`,
+              transform: `translateY(${(1 - p) * 18}px) scale(${(on ? 1.1 : 1) * lerp(1.35, 1, p)})`,
               filter: `drop-shadow(0 4px 14px rgba(0,0,0,0.85))${p < 1 ? ` blur(${(1 - p) * 6}px)` : ''}`,
             }}
           >
@@ -208,55 +213,6 @@ const Captions: React.FC<{t: number}> = ({t}) => {
 
 // ---------------------------------------------------------------- graphic layers (keyed to his words)
 const win = (t: number, a: number, b: number, fi = 0.25, fo = 0.25) => ap(t, a, fi) * (1 - pt(t, b - fo, b, ease.in));
-
-/** Hook: "Ek sawaal hai dosto," big question over the full-frame shot. */
-const Hook: React.FC<{t: number}> = ({t}) => {
-  const b = W(4) - 0.05;
-  if (t > b) return null;
-  const v = 1 - pt(t, b - 0.2, b, ease.in);
-  const q = sp(t, W(1) - 0.05, 360, 12);
-  return (
-    <div style={{position: 'absolute', left: 0, right: 0, top: 260, textAlign: 'center', opacity: v}}>
-      <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 40, letterSpacing: '0.35em', paddingLeft: '0.35em', color: C.gold, opacity: ap(t, 0.2)}}>DIWALI SPECIAL</div>
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 10}}>
-        <span style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 170, ...goldText, transform: `scale(${lerp(1.4, 1, m1(q))})`, opacity: m1(q * 2), display: 'inline-block', filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.6))'}}>Ek sawaal</span>
-        <Ico n="red_question_mark.png" size={150} style={{transform: `rotate(${12 + Math.sin(t * 3) * 6}deg) scale(${m1(sp(t, W(2) - 0.05, 380, 12))})`}} />
-      </div>
-    </div>
-  );
-};
-
-/** "ki is Diwali… surprise gift… kya choose karenge?" above the framed card. */
-const GiftIntro: React.FC<{t: number}> = ({t}) => {
-  const a = W(4) - 0.1, b = W(21) - 0.12;
-  if (t < a || t > b) return null;
-  const v = win(t, a, b);
-  const gift = sp(t, W(11) - 0.08, 300, 11);
-  const open = pt(t, W(15), W(19), ease.inOut);
-  return (
-    <div style={{position: 'absolute', inset: 0, opacity: v}}>
-      <DotGrid x={70} y={150} t={t} at={a} />
-      <Bars x={830} y={170} t={t} at={a + 0.1} flip />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 260, textAlign: 'center'}}>
-        <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 62, color: C.cream, opacity: ap(t, W(5) - 0.05)}}>Is Diwali agar</div>
-        <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 150, ...goldText, lineHeight: 1.02, opacity: ap(t, W(11) - 0.05), transform: `translateY(${(1 - ap(t, W(11) - 0.05, 0.4)) * 40}px)`}}>surprise gift</div>
-        <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 62, color: C.cream, opacity: ap(t, W(13) - 0.05)}}>mil jaaye…</div>
-      </div>
-      {/* the gift box pops on the card's top-right corner and shakes as if about to open */}
-      <div style={{position: 'absolute', left: 760, top: 600, transform: `scale(${m1(gift)}) rotate(${Math.sin(t * 22) * 6 * open}deg)`}}>
-        <Ico n="wrapped_gift.png" size={240} />
-        {open > 0.6 && Array.from({length: 10}, (_, i) => {
-          const u = pt(t, W(19), W(19) + 0.7, ease.out);
-          const ang = -Math.PI / 2 + (i - 4.5) * 0.28;
-          return <div key={i} style={{position: 'absolute', left: 120 + Math.cos(ang) * 180 * u, top: 60 + Math.sin(ang) * 220 * u, width: 10, height: 26, borderRadius: 4, background: i % 2 ? C.gold : C.cream, opacity: 1 - u, transform: `rotate(${i * 40}deg)`}} />;
-        })}
-      </div>
-      <div style={{position: 'absolute', left: 40, top: 1560, transform: `scale(${m1(sp(t, a + 0.3, 260, 14))})`}}>
-        <Ico n="diya_lamp.png" size={170} style={{filter: `drop-shadow(0 0 ${20 + 10 * Math.sin(t * 9)}px rgba(255,160,60,0.8))`}} />
-      </div>
-    </div>
-  );
-};
 
 const PRODUCTS = [
   {n: 'iphone-duo.png', name: 'iPhone Duo', at: 22, w: 560},
@@ -575,6 +531,129 @@ const Poll: React.FC<{t: number}> = ({t}) => {
   );
 };
 
+// ---------------------------------------------------------------- intro: cut-out Deepak, live background, fast kinetic words
+const T_OUT = W(21) - 0.12;
+const CUT_FRAMES = 195;
+const BEAT_S = 60 / 112;
+const PHRASES = [
+  {a: 0, b: 3, big: new Set([1])}, // Ek SAWAAL hai dosto
+  {a: 4, b: 10, big: new Set([6])}, // ki is DIWALI aap logon ko
+  {a: 11, b: 14, big: new Set([11, 12])}, // SURPRISE GIFT mil jaaye
+  {a: 15, b: 20, big: new Set([19])}, // toh aap log kya CHOOSE karenge?
+];
+const ZOOMS = [
+  {at: 0, z: 1.0},
+  {at: W(1) - 0.05, z: 1.1},
+  {at: W(4) - 0.05, z: 1.02},
+  {at: W(6) - 0.05, z: 1.14},
+  {at: W(11) - 0.06, z: 1.26},
+  {at: W(15) - 0.05, z: 1.04},
+  {at: W(19) - 0.05, z: 1.16},
+];
+const HITS = [W(1), W(6), W(11), W(19)];
+
+const Marquee: React.FC<{t: number; y: number; dir: number; text: string; o: number}> = ({t, y, dir, text, o}) => {
+  const x = ((t * 260 * dir) % 1400) - (dir > 0 ? 1400 : 0);
+  return (
+    <div style={{position: 'absolute', left: x, top: y, whiteSpace: 'nowrap', fontFamily: SANS, fontWeight: 900, fontSize: 170, letterSpacing: '-0.04em', color: 'transparent', WebkitTextStroke: '3px rgba(255,138,0,0.55)', opacity: o}}>
+      {Array.from({length: 4}, () => text).join('  ')}
+    </div>
+  );
+};
+
+const Intro: React.FC<{t: number}> = ({t}) => {
+  if (t > T_OUT + 0.45) return null;
+  const out = pt(t, T_OUT - 0.05, T_OUT + 0.4, ease.inOut);
+  const pulse = Math.exp(-(((t % BEAT_S) / BEAT_S) * 6));
+  // camera: punch-in on every phrase, short shake on the hits
+  const zi = ZOOMS.reduce((n, z, i) => (t >= z.at ? i : n), 0);
+  const zk = zi ? m1(sp(t, ZOOMS[zi].at, 420, 26)) : 1;
+  const zoom = lerp(zi ? ZOOMS[zi - 1].z : 1, ZOOMS[zi].z, zk) * lerp(1, 0.5, out);
+  const enter = sp(t, 0, 300, 20);
+  const hit = HITS.reduce((m, h) => Math.max(m, t >= h - 0.06 && t < h + 0.22 ? 1 - (t - h + 0.06) / 0.28 : 0), 0);
+  const shx = Math.sin(t * 95) * 12 * hit, shy = Math.cos(t * 80) * 8 * hit;
+  const fi = Math.min(CUT_FRAMES - 1, Math.floor(t * FPS));
+  const pi = PHRASES.reduce((n, p, i) => (t >= W(p.a) - 0.08 ? i : n), 0);
+  const P = PHRASES[pi];
+  const pin = ap(t, W(P.a) - 0.08, 0.18);
+  const flick = Math.floor(t * 7) % 5; // fast product teaser behind him
+  return (
+    <AbsoluteFill style={{opacity: 1 - out, transform: `translate(${shx}px, ${shy}px)`}}>
+      {/* live background */}
+      <AbsoluteFill style={{background: `radial-gradient(ellipse 80% 55% at 50% 52%, rgba(255,120,0,${0.42 + 0.18 * pulse}) 0%, #2A1204 45%, ${C.bg} 100%)`}} />
+      <AbsoluteFill style={{background: `repeating-conic-gradient(from ${t * 28}deg at 50% 62%, rgba(255,170,60,0.13) 0deg 7deg, transparent 7deg 18deg)`}} />
+      <Marquee t={t} y={300} dir={-1} text="DIWALI BUMPER GIVEAWAY •" o={0.55} />
+      <Marquee t={t + 2} y={520} dir={1} text="27 WINNERS • 5 GIFTS •" o={0.4} />
+      <Marquee t={t + 4} y={740} dir={-1} text="iPHONE • MACBOOK • iPAD • AIRPODS • JBL •" o={0.3} />
+      {PRODUCTS.map((p, i) => {
+        const ang = (i / 5) * Math.PI * 2 + t * 1.1;
+        const x = 540 + Math.cos(ang) * 470, y = 1000 + Math.sin(ang) * 260;
+        const front = i === flick && t > W(15);
+        return <Img key={p.n} src={brand(p.n)} style={{position: 'absolute', left: x - 120, top: y - 100, width: 240, opacity: front ? 0.95 : 0.55, transform: `scale(${front ? 1.25 : 0.85}) rotate(${Math.sin(t * 2 + i) * 10}deg)`, filter: `blur(${front ? 0 : 2}px) drop-shadow(0 20px 30px rgba(0,0,0,0.6))`}} />;
+      })}
+      {Array.from({length: 30}, (_, i) => {
+        const x = rand(i * 7.7) * 1080;
+        const y = 1920 - ((rand(i * 3.3) * 1920 + t * (160 + rand(i) * 260)) % 2000);
+        const r = 4 + rand(i * 2.9) * 8;
+        return <div key={i} style={{position: 'absolute', left: x, top: y, width: r, height: r, borderRadius: r, background: i % 3 ? C.gold : '#FFE2B0', boxShadow: `0 0 ${r * 3}px ${C.gold}`, opacity: 0.7}} />;
+      })}
+      {/* Deepak, background removed */}
+      <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, transformOrigin: '50% 100%', transform: `translateY(${420 + (1 - m1(enter)) * 300}px) scale(${zoom * 1.12})`}}>
+        <Img src={staticFile(`clips/cut/f${String(fi).padStart(4, '0')}.webp`)} style={{width: 1080, height: 1920, filter: 'contrast(1.07) saturate(1.12) drop-shadow(0 0 26px rgba(255,140,0,0.55)) drop-shadow(0 30px 50px rgba(0,0,0,0.6))'}} />
+      </div>
+      <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 380, background: `linear-gradient(180deg, transparent, ${C.bg} 75%)`}} />
+      {/* kinetic words: exactly what he says, word by word */}
+      <div key={pi} style={{position: 'absolute', left: 50, right: 50, top: 190, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', columnGap: 22, rowGap: 0, opacity: pin, transform: `translateX(${(1 - pin) * 120}px)`, filter: pin < 1 ? `blur(${(1 - pin) * 10}px)` : undefined}}>
+        {WORDS.slice(P.a, P.b + 1).map((w) => {
+          const big = P.big.has(w.i);
+          const s2 = sp(t, w.s - 0.06, 460, 17);
+          if (s2 <= 0) return null;
+          return (
+            <span key={w.i} style={{display: 'inline-block', fontFamily: big ? SERIF : SANS, fontStyle: big ? 'italic' : 'normal', fontWeight: big ? 400 : 900, fontSize: big ? 190 : 92, lineHeight: big ? 1.0 : 1.15, letterSpacing: big ? '0' : '-0.03em', textTransform: big ? 'none' : 'uppercase', paddingRight: big ? '0.1em' : 0, ...(big ? goldText : {color: C.cream}), transform: `scale(${lerp(big ? 2.2 : 1.6, 1, m1(s2))})`, opacity: m1(s2 * 3), filter: 'drop-shadow(0 10px 26px rgba(0,0,0,0.7))'}}>
+              {w.w.replace(/[,]/g, '')}
+            </span>
+          );
+        })}
+      </div>
+      {pi === 0 && <Ico n="red_question_mark.png" size={150} style={{position: 'absolute', left: 840, top: 150, transform: `rotate(${14 + Math.sin(t * 6) * 8}deg) scale(${m1(sp(t, W(2) - 0.05, 420, 12))})`}} />}
+      {pi === 1 && <Ico n="diya_lamp.png" size={150} style={{position: 'absolute', left: 60, top: 560, transform: `scale(${m1(sp(t, W(6) - 0.05, 420, 12))})`, filter: `drop-shadow(0 0 ${20 + 14 * pulse}px rgba(255,160,60,0.9))`}} />}
+      {pi === 2 && (
+        <Ico n="wrapped_gift.png" size={230} style={{position: 'absolute', left: 800, top: 560, transform: `scale(${m1(sp(t, W(11) - 0.08, 420, 11))}) rotate(${Math.sin(t * 24) * 8}deg)`}} />
+      )}
+      {pi === 3 && <Ico n="thinking_face.png" size={150} style={{position: 'absolute', left: 70, top: 600, transform: `scale(${m1(sp(t, W(15), 420, 12))}) rotate(-10deg)`}} />}
+      {/* phrase-change flash */}
+      <AbsoluteFill style={{background: '#FFD9A0', opacity: (1 - pt(t, W(P.a) - 0.08, W(P.a) + 0.06)) * (pi ? 0.35 : 0), mixBlendMode: 'screen'}} />
+    </AbsoluteFill>
+  );
+};
+
+/** His name, zoomed in and centred below the mouth: in the intro and whenever his card comes back. */
+const NAME_AT = [0.25, W(21) + 0.15, W(79) + 0.1, W(110) + 0.1];
+const NameTag: React.FC<{t: number}> = ({t}) => {
+  const a = NAME_AT.filter((x) => t >= x).pop();
+  if (a === undefined || t > a + 2.3 || t > edit.speech) return null;
+  const m = modeNow(t);
+  if (m === 'gone') return null;
+  const R = rectAt(t);
+  const s = sp(t, a, 380, 15);
+  const v = m1(s * 2) * (1 - pt(t, a + 1.9, a + 2.3, ease.in));
+  const intro = m === 'intro';
+  const y = intro ? 1600 : R.y + 26;
+  const shine = pt(t, a + 0.15, a + 0.9, ease.inOut);
+  return (
+    <div style={{position: 'absolute', left: intro ? 0 : R.x + 26, right: intro ? 0 : undefined, top: y, display: 'flex', justifyContent: 'center', opacity: v, transformOrigin: intro ? '50% 50%' : '0 50%', transform: `scale(${lerp(1.9, 1, m1(s))})`}}>
+      <div style={{position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', gap: 16, padding: intro ? '18px 40px' : '12px 30px', borderRadius: 999, background: GOLD_GRAD, boxShadow: '0 18px 50px rgba(255,120,0,0.45), 0 10px 30px rgba(0,0,0,0.6)'}}>
+        <span style={{fontFamily: SANS, fontWeight: 900, fontSize: intro ? 70 : 46, letterSpacing: '-0.02em', color: C.ink, whiteSpace: 'nowrap'}}>Deepak Wadhwa</span>
+        <svg width={intro ? 50 : 36} height={intro ? 50 : 36} viewBox="0 0 40 40">
+          <path d="M20 2l4.2 3.1 5.2-.3 1.7 4.9 4.4 2.8-1.2 5.1 2.1 4.8-3.6 3.8-.4 5.2-5.1 1.3-3 4.3-4.9-1.8-4.9 1.8-3-4.3-5.1-1.3-.4-5.2L2.4 22.4l2.1-4.8-1.2-5.1 4.4-2.8 1.7-4.9 5.2.3z" fill={C.ink} />
+          <path d="M13 20.5l4.6 4.6L27.5 15" fill="none" stroke={C.gold} strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <div style={{position: 'absolute', inset: 0, background: `linear-gradient(100deg, transparent ${shine * 140 - 30}%, rgba(255,255,255,0.7) ${shine * 140 - 15}%, transparent ${shine * 140}%)`}} />
+      </div>
+    </div>
+  );
+};
+
 const EndCard: React.FC<{t: number}> = ({t}) => {
   const a = edit.speech;
   if (t < a - 0.25) return null;
@@ -625,8 +704,8 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
       <Backdrop t={t} />
       <Speaker t={t} />
       <Brackets t={t} />
-      <Hook t={t} />
-      <GiftIntro t={t} />
+      <Intro t={t} />
+      <NameTag t={t} />
       <Products t={t} />
       <Bumper t={t} />
       <Counter t={t} />
