@@ -1,0 +1,27 @@
+# Each phrase: list of (caption word, Devanagari spoken form). One line = one page of the notebook.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Agar|अगर hum|हम aapke|आपके coaching|कोचिंग institute|इंस्टिट्यूट ya|या school|स्कूल ki|की admissions|एडमिशन्स aur|और WhatsApp|व्हाट्सऐप enquiries|एन्क्वायरीज़ handle|हैंडल karte,|करते,"),
+   P("toh|तो sirf|सिर्फ़ Instagram|इंस्टाग्राम par|पर result|रिज़ल्ट posters|पोस्टर्स nahi|नहीं daalte.|डालते।")],
+  [P("Hum|हम har|हर parent|पेरेंट ka|का bharosa|भरोसा jeette.|जीतते।"),
+   P("Dekho|देखो kaise.|कैसे।")],
+  [P("Raat|रात 9|नौ baje,|बजे, Sharma|शर्मा ji|जी ne|ने Google|गूगल Maps|मैप्स par|पर aapka|आपका institute|इंस्टिट्यूट dekha,|देखा,"),
+   P("aur|और WhatsApp|व्हाट्सऐप kiya,|किया,"),
+   P("Class|क्लास 10|दस ki|की fees|फ़ीस aur|और batch|बैच timing|टाइमिंग kya|क्या hai?|है?")],
+  [P("Turant|तुरंत AI|ए_आई ne|ने fees,|फ़ीस, batch|बैच timings|टाइमिंग्स aur|और faculty|फ़ैकल्टी ki|की details|डिटेल्स bheji,|भेजीं,"),
+   P("aur|और Saturday|सैटरडे ki|की free|फ़्री demo|डेमो class|क्लास book|बुक kar|कर di.|दी।")],
+  [P("Demo|डेमो ke|के baad|बाद Aarav|आरव ka|का admission|एडमिशन ho|हो gaya.|गया।"),
+   P("Fees|फ़ीस teen|तीन installments|इंस्टॉलमेंट्स mein,|में,"),
+   P("aur|और har|हर installment|इंस्टॉलमेंट se|से pehle|पहले automatic|ऑटोमैटिक reminder.|रिमाइंडर।")],
+  [P("Ek|एक din|दिन Aarav|आरव class|क्लास nahi|नहीं aaya?|आया?"),
+   P("Das|दस minute|मिनट mein|में Sharma|शर्मा ji|जी ko|को WhatsApp|व्हाट्सऐप par|पर absent|एब्सेंट alert|अलर्ट chala|चला gaya.|गया।")],
+  [P("Har|हर test|टेस्ट ke|के baad,|बाद, marks|मार्क्स aur|और progress|प्रोग्रेस report|रिपोर्ट seedha|सीधा parents|पेरेंट्स ke|के WhatsApp|व्हाट्सऐप par.|पर।")],
+  [P("Sharma|शर्मा ji|जी itne|इतने khush|ख़ुश hue,|हुए,"),
+   P("ki|कि do|दो aur|और parents|पेरेंट्स ko|को aapke|आपके institute|इंस्टिट्यूट ka|का number|नंबर de|दे diya.|दिया।")],
+  [P("Kyunki|क्योंकि education|एजुकेशन mein,|में,"),
+   P("admissions|एडमिशन्स ads|ऐड्स se|से nahi,|नहीं,"),
+   P("parents|पेरेंट्स ke|के bharose|भरोसे se|से badhte|बढ़ते hain.|हैं।")],
+  [P("Aapke|आपके institute|इंस्टिट्यूट ki|की sabse|सबसे badi|बड़ी problem|प्रॉब्लम kya|क्या hai?|है?"),
+   P("Comment|कमेंट karo|करो \"WhatsApp\",|व्हाट्सऐप,"),
+   P("saari|सारी details|डिटेल्स aapko|आपको DM|डी_एम kar|कर dunga!|दूंगा।")],
+]
