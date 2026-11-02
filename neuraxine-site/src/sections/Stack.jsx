@@ -18,7 +18,7 @@ export default function Stack() {
         </ul>
       </div>
       <div className="orbit" aria-hidden="true">
-        <div className="orbit__core"><img src="/brand/logo.svg" alt="" /></div>
+        <div className="orbit__core"><img src={`${import.meta.env.BASE_URL}brand/logo.svg`} alt="" /></div>
         {[inner, outer].map((ring, r) => (
           <div key={r} className={`orbit__ring r${r}`} style={{ '--n': ring.length }}>
             {ring.map(([label, icon], i) => (

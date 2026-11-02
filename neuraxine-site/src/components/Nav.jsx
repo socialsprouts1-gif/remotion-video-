@@ -23,7 +23,7 @@ export default function Nav() {
   return (
     <header className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
       <button className="nav__logo" onClick={() => scrollTo(0)} aria-label="Neuraxine, back to top">
-        <img src="/brand/logo.svg" alt="" width="34" height="22" />
+        <img src={`${import.meta.env.BASE_URL}brand/logo.svg`} alt="" width="34" height="22" />
         <span>Neuraxine</span>
       </button>
       <nav className="nav__links" aria-label="Primary">

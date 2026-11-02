@@ -28,7 +28,7 @@ export default function Loader({ onDone }) {
       {visible && (
         <motion.div className="loader" exit={{ clipPath: 'inset(0% 0% 100% 0%)' }} initial={{ clipPath: 'inset(0% 0% 0% 0%)' }} transition={{ duration: 1, ease }}>
           <motion.img
-            src="/brand/logo.svg"
+            src={`${import.meta.env.BASE_URL}brand/logo.svg`}
             alt="Neuraxine"
             className="loader__logo"
             initial={{ opacity: 0, scale: 0.92, filter: 'blur(8px)' }}

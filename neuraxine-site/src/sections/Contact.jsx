@@ -90,7 +90,7 @@ export default function Contact() {
       </form>
       <footer className="footer">
         <div className="footer__top">
-          <img src="/brand/logo.svg" alt="Neuraxine" className="footer__logo" />
+          <img src={`${import.meta.env.BASE_URL}brand/logo.svg`} alt="Neuraxine" className="footer__logo" />
           <p className="muted">AI agents, WhatsApp automation and n8n workflows for growing businesses. Made in {site.country}.</p>
         </div>
         <div className="footer__row">
