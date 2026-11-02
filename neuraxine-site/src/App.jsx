@@ -4,6 +4,7 @@ import { store } from './store'
 import Loader from './components/Loader'
 import Nav from './components/Nav'
 import Cursor from './components/Cursor'
+import WhatsAppFab from './components/WhatsAppFab'
 import Hero from './sections/Hero'
 import Journey from './sections/Journey'
 import Demos from './sections/Demos'
@@ -43,6 +44,7 @@ export default function App() {
       <div className="grain" aria-hidden="true" />
       <Cursor />
       <Nav />
+      <WhatsAppFab show={loaded} />
       <main className={loaded ? 'is-loaded' : ''}>
         <Hero />
         <Journey />

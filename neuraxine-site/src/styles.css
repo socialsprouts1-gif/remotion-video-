@@ -528,3 +528,18 @@ input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius
   .grain, .orbit__ring, .orbit__item > span, .marquee__track, .hero__title .serif { animation: none !important; }
   .hero__title .line > span { transition: none; }
 }
+
+/* ── floating WhatsApp button ── */
+.wa-fab { position: fixed; right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 70; display: flex; align-items: center; gap: 12px; text-decoration: none;
+  opacity: 0; transform: translateY(20px) scale(0.9); transition: opacity .6s var(--ease-out) .4s, transform .6s var(--ease-out) .4s; }
+.wa-fab.is-in { opacity: 1; transform: none; }
+.wa-fab__btn { position: relative; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; background: #25d366;
+  box-shadow: 0 12px 30px -8px rgba(37,211,102,0.6), 0 4px 12px rgba(0,0,0,0.4); transition: transform .3s var(--ease-out); }
+.wa-fab__btn::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25d366; z-index: -1; animation: wa-ping 2.4s var(--ease-out) infinite; }
+.wa-fab:hover .wa-fab__btn { transform: scale(1.07); }
+.wa-fab__label { padding: 9px 14px; border-radius: 999px; background: #fff; color: #0b141a; font-size: 14px; font-weight: 600; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  opacity: 0; transform: translateX(10px); transition: opacity .3s, transform .3s var(--ease-out); pointer-events: none; }
+.wa-fab:hover .wa-fab__label, .wa-fab:focus-visible .wa-fab__label { opacity: 1; transform: none; }
+@keyframes wa-ping { 0% { transform: scale(1); opacity: 0.5 } 80%, 100% { transform: scale(1.6); opacity: 0 } }
+@media (max-width: 720px) { .wa-fab__btn { width: 54px; height: 54px; } .wa-fab__label { display: none; } }
+@media (prefers-reduced-motion: reduce) { .wa-fab__btn::before { animation: none; } }

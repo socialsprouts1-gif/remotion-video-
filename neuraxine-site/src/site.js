@@ -13,6 +13,9 @@ export const site = {
     primary: 'Book a free automation audit',
     secondary: 'Watch it work',
   },
+  // WhatsApp for the floating chat button (country code + number, digits only).
+  whatsapp: '918237982569',
+  whatsappMessage: 'Hi Neuraxine, I want to automate my business. Can we talk?',
   // API base. Same origin by default (server/index.js serves both).
   api: import.meta.env?.VITE_API_URL || '',
 }
