@@ -1,38 +1,50 @@
-# Neuraxine: "The Living Workflow" site
+# Neuraxine website
 
-The agency site for Neuraxine. A 3D workflow network sits behind the page. As you scroll, one customer message travels through it: WhatsApp → AI agent → CRM → calendar → follow-up → report. Each service then has a **live demo** that runs entirely in the browser.
+The Neuraxine agency site. The hero shows a 3D version of the Neuraxine logo, traced from the original artwork and extruded in chrome and lime. As you scroll, a workflow network takes over: one customer message travels WhatsApp → AI agent → CRM → calendar → follow-up → report. Each service then has a **live demo connected to a real backend**.
 
 ![Hero](docs/preview-hero.png)
 
-## Run
+## Run it
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # static output in dist/
+npm run build
+npm run server          # site + API on http://localhost:8787
 ```
 
-## Sections
+For development, run `npm run server` in one terminal and `npm run dev` in another. Vite (http://localhost:5173) proxies `/api` to the server.
 
-| Section | What it does |
-|---|---|
-| Hero | Boot-sequence loader, then the network floats in. Big headline and a magnetic CTA |
-| How it works | Sticky, 600vh. The camera follows a glowing packet node by node; a card shows what happens at each step (chat, intent JSON, CRM row, booked slot, reminder, daily summary) |
-| Live demos | **WhatsApp AI agent:** pick a business type and chat (buttons or free text); an automation log shows CRM, calendar, payment and reminder events. **n8n workflow:** run three templates node by node and inspect each node's output. **Lead-gen agent:** choose a niche and city; the agent streams scored leads and drafts a first message. **Custom SaaS:** a gym admin with KPIs, a check-ins chart, member search and one-click WhatsApp renewal reminders |
-| ROI calculator | Sliders produce an estimate of hours and staff cost saved per month |
-| Process | Audit → Blueprint → Build → Launch, with a line that draws as you scroll |
-| Integrations | Two counter-rotating orbits of tools around a core |
-| Builds | Things Neuraxine has actually built (no invented metrics) |
-| Contact | Free-audit form and footer |
+```bash
+npm test                # 15 API tests (vitest + supertest)
+```
 
-## Before going live
+## Backend (`server/`)
 
-- **Copy and services:** edit `src/site.js`. The current copy was written without access to neuraxine.com, so replace anything that doesn't match how you describe your work.
-- **Contact form:** set `formEndpoint` in `src/site.js` to an n8n webhook, Formspree or similar URL. Until then the form tells visitors it isn't connected, instead of pretending the request was sent.
-- **Demo data:** businesses, prices and numbers in `src/demos/data.js` are fictional and labelled "sample" on screen. Change the industries, flows and workflow templates there.
+An Express app that serves the built site and the API from one port, so it deploys anywhere Node runs (Render, Railway, a VPS).
 
-## Stack
+| Endpoint | What it does | Real service it uses when configured |
+|---|---|---|
+| `GET /api/health` | Live status used by the nav's "All systems operational" pill and the demo badges | — |
+| `POST /api/contact` | Validates the audit form, rate-limits, saves to `data/contacts.jsonl`, forwards the lead | n8n webhook (`N8N_WEBHOOK_URL`), email via Resend (`RESEND_API_KEY`, `LEAD_EMAIL_TO`) |
+| `POST /api/agent/chat` | WhatsApp agent replies, quick replies and the "behind the scenes" events | Claude (`ANTHROPIC_API_KEY`), using structured JSON output |
+| `POST /api/leads/search` | Finds and scores businesses, then drafts a first message | Google Places API (New) (`GOOGLE_PLACES_API_KEY`) + Claude for drafts |
+| `POST /api/workflow/run` | Executes the workflow server-side with real per-node timings, stores rows, posts steps to n8n | Claude for lead scoring, n8n webhook |
 
-React 19 · React Three Fiber · GSAP ScrollTrigger · Lenis · Framer Motion · Vite. The scroll engine (section coordinate, smooth scroll, reveals, magnetic buttons, cursor) is shared with `../brand-site`. The 3D scene lives in `src/three/Network.jsx`: path, nodes, the flowing-dash shader, packet and trail, and the camera rig that moves through hero, journey and backdrop modes. Each demo is lazy-loaded.
+Every key is optional; see `.env.example`. Without a key, that feature falls back to a built-in engine and the UI badge says so ("Scripted demo", "Sample data"). If a Claude request fails or the model declines, the agent falls back to the scripted reply instead of erroring. If the API can't be reached at all (static hosting), the demos run in the browser and show "Offline demo".
 
-![Scroll states](docs/preview-scroll.png)
+## What's real on the page
+
+- **Logo:** `public/brand/logo.svg` is a vector trace of the supplied logo. The 3D version is built from the same paths (`src/three/logoPaths.json`).
+- **Icons:** official brand marks from Simple Icons (CC0) and the Lucide icon set. OpenAI and Slack aren't included because Simple Icons removed them at those companies' request.
+- **Demos:** real UI in device frames (an iPhone-style phone with WhatsApp's dark theme, browser windows), backed by the API above.
+- **Photos:** none yet. Add your own team or client photos to `public/images/`; real photos of your work will beat stock.
+
+## Edit content
+
+- Copy, services, process, builds and integrations: `src/site.js`
+- Demo businesses, workflows and lead categories: `src/demos/data.js`
+- Scripted agent and lead drafts: `src/demos/engine.js` (shared by browser and server)
+
+| WhatsApp agent | n8n workflow | Lead-gen agent |
+|---|---|---|
+| ![](docs/demo-whatsapp.png) | ![](docs/demo-workflow.png) | ![](docs/demo-leads.png) |

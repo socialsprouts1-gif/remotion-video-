@@ -41,7 +41,6 @@ export default function App() {
         </Suspense>
       </div>
       <div className="grain" aria-hidden="true" />
-      <div className="scan" aria-hidden="true" />
       <Cursor />
       <Nav />
       <main className={loaded ? 'is-loaded' : ''}>

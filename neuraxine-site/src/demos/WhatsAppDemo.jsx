@@ -1,128 +1,91 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { industries, days, slots, rupees } from './data'
+import { Send, ChevronLeft, Video, Phone as PhoneIcon } from 'lucide-react'
+import { industries } from './data'
+import { scriptedTurn, greeting } from './engine'
+import { api } from '../lib/api'
+import { Phone, ModeBadge } from '../components/Devices'
 
-const now = () => new Date().toTimeString().slice(0, 8)
+const now = () => new Date().toTimeString().slice(0, 5)
+const LOG_LABELS = {
+  intent_detected: 'Intent detected',
+  availability_checked: 'Calendar checked',
+  lead_created: 'Lead saved to CRM',
+  slot_booked: 'Appointment booked',
+  payment_link: 'Payment link sent',
+  reminder_scheduled: 'Reminders scheduled',
+  faq_answered: 'FAQ answered',
+  handoff_human: 'Handed to a human',
+}
 
-// A scripted WhatsApp agent that runs entirely in the browser.
-export default function WhatsAppDemo() {
+// WhatsApp agent. Talks to /api/agent/chat (Claude when the server has a key);
+// falls back to the same scripted engine in the browser if the API is unreachable.
+export default function WhatsAppDemo({ health }) {
   const [key, setKey] = useState('salon')
   const [msgs, setMsgs] = useState([])
   const [options, setOptions] = useState([])
   const [typing, setTyping] = useState(false)
   const [log, setLog] = useState([])
   const [text, setText] = useState('')
-  const ctx = useRef({})
+  const [mode, setMode] = useState('scripted')
+  const state = useRef({})
+  const history = useRef([])
   const run = useRef(0)
   const body = useRef(null)
   const ind = industries[key]
 
-  const addLog = (event, detail = '') => setLog((l) => [...l.slice(-7), { t: now(), event, detail }])
-
-  // Bot replies arrive one by one with a typing indicator.
-  const say = useCallback((lines, nextOptions) => {
-    const id = run.current
-    setOptions([])
-    let delay = 250
-    lines.forEach((line, i) => {
+  const deliver = useCallback((turn, id) => {
+    let delay = 300
+    turn.replies.forEach((line, i) => {
       setTimeout(() => id === run.current && setTyping(true), delay)
-      delay += Math.min(1400, 550 + line.length * 14)
+      delay += Math.min(1300, 500 + line.length * 12)
       setTimeout(() => {
         if (id !== run.current) return
         setTyping(false)
-        setMsgs((m) => [...m, { from: 'bot', text: line }])
-        if (i === lines.length - 1) setOptions(nextOptions)
+        setMsgs((m) => [...m, { from: 'bot', text: line, t: now() }])
+        history.current.push({ role: 'assistant', text: line })
+        if (i === turn.replies.length - 1) setOptions(turn.quick_replies || [])
       }, delay)
-      delay += 180
+      delay += 160
     })
+    if (turn.actions?.length) setLog((l) => [...l, ...turn.actions.map((a) => ({ ...a, t: now() }))].slice(-8))
   }, [])
 
-  const node = useCallback(
-    (name, value) => {
-      const c = ctx.current
-      const home = [`Book ${ind.noun}`, 'Prices', 'Location & timings']
-      switch (name) {
-        case 'start':
-          return say([ind.greeting], home)
-        case 'book':
-          addLog('intent.detected', `book_${ind.noun.replace(' ', '_')}`)
-          return say([`Zaroor! Kaunsi service ke liye?`], ind.services.map((s) => s[0]))
-        case 'day':
-          c.service = ind.services.find((s) => s[0] === value)
-          return say([`${c.service[0]} ke liye kaunsa din theek rahega?`], days)
-        case 'slot':
-          c.day = value
-          addLog('calendar.availability', `${value}: ${slots.length} free slots`)
-          return say([`${value} ke available slots:`], slots)
-        case 'confirm': {
-          c.slot = value
-          const price = c.service[1]
-          addLog('crm.lead.created', `${c.service[0]} · source: WhatsApp`)
-          addLog('calendar.booked', `${c.day} ${value}`)
-          if (price > 0) addLog('payment.link.sent', rupees(price))
-          addLog('reminder.scheduled', '-24h and -2h')
-          return say(
-            [
-              `Done! Aapka ${ind.noun} book ho gaya: ${c.service[0]}, ${c.day} ${value}.`,
-              price > 0 ? `Advance pay karne ke liye link: pay.example/${key}-${Math.floor(Math.random() * 9000 + 1000)} (${rupees(price)})` : 'Koi charge nahi hai. Bas time pe aa jaiye.',
-              'Ek din pehle reminder bhej denge. Kuch aur?',
-            ],
-            ['Prices', 'Location & timings', 'Start over'],
-          )
-        }
-        case 'prices':
-          addLog('faq.answered', 'prices')
-          return say([ind.services.map((s) => `• ${s[0]}: ${rupees(s[1])}`).join('\n')], [`Book ${ind.noun}`, 'Location & timings'])
-        case 'location':
-          addLog('faq.answered', 'location')
-          return say([ind.location], [`Book ${ind.noun}`, 'Prices'])
-        default:
-          addLog('handoff.human', 'notified team on WhatsApp')
-          return say(['Iska sahi answer main team se confirm karke thodi der mein bhejti hoon.'], home)
-      }
-    },
-    [ind, key, say],
-  )
-
   const reset = useCallback(() => {
-    run.current++
-    ctx.current = {}
+    const id = ++run.current
+    state.current = {}
+    history.current = []
     setMsgs([])
-    setLog([{ t: now(), event: 'agent.online', detail: ind.business }])
-    setTyping(false)
-    node('start')
-  }, [ind, node])
+    setOptions([])
+    setLog([{ type: 'online', detail: ind.business, t: now() }])
+    deliver(greeting(key), id)
+  }, [key, ind, deliver])
 
   useEffect(reset, [key]) // eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => {
     if (body.current) body.current.scrollTop = body.current.scrollHeight
   }, [msgs, typing, options])
 
-  const choose = (label) => {
-    setMsgs((m) => [...m, { from: 'me', text: label }])
-    addLog('message.received', `"${label}"`)
-    if (label === 'Start over') return reset()
-    if (label.startsWith('Book')) return node('book')
-    if (label === 'Prices') return node('prices')
-    if (label.startsWith('Location')) return node('location')
-    if (ind.services.some((s) => s[0] === label)) return node('day', label)
-    if (days.includes(label)) return node('slot', label)
-    if (slots.includes(label)) return node('confirm', label)
-    return node('human')
-  }
-
-  const submit = (e) => {
-    e.preventDefault()
-    const t = text.trim()
+  const send = async (raw) => {
+    const t = raw.trim()
     if (!t) return
-    setText('')
-    setMsgs((m) => [...m, { from: 'me', text: t }])
-    addLog('message.received', `"${t.slice(0, 28)}"`)
-    const s = t.toLowerCase()
-    if (/book|slot|appointment|visit|trial|kal|aaj|time/.test(s)) return node('book')
-    if (/price|rate|kitna|cost|fees|charge/.test(s)) return node('prices')
-    if (/where|location|address|kahan|timing|open/.test(s)) return node('location')
-    return node('human')
+    const id = run.current
+    setOptions([])
+    setMsgs((m) => [...m, { from: 'me', text: t, t: now() }])
+    if (t === 'Start over') return reset()
+    history.current.push({ role: 'user', text: t })
+    setTyping(true)
+    let turn
+    try {
+      turn = await api('/api/agent/chat', { industry: key, messages: history.current.slice(-20), state: state.current })
+      setMode(turn.mode)
+    } catch {
+      turn = scriptedTurn(key, t, state.current)
+      setMode('offline')
+    }
+    if (id !== run.current) return
+    setTyping(false)
+    state.current = turn.state || {}
+    deliver(turn, id)
   }
 
   return (
@@ -135,46 +98,66 @@ export default function WhatsAppDemo() {
             </button>
           ))}
         </div>
+        <ModeBadge live={mode === 'ai' || (mode !== 'offline' && health?.services?.ai)} liveText="Live AI · Claude" offText={mode === 'offline' ? 'Offline demo' : 'Scripted demo'} />
       </div>
       <div className="demo-wa__grid">
-        <div className="phone">
-          <div className="phone__head">
-            <span className="avatar">{ind.business[0]}</span>
-            <div>
-              <b>{ind.business}</b>
-              <small>{typing ? 'typing…' : 'online · AI assistant'}</small>
-            </div>
-          </div>
-          <div className="phone__body" ref={body} data-lenis-prevent>
-            {msgs.map((m, i) => (
-              <div key={i} className={`bubble ${m.from === 'me' ? 'out' : 'in'}`}>{m.text}</div>
-            ))}
-            {typing && <div className="typing"><i /><i /><i /></div>}
-            {!!options.length && (
-              <div className="quick">
-                {options.map((o) => (
-                  <button key={o} onClick={() => choose(o)}>{o}</button>
-                ))}
+        <Phone>
+          <div className="wa">
+            <div className="wa__head">
+              <ChevronLeft size={22} />
+              <span className="wa__avatar">{ind.business[0]}</span>
+              <div className="wa__who">
+                <b>{ind.business}</b>
+                <small>{typing ? 'typing…' : 'Business account'}</small>
               </div>
-            )}
+              <Video size={19} />
+              <PhoneIcon size={17} />
+            </div>
+            <div className="wa__body" ref={body} data-lenis-prevent>
+              <span className="wa__day">Today</span>
+              {msgs.map((m, i) => (
+                <div key={i} className={`wa-msg ${m.from === 'me' ? 'out' : 'in'}`}>
+                  {m.text}
+                  <time>{m.t}{m.from === 'me' && <span className="ticks">✓✓</span>}</time>
+                </div>
+              ))}
+              {typing && <div className="wa-typing"><i /><i /><i /></div>}
+              {!!options.length && (
+                <div className="wa-quick">
+                  {options.map((o) => (
+                    <button key={o} onClick={() => send(o)}>{o}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <form
+              className="wa__input"
+              onSubmit={(e) => {
+                e.preventDefault()
+                send(text)
+                setText('')
+              }}
+            >
+              <input id="wa-input" value={text} onChange={(e) => setText(e.target.value)} placeholder="Message" aria-label="Type a message" />
+              <button aria-label="Send"><Send size={17} /></button>
+            </form>
           </div>
-          <form className="phone__input" onSubmit={submit}>
-            <input id="wa-input" value={text} onChange={(e) => setText(e.target.value)} placeholder="Type a message… try “price kitna hai?”" />
-            <button aria-label="Send">➤</button>
-          </form>
-        </div>
+        </Phone>
         <div className="log">
-          <div className="log__head mono"><i />Automation log</div>
+          <div className="log__head">Behind the scenes</div>
           <ol data-lenis-prevent>
             {log.map((l, i) => (
-              <li key={i} className="mono">
-                <span>{l.t}</span>
-                <b>{l.event}</b>
-                <em>{l.detail}</em>
+              <li key={i}>
+                <span className="log__dot" />
+                <div>
+                  <b>{l.type === 'online' ? 'Agent online' : LOG_LABELS[l.type] || l.type}</b>
+                  <em>{l.detail}</em>
+                </div>
+                <time>{l.t}</time>
               </li>
             ))}
           </ol>
-          <p className="log__note">Sample business. In production this runs on the official WhatsApp Business API and writes to your CRM, calendar and payment gateway.</p>
+          <p className="note">Try typing your own question, like “price kitna hai?” or “kal 6 baje free ho?”. Sample business; in production this runs on the official WhatsApp Business API.</p>
         </div>
       </div>
     </div>

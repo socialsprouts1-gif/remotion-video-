@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { members, checkins, checkinHours } from './data'
+import { Browser, ModeBadge } from '../components/Devices'
 
 const TABS = ['Overview', 'Members', 'Renewals']
 
@@ -19,7 +20,13 @@ export default function SaasDemo() {
   const sentCount = Object.values(sent).filter((v) => v === 'sent').length
 
   return (
-    <div className="demo demo-saas">
+    <div className="demo">
+      <div className="demo__bar">
+        <span className="demo__title">IronFit · gym management panel</span>
+        <ModeBadge live={false} liveText="" offText="Interactive prototype" />
+      </div>
+      <Browser url="app.ironfit.in/admin">
+      <div className="demo-saas">
       <aside className="saas-side">
         <b className="saas-logo">IronFit <span className="mono">admin</span></b>
         {TABS.map((t) => (
@@ -88,8 +95,10 @@ export default function SaasDemo() {
             ))}
           </div>
         )}
-        <p className="log__note">Sample gym data. Built as a custom panel with payments and WhatsApp reminders wired in.</p>
       </div>
+      </div>
+      </Browser>
+      <p className="note">Sample gym data. The production version has payments and WhatsApp reminders wired in.</p>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { journey } from '../site'
 import { ScrollTrigger } from '../lib/smooth'
 import { JOURNEY_TRAVEL } from '../store'
+import BrandIcon from '../components/BrandIcon'
 
 const ease = [0.76, 0, 0.24, 1]
 
@@ -94,9 +95,10 @@ export default function Journey() {
   return (
     <section id="journey" className="journey">
       <div className="sticky">
+        <div className="journey__scrim" aria-hidden="true" />
         <div className="journey__head">
           <span className="eyebrow mono">How it works</span>
-          <h2 className="h2">One message. <em>Zero manual work.</em></h2>
+          <h2 className="h2">One message. <em className="serif">Zero manual work.</em></h2>
         </div>
 
         <div className="journey__card">
@@ -108,8 +110,9 @@ export default function Journey() {
               exit={{ opacity: 0, y: -18, filter: 'blur(6px)' }}
               transition={{ duration: 0.6, ease }}
             >
-              <span className="journey__no mono">
-                Step 0{index + 1} / 0{journey.length} · {step.label}
+              <span className="journey__no">
+                <span className="journey__icon"><BrandIcon name={step.icon} size={18} color={step.icon === 'siN8n' || step.icon === 'siClaude' ? '#fff' : undefined} /></span>
+                Step {index + 1} of {journey.length} · {step.label}
               </span>
               <h3 className="h3">{step.title}</h3>
               <p className="muted">{step.copy}</p>

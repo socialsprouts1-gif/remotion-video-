@@ -3,8 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    target: 'es2020',
-    chunkSizeWarningLimit: 1200,
-  },
+  server: { proxy: { '/api': 'http://localhost:8787' } },
+  build: { target: 'es2020', chunkSizeWarningLimit: 1200 },
+  test: { include: ['server/**/*.test.js'], environment: 'node' },
 })

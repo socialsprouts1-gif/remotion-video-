@@ -32,9 +32,9 @@ export default function Roi() {
   return (
     <section id="roi" className="roi">
       <div className="roi__head">
-        <span className="eyebrow mono">ROI calculator</span>
-        <h2 className="h2">What is manual work <em>costing you?</em></h2>
-        <p className="muted">Move the sliders to match your business. It's an estimate, not a promise; the audit gives you real numbers.</p>
+        <span className="eyebrow">ROI calculator</span>
+        <h2 className="h2">What is manual work <em className="serif">costing you?</em></h2>
+        <p className="lead">Move the sliders to match your business. It's an estimate, not a promise; the audit gives you real numbers.</p>
       </div>
       <div className="roi__grid">
         <div className="roi__inputs">
@@ -42,7 +42,7 @@ export default function Roi() {
             <label key={f.id} className="slider">
               <span className="slider__top">
                 <span>{f.label}</span>
-                <b className="mono">{f.fmt(v[f.id])}</b>
+                <b>{f.fmt(v[f.id])}</b>
               </span>
               <input
                 id={`roi-${f.id}`}
@@ -59,15 +59,15 @@ export default function Roi() {
         </div>
         <div className="roi__out">
           <div>
-            <span className="mono label">Hours back every month</span>
+            <span className="label">Hours back every month</span>
             <b className="big"><Counter value={hours} /></b>
           </div>
           <div>
-            <span className="mono label">Staff cost saved / month</span>
+            <span className="label">Staff cost saved / month</span>
             <b className="big lime"><Counter value={money} prefix="₹" /></b>
           </div>
           <div>
-            <span className="mono label">First reply time</span>
+            <span className="label">First reply time</span>
             <b className="mid">Under 5 seconds, 24/7</b>
           </div>
         </div>

@@ -17,15 +17,15 @@ export default function Process() {
   return (
     <section id="process" className="process" ref={ref}>
       <div className="process__head">
-        <span className="eyebrow mono">Process</span>
-        <h2 className="h2">From audit <em>to autopilot.</em></h2>
+        <span className="eyebrow">Process</span>
+        <h2 className="h2">From audit <em className="serif">to autopilot.</em></h2>
       </div>
       <div className="process__list">
         <div className="process__line" aria-hidden="true"><i /></div>
         {process.map((p, i) => (
           <div className="process__item" key={p.title}>
             <span className="process__dot" aria-hidden="true" />
-            <span className="mono process__no">Step {i + 1}</span>
+            <span className="process__no">Step {i + 1}</span>
             <h3 className="h3">{p.title}</h3>
             <p className="muted">{p.copy}</p>
           </div>

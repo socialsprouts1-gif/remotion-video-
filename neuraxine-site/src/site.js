@@ -13,8 +13,8 @@ export const site = {
     primary: 'Book a free automation audit',
     secondary: 'Watch it work',
   },
-  // Optional: set to a form endpoint (Formspree, n8n webhook, etc.) to receive leads.
-  formEndpoint: '',
+  // API base. Same origin by default (server/index.js serves both).
+  api: import.meta.env?.VITE_API_URL || '',
 }
 
 // The scroll journey: one customer message travelling through the system.
@@ -22,42 +22,42 @@ export const site = {
 export const journey = [
   {
     id: 'wa',
-    glyph: 'WA',
+    icon: 'siWhatsapp',
     label: 'WhatsApp',
     title: 'A customer messages you',
     copy: 'At 11:42 pm, while you sleep. Most businesses reply the next morning. By then the customer has booked somewhere else.',
   },
   {
     id: 'ai',
-    glyph: 'AI',
+    icon: 'siClaude',
     label: 'AI Agent',
     title: 'The agent understands it',
     copy: 'Hindi, English or Hinglish. It reads the intent, the service, the date, and answers in your tone of voice.',
   },
   {
     id: 'crm',
-    glyph: 'CRM',
+    icon: 'siHubspot',
     label: 'CRM',
     title: 'The lead is saved',
     copy: 'Name, number, interest and source go straight into your CRM or Google Sheet. No copy-paste, no lost chats.',
   },
   {
     id: 'cal',
-    glyph: 'CAL',
+    icon: 'siGooglecalendar',
     label: 'Calendar',
     title: 'The slot gets booked',
     copy: 'It checks real availability, books the appointment and sends a payment link if you want one.',
   },
   {
     id: 'fu',
-    glyph: '↻',
+    icon: 'siN8n',
     label: 'Follow-up',
     title: 'Reminders go out on time',
     copy: 'A reminder the day before, a nudge if they go quiet, a review request after the visit. Fewer no-shows.',
   },
   {
     id: 'rep',
-    glyph: '▤',
+    icon: 'siGooglesheets',
     label: 'Report',
     title: 'You see everything',
     copy: 'One daily summary on WhatsApp: chats handled, bookings made, leads that need a human.',
@@ -106,9 +106,13 @@ export const process = [
   { title: 'Launch & improve', copy: 'Go live, watch the numbers, tune the prompts. You get the docs and full ownership.' },
 ]
 
+// [label, simple-icons export name]
 export const stack = [
-  'WhatsApp API', 'n8n', 'Google Sheets', 'Gmail', 'OpenAI', 'Claude', 'Razorpay', 'Shopify',
-  'HubSpot', 'Zoho', 'Calendly', 'Notion', 'Supabase', 'Make', 'Zapier', 'Airtable',
+  ['WhatsApp', 'siWhatsapp'], ['n8n', 'siN8n'], ['Claude', 'siClaude'], ['Google Sheets', 'siGooglesheets'],
+  ['Gmail', 'siGmail'], ['Google Calendar', 'siGooglecalendar'], ['Razorpay', 'siRazorpay'], ['Shopify', 'siShopify'],
+  ['HubSpot', 'siHubspot'], ['Zoho', 'siZoho'], ['Calendly', 'siCalendly'], ['Notion', 'siNotion'],
+  ['Supabase', 'siSupabase'], ['Make', 'siMake'], ['Zapier', 'siZapier'], ['Airtable', 'siAirtable'],
+  ['Meta', 'siMeta'], ['Stripe', 'siStripe'], ['Instagram', 'siInstagram'],
 ]
 
 // Things that have been built (no metrics claimed).

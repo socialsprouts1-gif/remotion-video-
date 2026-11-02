@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { journey } from '../site'
 import { store, journeyProgress } from '../store'
+import { brandPath, brandHex } from '../components/BrandIcon'
 
 const { damp, smoothstep, lerp, clamp } = THREE.MathUtils
 const LIME = new THREE.Color('#C2FF3D')
@@ -33,7 +34,7 @@ function glowTexture() {
   return new THREE.CanvasTexture(c)
 }
 
-function labelTexture(glyph, label) {
+function iconTexture(icon, label) {
   const c = document.createElement('canvas')
   c.width = c.height = 256
   const tex = new THREE.CanvasTexture(c)
@@ -42,18 +43,21 @@ function labelTexture(glyph, label) {
   const draw = () => {
     const g = c.getContext('2d')
     g.clearRect(0, 0, 256, 256)
-    g.fillStyle = '#fff'
+    // Official brand mark (Simple Icons, 24x24 viewBox) in its brand colour.
+    g.save()
+    g.translate(128 - 48, 52)
+    g.scale(4, 4)
+    g.fillStyle = icon === 'siN8n' || icon === 'siClaude' ? '#ffffff' : brandHex(icon)
+    g.fill(new Path2D(brandPath(icon)))
+    g.restore()
+    g.fillStyle = '#f2f4f2'
     g.textAlign = 'center'
-    g.textBaseline = 'middle'
-    g.font = `600 ${glyph.length > 2 ? 64 : 84}px "Archivo", sans-serif`
-    g.fillText(glyph, 128, 112)
-    g.font = '500 22px "Geist Mono", monospace'
-    g.letterSpacing = '3px'
-    g.fillText(label.toUpperCase(), 128, 196)
+    g.font = '600 25px "Instrument Sans", sans-serif'
+    g.fillText(label, 128, 210)
     tex.needsUpdate = true
   }
   draw()
-  document.fonts?.load('600 64px "Archivo"').then(draw).catch(() => {})
+  document.fonts?.load('600 25px "Instrument Sans"').then(draw).catch(() => {})
   return tex
 }
 
@@ -128,7 +132,7 @@ function Field({ count }) {
 
 // ── one workflow node ─────────────────────────────────────────────
 const bodyGeo = new RoundedBoxGeometry(1.5, 1.5, 0.42, 5, 0.22)
-const bodyMat = new THREE.MeshPhysicalMaterial({ color: '#0e1310', metalness: 0.55, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.15 })
+const bodyMat = new THREE.MeshPhysicalMaterial({ color: '#16191b', metalness: 0.85, roughness: 0.24, clearcoat: 1, clearcoatRoughness: 0.12, envMapIntensity: 1.4 })
 
 function Node({ index, step, glow, glowTex }) {
   const group = useRef()
@@ -136,19 +140,20 @@ function Node({ index, step, glow, glowTex }) {
   const ring = useRef()
   const halo = useRef()
   const labelMat = useMemo(
-    () => new THREE.MeshBasicMaterial({ map: labelTexture(step.glyph, step.label), transparent: true, color: IDLE.clone(), depthWrite: false }),
+    () => new THREE.MeshBasicMaterial({ map: iconTexture(step.icon, step.label), transparent: true, depthWrite: false }),
     [step],
   )
   const p = POS[index]
   useFrame((state) => {
     const t = state.clock.elapsedTime
     const g = glow.current[index]
-    const appear = smoothstep(store.intro, index * 0.08, 0.4 + index * 0.08)
+    // Nodes stay hidden behind the hero logo and build in as the journey begins.
+    const appear = smoothstep(store.s, 0.3 + index * 0.06, 0.75 + index * 0.06)
     group.current.scale.setScalar(Math.max(0.0001, appear))
     group.current.position.set(p[0], p[1] + Math.sin(t * 0.8 + index) * 0.12, p[2])
     group.current.rotation.y = Math.sin(t * 0.3 + index) * 0.25 + store.pointer.sx * 0.2
     group.current.rotation.x = Math.cos(t * 0.25 + index) * 0.12 - store.pointer.sy * 0.15
-    labelMat.color.copy(IDLE).lerp(LIME, g)
+    labelMat.opacity = 0.55 + g * 0.45
     ring.current.material.opacity = 0.15 + g * 0.85
     ring.current.rotation.z = t * 0.4 + index
     ring.current.scale.setScalar(1 + g * 0.08)
@@ -261,9 +266,11 @@ export default function Network() {
     flow.uniforms.uTime.value = t
     flow.uniforms.uHead.value = u
     flow.uniforms.uMode.value = following ? 1 : 0
-    flow.uniforms.uDim.value = lerp(1, 0.55, aw)
+    const shown = smoothstep(s, 0.3, 0.8)
+    flow.uniforms.uDim.value = lerp(1, 0.55, aw) * shown
+    packet.current.visible = packetHalo.current.visible = trail.current.visible = shown > 0.02
     // Behind the demos and copy the network becomes a quiet backdrop.
-    state.gl.domElement.style.opacity = String(lerp(1, 0.42, aw))
+    state.gl.domElement.style.opacity = String(lerp(1, 0.22, aw))
 
     // Camera rig.
     const heroZ = Math.min(32, 24.5 / Math.max(aspect, 0.5))

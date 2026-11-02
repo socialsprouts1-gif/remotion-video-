@@ -1,7 +1,9 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Check, ArrowRight } from 'lucide-react'
 import { services } from '../site'
-import { SplitWords, FadeUp } from '../components/Reveal'
-import { scrollTo } from '../lib/smooth'
+import { SplitWords } from '../components/Reveal'
+import { gsap, scrollTo } from '../lib/smooth'
+import { getHealth } from '../lib/api'
 
 const demos = {
   WhatsAppDemo: lazy(() => import('../demos/WhatsAppDemo')),
@@ -11,34 +13,58 @@ const demos = {
 }
 
 export default function Demos() {
+  const ref = useRef(null)
+  const [health, setHealth] = useState(null)
+  useEffect(() => {
+    getHealth().then(setHealth)
+  }, [])
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Each device tilts up out of perspective as it scrolls into view.
+      gsap.utils.toArray('.service__demo').forEach((el) => {
+        gsap.fromTo(
+          el,
+          { rotateX: 16, y: 80, scale: 0.94, opacity: 0.4 },
+          { rotateX: 0, y: 0, scale: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 45%', scrub: true } },
+        )
+      })
+      gsap.utils.toArray('.service__info').forEach((el) => {
+        gsap.from(el.children, { y: 30, opacity: 0, stagger: 0.07, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 80%' } })
+      })
+    }, ref)
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="demos" className="demos">
+    <section id="demos" className="demos" ref={ref}>
       <div className="demos__head">
-        <span className="eyebrow mono">Services · live demos</span>
+        <span className="eyebrow">Services · live demos</span>
         <SplitWords as="h2" className="h2" text={['Don’t take our word.', 'Try it.']} />
-        <p className="muted">Every demo below runs in your browser. Click around, type, break it.</p>
+        <p className="lead">These demos are connected to a real backend. Type, click, run them. Nothing here is a video.</p>
       </div>
       {services.map((s) => {
         const Demo = demos[s.demo]
         return (
           <article key={s.id} className="service" id={`svc-${s.id}`}>
-            <FadeUp className="service__info">
-              <span className="service__no mono">{s.no}</span>
+            <div className="service__info">
+              <span className="service__no">{s.no}</span>
               <h3 className="h3">{s.name}</h3>
               <p>{s.line}</p>
               <ul>
                 {s.points.map((p) => (
-                  <li key={p}>{p}</li>
+                  <li key={p}><Check size={16} strokeWidth={2.5} />{p}</li>
                 ))}
               </ul>
-              <button className="link" onClick={() => scrollTo('#contact')} data-cursor="Book">Get this for my business →</button>
-            </FadeUp>
-            <FadeUp className="service__demo" delay={0.1}>
-              <span className="live mono"><i />Live demo</span>
-              <Suspense fallback={<div className="demo demo--loading mono">loading demo…</div>}>
-                <Demo />
+              <button className="link" onClick={() => scrollTo('#contact')} data-cursor="Book">
+                Get this for my business <ArrowRight size={16} />
+              </button>
+            </div>
+            <div className="service__demo">
+              <Suspense fallback={<div className="demo-loading">Loading demo…</div>}>
+                <Demo health={health} />
               </Suspense>
-            </FadeUp>
+            </div>
           </article>
         )
       })}
