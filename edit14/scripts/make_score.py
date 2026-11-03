@@ -290,6 +290,12 @@ for k in range(4):
     place(soft_tick(1300 + 150 * k), W[73] + k * 0.22, gain=0.02)
 place(whoosh(0.5, 300, 4000, 0.8), W[59] - 0.2, gain=0.02)      # the red strike
 
+# ---- a soft swish in and out of every cut bridge (work/cuts.json)
+CUTS = json.load(open(os.path.join(ROOT, "work", "cuts.json")))
+for k, c in enumerate(CUTS):
+    place(whoosh(0.28, 900, 8000, 0.6), c - 0.4, gain=0.03, pan=-0.3 if k % 2 else 0.3)
+    place(whoosh(0.25, 700, 6000, 0.4), c + 0.18, gain=0.018, pan=0.3 if k % 2 else -0.3)
+
 # ------------------------------------------------------------------ room + master
 def ir(d=3.2):
     t = tax(d)

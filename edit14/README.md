@@ -1,7 +1,7 @@
 # edit14: Neuraxine "automate" v3 (original concept)
 
 Same take as edit12/13 (`IMG_0126.mp4`). The reference was used for the level of polish only; the ideas here are new.
-Render: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS, lip sync +33 ms).
+Render: `renders/neuraxine-automate-v4.mp4` (v4: cut bridges, natural picture). Previous: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS, lip sync +33 ms).
 
 - **Type behind him:** a per-frame cutout (`scripts/matte.py`, MediaPipe selfie segmenter, temporally smoothed;
   writes `public/clips/person.webm` with alpha) is layered over the words, so "2026", "AI", "NEURAXINE" and
@@ -20,3 +20,10 @@ Render: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS
 
 Rebuild: `python3 scripts/matte.py` (needs `work/selfie_segmenter.tflite` from storage.googleapis.com/mediapipe-models),
 `python3 scripts/build_edit.py`, `python3 scripts/make_score.py`, `npx remotion render Edit out/neuraxine-automate-v3.mp4`.
+
+## v4 changes
+- **Cut bridges:** the footage jumps between takes 14 times (`work/cuts.json`, found by frame difference). Each jump is
+  covered by a 0.65 s full-screen motion beat tied to the words at that moment (Socho…, Follow-ups loop, Har din.,
+  But…, repeating "repetitive", AI agents circuit, Custom tiles, Your way., Neuraxine logo, We help., rising bars,
+  Your turn., comment bubble, + Follow). Each wipes in just before the cut and out just after, with a soft swish.
+- **Natural picture:** no colour filter, no vignette, no push-in zoom; the footage plays as filmed.

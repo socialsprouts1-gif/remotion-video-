@@ -51,8 +51,8 @@ const frameRect = (f: number) => ({x: lerp(FULL.x, WIN.x, f), y: lerp(FULL.y, WI
 // slow, eased push on the full-frame stretches
 const pushAt = (t: number) => {
   const segs: [number, number][] = [[0, W(18)], [W(49), W(64)], [W(82), W(103)], [W(103), edit.speech]];
-  for (const [a, b] of segs) if (t >= a && t < b) return lerp(1, 1.06, inOut(m1((t - a) / (b - a))));
-  return 1;
+  void segs;
+  return 1; // no push-ins: the shot stays as filmed
 };
 
 // ---------------------------------------------------------------- type that sits behind him
@@ -336,8 +336,10 @@ const LINES: Line[] = (() => {
 const Captions: React.FC<{t: number; fold: number}> = ({t, fold}) => {
   const c = LINES.find((x) => t >= x.s - 0.05 && t < x.e);
   if (!c) return null;
+  const bk = bridgeAt(t);
+  const light = bk >= 0 && BRIDGES[bk].bg !== C.char;
   const p = pt(t, c.s - 0.05, c.s + 0.15, smooth);
-  const top = lerp(1210, 1020, fold);
+  const top = bk >= 0 ? 1560 : lerp(1210, 1020, fold);
   return (
     <div style={{position: 'absolute', left: 60, right: 60, top, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', columnGap: 18, rowGap: 4, opacity: p, transform: `translateY(${(1 - p) * 16}px)`}}>
       {c.words.map((w, i) => {
@@ -345,13 +347,170 @@ const Captions: React.FC<{t: number; fold: number}> = ({t, fold}) => {
         const active = on && (i === c.words.length - 1 ? t < w.e + 0.2 : t < c.words[i + 1].s - 0.04);
         const bar = active ? pt(t, w.s - 0.04, w.s + 0.12, smooth) : 0;
         return (
-          <span key={i} style={{position: 'relative', fontFamily: SANS, fontWeight: 750, fontSize: 64, letterSpacing: '-0.035em', lineHeight: 1.12, color: on ? '#fff' : 'rgba(255,255,255,0.45)', textShadow: '0 2px 14px rgba(0,0,0,0.45)'}}>
+          <span key={i} style={{position: 'relative', fontFamily: SANS, fontWeight: 750, fontSize: 64, letterSpacing: '-0.035em', lineHeight: 1.12, color: light ? (on ? C.char : 'rgba(18,20,18,0.4)') : on ? '#fff' : 'rgba(255,255,255,0.45)', textShadow: light ? 'none' : '0 2px 14px rgba(0,0,0,0.45)'}}>
             {w.w.replace(/["“”]/g, '')}
-            <span style={{position: 'absolute', left: 0, right: 0, bottom: -2, height: 7, borderRadius: 7, background: C.lime, transformOrigin: '0 50%', transform: `scaleX(${bar})`}} />
+            <span style={{position: 'absolute', left: 0, right: 0, bottom: -2, height: 7, borderRadius: 7, background: light && bk >= 0 && BRIDGES[bk].bg === C.lime ? C.char : C.lime, transformOrigin: '0 50%', transform: `scaleX(${bar})`}} />
           </span>
         );
       })}
     </div>
+  );
+};
+
+
+// ---------------------------------------------------------------- bridges: a short full-screen motion beat over every jump cut
+// The footage cuts between takes 14 times (work/cuts.json). Each cut is covered by a 0.65 s graphic tied to the
+// words he is saying at that moment; it wipes in just before the cut and wipes out just after, so the jump is hidden.
+type BKind = 'word' | 'dots' | 'loop' | 'repeat' | 'lines' | 'grid' | 'logo' | 'bars' | 'bubble' | 'follow';
+const BRIDGES: {cut: number; kind: BKind; text?: string; label?: string; bg: string; fg: string}[] = [
+  {cut: 4.633, kind: 'dots', text: 'Socho', label: 'IMAGINE THIS', bg: C.cream, fg: C.char},
+  {cut: 8.267, kind: 'loop', text: 'Follow-ups', label: 'AGAIN AND AGAIN', bg: C.char, fg: '#fff'},
+  {cut: 10.167, kind: 'word', text: 'Har din.', label: 'EVERY SINGLE DAY', bg: C.lime, fg: C.char},
+  {cut: 14.8, kind: 'word', text: 'But…', label: 'PLOT TWIST', bg: C.char, fg: C.lime},
+  {cut: 16.3, kind: 'repeat', text: 'repetitive', bg: C.cream, fg: C.char},
+  {cut: 18.967, kind: 'lines', text: 'AI agents', label: 'NEURAXINE BUILDS', bg: C.char, fg: '#fff'},
+  {cut: 21.433, kind: 'grid', text: 'Custom.', label: 'BUILT FOR YOU', bg: C.lime, fg: C.char},
+  {cut: 23.533, kind: 'word', text: 'Your way.', label: 'YOUR BUSINESS NEEDS', bg: C.cream, fg: C.char},
+  {cut: 26.267, kind: 'logo', bg: C.char, fg: '#fff'},
+  {cut: 28.5, kind: 'word', text: 'We help.', label: 'NEURAXINE', bg: C.cream, fg: C.char},
+  {cut: 31.667, kind: 'bars', text: 'Scale.', bg: C.char, fg: C.lime},
+  {cut: 33.367, kind: 'word', text: 'Your turn.', label: 'READY?', bg: C.lime, fg: C.char},
+  {cut: 35.9, kind: 'bubble', text: 'Comment', bg: C.cream, fg: C.char},
+  {cut: 39.167, kind: 'follow', text: 'Follow', bg: C.char, fg: '#fff'},
+];
+const B_IN = 0.32, B_OUT = 0.33;
+const bridgeAt = (t: number) => BRIDGES.findIndex((b) => t >= b.cut - B_IN && t < b.cut + B_OUT);
+const Bridge: React.FC<{t: number}> = ({t}) => {
+  const k = bridgeAt(t);
+  if (k < 0) return null;
+  const b = BRIDGES[k];
+  const a = b.cut - B_IN, e = b.cut + B_OUT;
+  const wi = pt(t, a, a + 0.16, inOut); // wipe in
+  const wo = pt(t, e - 0.16, e, inOut); // wipe out
+  const dir = k % 2 ? 1 : -1;
+  // panel enters from one side and leaves through the other
+  const clip = wo > 0 ? (dir > 0 ? `inset(0 0 0 ${wo * 100}%)` : `inset(0 ${wo * 100}% 0 0)`) : dir > 0 ? `inset(0 ${(1 - wi) * 100}% 0 0)` : `inset(0 0 0 ${(1 - wi) * 100}%)`;
+  const local = t - a;
+  const p = pt(local, 0.06, 0.4, smooth);
+  const big: React.CSSProperties = {fontFamily: SANS, fontWeight: 800, fontSize: 170, letterSpacing: '-0.06em', lineHeight: 0.95, color: b.fg};
+  let body: React.ReactNode = null;
+  if (b.kind === 'word' || b.kind === 'dots') {
+    const dots = b.kind === 'dots' ? '...'.slice(0, Math.min(3, Math.floor(local / 0.12))) : '';
+    body = (
+      <div style={{...big, display: 'flex'}}>
+        {(b.text ?? '').split('').map((ch, i) => {
+          const q = pt(local, 0.04 + i * 0.025, 0.3 + i * 0.025, smooth);
+          return (
+            <span key={i} style={{display: 'inline-block', whiteSpace: 'pre', transform: `translateY(${(1 - q) * 70}px)`, opacity: q}}>
+              {ch}
+            </span>
+          );
+        })}
+        <span style={{color: b.bg === C.lime ? C.char : C.lime}}>{dots}</span>
+      </div>
+    );
+  } else if (b.kind === 'loop') {
+    body = (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30}}>
+        <svg width={220} height={220} viewBox="0 0 24 24" fill="none" stroke={C.lime} strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" style={{transform: `rotate(${local * 540}deg)`}}>
+          <path d="M20 11a8 8 0 0 0-14.3-4.9L4 8" />
+          <path d="M4 4v4h4" />
+          <path d="M4 13a8 8 0 0 0 14.3 4.9L20 16" />
+          <path d="M20 20v-4h-4" />
+        </svg>
+        <div style={{...big, fontSize: 130, opacity: p, transform: `translateY(${(1 - p) * 40}px)`}}>{b.text}</div>
+      </div>
+    );
+  } else if (b.kind === 'repeat') {
+    body = (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        {Array.from({length: 7}, (_, i) => {
+          const off = ((local * 900 + i * 40) % 260) - 130;
+          return (
+            <div key={i} style={{...big, fontSize: 130, opacity: i === 3 ? 1 : 0.12 + 0.05 * (3 - Math.abs(i - 3)), transform: `translateX(${i === 3 ? 0 : (i % 2 ? off : -off)}px)`}}>
+              {b.text}
+            </div>
+          );
+        })}
+      </div>
+    );
+  } else if (b.kind === 'lines') {
+    const L = pt(local, 0, 0.45, inOut);
+    body = (
+      <div style={{position: 'relative', width: 1080, height: 1920}}>
+        <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+          {[[-1, 1], [1, 1], [-1, -1], [1, -1], [0, 1], [0, -1]].map(([dx, dy], i) => (
+            <path key={i} d={`M 540 960 L ${540 + dx * 160} ${960 + dy * 160} L ${540 + dx * 420} ${960 + dy * 160} L ${540 + dx * 420} ${960 + dy * 520}`} fill="none" stroke={C.lime} strokeWidth={3} strokeOpacity={0.7} strokeDasharray={1200} strokeDashoffset={1200 * (1 - L)} />
+          ))}
+          <circle cx={540} cy={960} r={120 * p} fill="none" stroke="#fff" strokeWidth={3} />
+        </svg>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 870, textAlign: 'center', ...big, fontSize: 120, opacity: p}}>{b.text}</div>
+      </div>
+    );
+  } else if (b.kind === 'grid') {
+    body = (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40}}>
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 110px)', gap: 14}}>
+          {Array.from({length: 9}, (_, i) => {
+            const q = pt(local, 0.02 + i * 0.03, 0.22 + i * 0.03, smooth);
+            return <div key={i} style={{width: 110, height: 110, borderRadius: 22, background: i === 4 ? C.char : 'rgba(18,20,18,0.18)', transform: `scale(${q}) rotate(${(1 - q) * 45}deg)`}} />;
+          })}
+        </div>
+        <div style={{...big, opacity: p}}>{b.text}</div>
+      </div>
+    );
+  } else if (b.kind === 'logo') {
+    body = (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30}}>
+        <Img src={staticFile('brand/logo-alpha.png')} style={{width: 340, height: 250, objectFit: 'contain', transform: `scale(${lerp(0.6, 1, p)}) rotate(${(1 - p) * -20}deg)`, opacity: p}} />
+        <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 54, letterSpacing: `${lerp(0.6, 0.32, p)}em`, color: '#fff', opacity: p}}>NEURAXINE</div>
+      </div>
+    );
+  } else if (b.kind === 'bars') {
+    body = (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40}}>
+        <div style={{display: 'flex', alignItems: 'flex-end', gap: 26, height: 420}}>
+          {[0.25, 0.4, 0.55, 0.75, 1].map((h, i) => {
+            const q = pt(local, 0.02 + i * 0.05, 0.3 + i * 0.05, smooth);
+            return <div key={i} style={{width: 100, height: 420 * h * q, borderRadius: 18, background: i === 4 ? C.lime : 'rgba(255,255,255,0.18)'}} />;
+          })}
+        </div>
+        <div style={{...big, opacity: p}}>{b.text}</div>
+      </div>
+    );
+  } else if (b.kind === 'bubble') {
+    const q = spring({frame: Math.max(0, local - 0.03) * FPS, fps: FPS, config: {stiffness: 200, damping: 12}});
+    body = (
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40}}>
+        <svg width={260} height={240} viewBox="0 0 24 22" style={{transform: `scale(${q})`}}>
+          <path d="M3 2h18a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4H3a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill={C.char} />
+          {[7, 12, 17].map((x, i) => (
+            <circle key={i} cx={x} cy={9.5} r={1.4} fill={C.lime} opacity={0.4 + 0.6 * Math.abs(Math.sin(local * 10 - i))} />
+          ))}
+        </svg>
+        <div style={{...big, opacity: p}}>{b.text}</div>
+      </div>
+    );
+  } else if (b.kind === 'follow') {
+    const q = spring({frame: Math.max(0, local - 0.03) * FPS, fps: FPS, config: {stiffness: 200, damping: 13}});
+    body = (
+      <div style={{display: 'flex', alignItems: 'center', gap: 30, transform: `scale(${q})`}}>
+        <div style={{width: 150, height: 150, borderRadius: 150, background: C.lime, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <svg width={70} height={70} viewBox="0 0 24 24" fill="none" stroke={C.char} strokeWidth={3} strokeLinecap="round">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </div>
+        <div style={{...big, fontSize: 150}}>{b.text}</div>
+      </div>
+    );
+  }
+  return (
+    <AbsoluteFill style={{background: b.bg, clipPath: clip}}>
+      <AbsoluteFill style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transform: `translateX(${dir * (1 - wi) * 60 - dir * wo * 60}px)`}}>
+        {b.label && <div style={{fontFamily: MONO, fontSize: 26, letterSpacing: '0.3em', color: b.fg, opacity: 0.6 * p, marginBottom: 34}}>{b.label}</div>}
+        {body}
+      </AbsoluteFill>
+    </AbsoluteFill>
   );
 };
 
@@ -381,7 +540,7 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   const fold = foldAt(t);
   const r = frameRect(fold);
   const z = pushAt(t);
-  const vid: React.CSSProperties = {position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, maxWidth: 'none', filter: 'contrast(1.05) saturate(0.96) brightness(1.01)'};
+  const vid: React.CSSProperties = {position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, maxWidth: 'none', };
   // inside the window the shot is scaled so his face stays centred
   const inner = lerp(1, 0.86, fold);
   const ox = (r.w - 1080 * inner) / 2;
@@ -400,9 +559,6 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
             <OffthreadVideo muted transparent src={staticFile('clips/person.webm')} style={vid} />
           </div>
         </div>
-        {/* soft edge falloff only (no heavy vignette) */}
-        <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 85% 70% at 50% 45%, transparent 65%, rgba(0,0,0,0.18) 100%)'}} />
-        <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.28))', opacity: 1 - fold}} />
       </div>
       {/* graphics in the space below the window */}
       {fold > 0.02 && (
@@ -422,6 +578,7 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
           <Chips t={t} />
           <DmChip t={t} />
           <FollowPill t={t} />
+          <Bridge t={t} />
           <Captions t={t} fold={fold} />
         </>
       )}
