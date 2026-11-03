@@ -1,7 +1,7 @@
 # edit14: Neuraxine "automate" v3 (original concept)
 
 Same take as edit12/13 (`IMG_0126.mp4`). The reference was used for the level of polish only; the ideas here are new.
-Render: `renders/neuraxine-automate-v4.mp4` (v4: cut bridges, natural picture). Previous: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS, lip sync +33 ms).
+Render: `renders/neuraxine-automate-v5.mp4` (v5: 3D cut scenes, HDR fixed). Earlier: `renders/neuraxine-automate-v4.mp4`, Previous: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS, lip sync +33 ms).
 
 - **Type behind him:** a per-frame cutout (`scripts/matte.py`, MediaPipe selfie segmenter, temporally smoothed;
   writes `public/clips/person.webm` with alpha) is layered over the words, so "2026", "AI", "NEURAXINE" and
@@ -27,3 +27,15 @@ Rebuild: `python3 scripts/matte.py` (needs `work/selfie_segmenter.tflite` from s
   But…, repeating "repetitive", AI agents circuit, Custom tiles, Your way., Neuraxine logo, We help., rising bars,
   Your turn., comment bubble, + Follow). Each wipes in just before the cut and out just after, with a soft swish.
 - **Natural picture:** no colour filter, no vignette, no push-in zoom; the footage plays as filmed.
+
+## v5 changes
+- **Colour fix:** the iPhone clip is Dolby Vision HDR (HLG, BT.2020). The earlier working copy kept the HDR signal
+  without converting it, which made him look washed out and too bright. `public/clips/main.mp4` is now tone-mapped to
+  SDR BT.709 (zscale + Hable, npl 300), so skin and colours look as filmed; the cutout was regenerated from it.
+- **3D cut scenes:** each of the 14 cut bridges is a small scene built from Fluent 3D icons and real app logos on a rich
+  gradient (violet / coral / midnight / lime / teal / cream): thinking face, orbiting follow-up messages, stacking
+  calendars, a bulb switching on, a dizzy face in a wall of "repetitive", a robot with app logos orbiting in depth,
+  puzzle pieces snapping together, an arrow into a bullseye, the logo with sparkles, raised hands, a rocket over a
+  chart, a finger pointing at the viewer, a speech balloon, a ringing bell. Diagonal wipes, subtle film grain.
+- **3D icons across the edit:** above every timeline task, the stopwatch / hourglass on the free-time counter, on every
+  layer of the build stack, on the benefit chips, the DM document and a bell on Follow. Window backdrop is deep midnight.
