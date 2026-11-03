@@ -8,3 +8,4 @@ work/*.png
 work/*.jpg
 work/*.log
 scripts/__pycache__/
+ref/
