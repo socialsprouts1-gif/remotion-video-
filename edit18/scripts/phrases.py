@@ -25,6 +25,8 @@ LINES = [
   [P("Yaad|याद rakho.|रखो।"),
    P("Hazaar|हज़ार random|रैंडम leads|लीड्स se,|से,"),
    P("sau|सौ sahi|सही leads|लीड्स zyada|ज़्यादा deals|डील्स laati|लाती hain.|हैं।")],
-  [P("Ise|इसे save|सेव karo,|करो, aur|और apni|अपनी marketing|मार्केटिंग team|टीम ko|को bhejo.|भेजो।"),
-   P("Comment|कमेंट mein|में batao,|बताओ, kaunsa|कौनसा pehle|पहले try|ट्राई karoge?|करोगे?")],
+  [P("Agar|अगर aap|आप chahte|चाहते ho|हो ki|कि yeh|यह sab|सब hum|हम aapke|आपके liye|लिए karein,|करें,"),
+   P("toh|तो comment|कमेंट kijiye|कीजिए \"DETAILS\",|डिटेल्स,"),
+   P("aur|और guide|गाइड main|मैं aapko|आपको direct|डायरेक्ट DM|डी_एम kar|कर dunga.|दूंगा।"),
+   P("Aur|और aise|ऐसे hi|ही content|कंटेंट ke|के liye,|लिए, follow|फ़ॉलो karo|करो Neuraxine.|न्यूरैक्सिन।")],
 ]

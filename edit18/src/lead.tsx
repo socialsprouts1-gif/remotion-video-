@@ -341,55 +341,96 @@ export const Z5: React.FC<P> = ({t, th}) => {
   );
 };
 
-// ===== 6 · your turn: save, share with team, comment (cream) ===========================
+// ===== 6 · done-for-you CTA: comment DETAILS -> guide in DM -> follow (cream) ========
 const LIST = ['Price range likho', 'Form mein 2 sawaal', '"Book site visit"', 'Smart retargeting'];
 export const Z6: React.FC<P> = ({t, th}) => {
   const L = W(7, 0);
-  const saveAt = W(7, 1);
-  const shareAt = W(7, 8);
-  const typeAt = W(7, 13);
-  const sent = W(7, 15) + 0.3;
+  const tickA = W(7, 5);
+  const cmtAt = W(7, 11);
+  const typeAt = W(7, 14);
+  const sent = typeAt + 0.6;
+  const dm = W(7, 20) - 0.1;
+  const folAt = W(7, 29);
+  const tapAt = W(7, 31);
+  const typed = 'DETAILS'.slice(0, Math.floor(clamp01((t - typeAt + 0.1) / 0.45) * 7));
   return (
     <>
-      <Headline t={t} at={L - 0.1} th={th} a={[[['Save karo. ']], [['Team ko bhejo.', true]]]} />
-      <div style={abs(800, 300, {display: 'flex', gap: 14})}>
-        <Pop t={t} at={saveAt} rot={-10}>
-          <Icon3D n="bookmark" size={100} t={t} seed={1} />
-        </Pop>
-        {t > shareAt && (
-          <Pop t={t} at={shareAt} rot={10}>
-            <div style={{width: 100, height: 100, borderRadius: 50, background: C.green, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 12px 24px rgba(31,157,85,0.4)'}}>
-              <svg width="48" height="48" viewBox="0 0 24 24">
+      <Headline t={t} at={L - 0.1} th={th} a={[[['Yeh sab hum ']], [['aapke liye karein?', true]]]} />
+      <Pop t={t} at={L + 0.2} style={abs(110, 680)} dy={40}>
+        <TCard th={th} style={{width: 860, padding: '18px 24px'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6}}>
+            <Img src={staticFile('brand/logo-alpha.png')} style={{width: 54, height: 40, objectFit: 'contain', filter: 'brightness(0.35)'}} />
+            <Label color={C.green} size={17}>Done for you · Neuraxine</Label>
+          </div>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 18px'}}>
+            {LIST.map((x, i) => {
+              const at = tickA + i * 0.22;
+              return (
+                <div key={i} style={{display: 'flex', alignItems: 'center', gap: 10, fontFamily: SANS, fontSize: 25, fontWeight: 600, color: C.ink, padding: '6px 0'}}>
+                  <Check size={30} p={ep(t, at, 0.3)} color={t > at ? C.green : '#D6D2CA'} />
+                  {x}
+                </div>
+              );
+            })}
+          </div>
+        </TCard>
+      </Pop>
+      {t > cmtAt - 0.2 && (
+        <Pop t={t} at={cmtAt - 0.2} style={abs(110, 930)} dy={40}>
+          <div style={{width: 860, display: 'flex', alignItems: 'center', gap: 16, background: '#fff', borderRadius: 40, padding: '12px 14px 12px 26px', boxShadow: '0 14px 30px rgba(40,30,20,0.14)', fontFamily: SANS}}>
+            <Img src={fl('speech_balloon')} style={{width: 40, height: 40}} />
+            <span style={{flex: 1, fontSize: 34, fontWeight: 800, letterSpacing: '0.04em', color: t > sent ? C.green : C.ink}}>
+              {t > sent ? 'DETAILS ✓ posted' : t > typeAt - 0.1 ? typed : <span style={{fontWeight: 400, color: '#8C8780', letterSpacing: 0}}>Add a comment...</span>}
+              {t > typeAt - 0.1 && t < sent && <span style={{opacity: Math.floor(t * 2) % 2 ? 1 : 0}}>|</span>}
+            </span>
+            <div style={{width: 64, height: 64, borderRadius: 32, background: C.green, display: 'flex', alignItems: 'center', justifyContent: 'center', transform: `scale(${t > sent ? lerp(0.8, 1, sp(t, sent)) : 1})`}}>
+              <svg width="28" height="28" viewBox="0 0 24 24">
                 <path d="M3 11.5 L21 3 L14 21 L11.5 13.5 Z" fill="#fff" />
               </svg>
             </div>
-          </Pop>
-        )}
-      </div>
-      <div style={abs(110, 700, {width: 860, display: 'flex', flexDirection: 'column', gap: 12})}>
-        {LIST.map((s, i) => {
-          const at = L + 0.3 + i * 0.12;
-          const hi = i === 1 && t > sent;
-          return t > at ? (
-            <Pop key={i} t={t} at={at} dy={20} from={0.9}>
-              <div style={{display: 'flex', alignItems: 'center', gap: 16, background: hi ? C.green : '#fff', color: hi ? '#fff' : C.ink, borderRadius: 22, padding: '16px 22px', boxShadow: '0 10px 20px rgba(40,30,20,0.08)', fontFamily: SANS}}>
-                <div style={{fontFamily: MONO, fontWeight: 800, fontSize: 32, color: hi ? '#fff' : C.green}}>{i + 1}</div>
-                <div style={{fontWeight: 700, fontSize: 31}}>{s}</div>
-              </div>
-            </Pop>
-          ) : null;
-        })}
-      </div>
-      {t > typeAt - 0.4 && (
-        <Pop t={t} at={typeAt - 0.4} style={abs(110, 1170)} dy={30}>
-          <TCard th={th} style={{width: 860, padding: '14px 14px 14px 26px', display: 'flex', alignItems: 'center', gap: 16, borderRadius: 40}}>
-            <span style={{flex: 1, fontFamily: SANS, fontSize: 30, color: t > sent ? '#8C8780' : C.ink}}>
-              {t > sent ? 'Comment posted ✓' : t > typeAt ? 'Pehle 2 try karunga' : 'Add a comment...'}
-            </span>
-            <div style={{width: 64, height: 64, borderRadius: 32, background: C.green, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-              <Check size={40} color={C.green} stroke="#fff" p={t > sent ? 1 : 0} />
+          </div>
+        </Pop>
+      )}
+      {t > W(7, 12) && (
+        <div style={abs(620, 880, {transform: `rotate(8deg) scale(${lerp(2, 1, sp(t, W(7, 12), 1.3))})`, opacity: ep(t, W(7, 12), 0.12), background: C.ink, color: '#fff', borderRadius: 14, padding: '6px 20px', fontFamily: MONO, fontWeight: 800, fontSize: 36, letterSpacing: '0.12em', boxShadow: '0 14px 30px rgba(0,0,0,0.3)'})}>COMMENT</div>
+      )}
+      {t > dm && (
+        <Pop t={t} at={dm} style={abs(110, 1070)} dy={-50}>
+          <div style={{width: 860, display: 'flex', alignItems: 'center', gap: 16, background: C.ink, borderRadius: 28, padding: '16px 20px', boxShadow: '0 24px 50px rgba(0,0,0,0.3)', fontFamily: SANS}}>
+            <div style={{width: 60, height: 60, borderRadius: 16, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <Img src={icon('instagram-icon.svg')} style={{width: 42, height: 42}} />
             </div>
-          </TCard>
+            <div style={{flex: 1}}>
+              <div style={{color: '#fff', fontSize: 24}}>
+                <b>neuraxine</b> <span style={{opacity: 0.6}}>sent you a message · now</span>
+              </div>
+              <div style={{display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 12, padding: '6px 10px', width: 'fit-content'}}>
+                <Img src={fl('page_facing_up')} style={{width: 30, height: 30}} />
+                <span style={{color: '#fff', fontSize: 21, fontWeight: 700}}>Lead Quality Guide.pdf</span>
+              </div>
+            </div>
+            <div style={{background: C.green, color: '#fff', borderRadius: 18, padding: '6px 14px', fontFamily: MONO, fontWeight: 800, fontSize: 17}}>DM</div>
+          </div>
+        </Pop>
+      )}
+      {t > folAt - 0.3 && (
+        <Pop t={t} at={folAt - 0.3} style={abs(210, 1240)} dy={30}>
+          <div style={{position: 'relative', width: 660, display: 'flex', alignItems: 'center', gap: 16, background: '#fff', borderRadius: 40, padding: '12px 14px 12px 14px', boxShadow: '0 14px 30px rgba(40,30,20,0.16)', fontFamily: SANS}}>
+            <div style={{width: 66, height: 66, borderRadius: 33, background: C.ink, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <Img src={staticFile('brand/logo-alpha.png')} style={{width: 48, height: 36, objectFit: 'contain'}} />
+            </div>
+            <div style={{flex: 1}}>
+              <div style={{fontWeight: 800, fontSize: 27, color: C.ink}}>neuraxine</div>
+              <div style={{fontSize: 19, color: '#8C8780'}}>AI · Automation · Growth</div>
+            </div>
+            <div style={{background: t > tapAt ? '#EFEFEF' : '#0095F6', color: t > tapAt ? C.ink : '#fff', borderRadius: 14, padding: '12px 22px', fontWeight: 800, fontSize: 24, transform: `scale(${t > tapAt ? lerp(0.9, 1, sp(t, tapAt)) : 1})`}}>{t > tapAt ? 'Following ✓' : 'Follow'}</div>
+            {t > tapAt - 0.4 && t < tapAt + 0.6 && (
+              <div style={{position: 'absolute', left: lerp(700, 560, eio(t, tapAt - 0.4, 0.35)), top: lerp(110, 40, eio(t, tapAt - 0.4, 0.35)), opacity: 1 - ep(t, tapAt + 0.3, 0.3)}}>
+                {t > tapAt && <div style={{position: 'absolute', left: -6, top: -26, width: 66, height: 66, borderRadius: 33, border: `5px solid #0095F6`, transform: `scale(${lerp(0.3, 2, ep(t, tapAt, 0.5))})`, opacity: 1 - ep(t, tapAt, 0.5)}} />}
+                <Img src={fl('index_pointing_up')} style={{width: 100, height: 100, transform: 'rotate(-14deg)', filter: 'drop-shadow(0 10px 14px rgba(0,0,0,0.35))'}} />
+              </div>
+            )}
+          </div>
         </Pop>
       )}
     </>

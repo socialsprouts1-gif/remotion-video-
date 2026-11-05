@@ -17,7 +17,7 @@ for w in E["words"]:
 W = lambda l, k: lines[l][k]["s"]
 WE = lambda l, k: lines[l][k]["e"]
 L = E["lines"]
-END_AT = WE(7, 15) + 0.6
+END_AT = WE(7, 31) + 0.6
 
 mus = np.zeros(N)
 sfx = np.zeros(N)
@@ -98,7 +98,10 @@ for s_ in [W(1, 18) - 0.2 + k * 0.1 for k in range(4)]: put(sfx, flick(), s_, 0.
 for at in [W(2, 4), W(3, 7), W(4, 5), W(5, 5)]: put(sfx, flick(0.4), at, 0.5); put(sfx, chime(), at + 0.9, 0.2)
 for s_ in [W(1, 13), W(2, 4), W(3, 20), W(4, 9), W(5, 13)]: put(sfx, blip(880, 0.12), s_, 0.25)  # meter steps
 for k in range(4): put(sfx, pop(900 + 120 * k), W(6, 10) + k * 0.1, 0.22)
-for s_ in [W(7, 1), W(7, 8), W(7, 15) + 0.3, END_AT + 1.4]: put(sfx, chime(), s_, 0.24)
+for k in range(4): put(sfx, pop(900 + 120 * k), W(7, 5) + k * 0.22, 0.2)
+put(sfx, thump(), W(7, 12), 0.6)
+for k in range(7): put(sfx, tick(), W(7, 14) - 0.1 + k * 0.065, 0.25)
+for s_ in [W(7, 14) + 0.6, W(7, 20) - 0.1, W(7, 31), END_AT + 1.4]: put(sfx, chime(), s_, 0.26)
 pops = [W(2, 12), W(2, 22), W(3, 17), W(3, 20), W(4, 15), W(5, 13), W(6, 2), W(6, 6)]
 for i, p_ in enumerate(pops): put(sfx, pop(750 + 140 * (i % 3)), p_, 0.2)
 score = mus + sfx

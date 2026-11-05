@@ -5,7 +5,7 @@ import {TH, Theme, fl} from './kit';
 import {SCENES, SCENE_LINE as CARD_LINE, THEMES, qualityAt} from './lead';
 
 const SW = CARD_LINE.map((li, i) => (i === 0 ? 0 : LINE[li] - 0.35));
-const END_AT = WE(7, 15) + 0.6;
+const END_AT = WE(7, 31) + 0.6;
 const FLIP = 0.6;
 
 const pageAt = (t: number) => {
@@ -18,7 +18,7 @@ const pageAt = (t: number) => {
 
 // ---- story time pill ---------------------------------------------------------
 const storyAt2 = (t: number): {txt: string; img: string} => {
-  if (t >= SW[6]) return {txt: 'Your turn', img: 'writing_hand'};
+  if (t >= SW[6]) return {txt: 'Done for you', img: 'handshake'};
   if (t >= SW[5]) return {txt: 'Remember', img: 'light_bulb'};
   for (let k = 4; k >= 1; k--) if (t >= SW[k]) return {txt: `Fix ${k}/4`, img: ['', 'money_bag', 'memo', 'calendar', 'bullseye'][k]};
   return {txt: 'Lead quality', img: 'warning'};
@@ -51,7 +51,7 @@ WORDS.forEach((w, i) => {
   if (!last || !prev || prev.line !== w.line || /[,.?!]$/.test(prev.w) || last.ws.length >= 3) CHUNKS.push({ws: [w], s: w.s});
   else last.ws.push(w);
 });
-const KEY = /^"?(whatsapp|instagram|dm|ai|gym|member|members|price|fake|leads|lead|quality|range|form|sawaal|budget|sahi|site|visit|book|retargeting|walkthrough|paisa|deals|save|team|comment)"?[,.?!]*$/i;
+const KEY = /^"?(whatsapp|instagram|dm|ai|gym|member|members|price|fake|leads|lead|quality|range|form|sawaal|budget|sahi|site|visit|book|retargeting|walkthrough|paisa|deals|details|guide|dm|follow|neuraxine|comment)"?[,.?!]*$/i;
 const Captions: React.FC<{t: number; theme: Theme}> = ({t, theme}) => {
   if (t > END_AT - 0.2) return null;
   let ci = -1;
