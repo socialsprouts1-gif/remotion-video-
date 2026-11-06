@@ -1,6 +1,6 @@
 // Render-free shared state between the DOM (GSAP / Lenis) and WebGL.
 
-export const SECTIONS = ['hero', 'journey', 'demos', 'roi', 'process', 'stack', 'builds', 'contact']
+export const SECTIONS = ['hero', 'journey', 'demos', 'more', 'industries', 'roi', 'process', 'stack', 'builds', 'faq', 'contact']
 
 export const store = {
   s: 0, // continuous section coordinate (see brand-site/src/store.js)

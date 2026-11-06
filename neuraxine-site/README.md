@@ -4,6 +4,17 @@ The Neuraxine agency site. The hero shows a 3D version of the Neuraxine logo, tr
 
 ![Hero](docs/preview-hero.png)
 
+## Page structure
+
+1. **Hero:** 3D logo, headline, a scrolling strip of brand logos
+2. **How it works:** scroll-driven journey through the 3D workflow network
+3. **Live demos:** WhatsApp agent, n8n workflow, lead-gen agent, custom SaaS (backed by the API)
+4. **More services:** a bento grid of six more services, each with a looping micro-demo. The voice agent plays a real spoken sample call using the browser's speech engine; the others show a website chatbot, invoice reading, a content calendar, a CRM pipeline and a website being built.
+5. **Industries:** a sideways-scrolling rail with use cases for eight trades
+6. **ROI calculator, process, integrations, builds**
+7. **FAQ:** accordion, with FAQPage structured data for search engines
+8. **Contact:** the free-audit form, a footer, and a floating WhatsApp button (number in `src/site.js`)
+
 ## Run it
 
 ```bash
@@ -41,7 +52,7 @@ Every key is optional; see `.env.example`. Without a key, that feature falls bac
 
 ## Edit content
 
-- Copy, services, process, builds and integrations: `src/site.js`
+- Copy, services (`services`, `moreServices`), industries, FAQ, process, builds and integrations: `src/site.js`
 - Demo businesses, workflows and lead categories: `src/demos/data.js`
 - Scripted agent and lead drafts: `src/demos/engine.js` (shared by browser and server)
 

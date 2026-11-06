@@ -1,6 +1,29 @@
-import * as icons from 'simple-icons'
+// Official brand marks from Simple Icons (CC0). Only the marks the site uses are
+// imported, so the bundle stays small. `name` is the export, e.g. "siWhatsapp".
+import {
+  siAirtable,
+  siCalendly,
+  siClaude,
+  siGmail,
+  siGooglecalendar,
+  siGooglesheets,
+  siHubspot,
+  siInstagram,
+  siMake,
+  siMeta,
+  siN8n,
+  siNotion,
+  siRazorpay,
+  siShopify,
+  siStripe,
+  siSupabase,
+  siWhatsapp,
+  siZapier,
+  siZoho,
+} from 'simple-icons'
 
-// Official brand marks from Simple Icons (CC0). `name` is the export, e.g. "siWhatsapp".
+const icons = { siAirtable, siCalendly, siClaude, siGmail, siGooglecalendar, siGooglesheets, siHubspot, siInstagram, siMake, siMeta, siN8n, siNotion, siRazorpay, siShopify, siStripe, siSupabase, siWhatsapp, siZapier, siZoho }
+
 export default function BrandIcon({ name, size = 20, color, title }) {
   const icon = icons[name]
   if (!icon) return null

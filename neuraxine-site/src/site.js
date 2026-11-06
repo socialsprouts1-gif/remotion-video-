@@ -127,3 +127,77 @@ export const builds = [
   { name: 'Video captioning pipeline', tag: 'Automation', copy: 'Transcribes, translates and burns styled captions into short-form videos.' },
   { name: 'Cinematic villa reel', tag: 'Creative', copy: 'A code-rendered property film for a villa client.' },
 ]
+
+// More services, shown as a bento grid. `demo` picks the micro-animation.
+export const moreServices = [
+  {
+    id: 'voice',
+    icon: 'PhoneCall',
+    name: 'AI Voice Agents',
+    line: 'Answers calls, books appointments and calls back missed leads, in Hindi or English.',
+    points: ['Inbound and outbound calls', 'Natural Hindi, English, Hinglish', 'Call summary sent to WhatsApp'],
+    demo: 'voice',
+    size: 'wide',
+  },
+  {
+    id: 'chatbot',
+    icon: 'MessagesSquare',
+    name: 'Website AI Chatbot',
+    line: 'Trained on your services, prices and FAQs. Captures the lead before the visitor leaves.',
+    points: ['Answers from your own documents', 'Hands over to WhatsApp', 'Works on any website'],
+    demo: 'chatbot',
+  },
+  {
+    id: 'docs',
+    icon: 'ScanText',
+    name: 'Document & Invoice Processing',
+    line: 'Reads invoices, bills and forms, pulls out the fields and files them where they belong.',
+    points: ['PDFs, photos and scans', 'GST numbers, totals, dates', 'Straight into Sheets or Tally'],
+    demo: 'docs',
+  },
+  {
+    id: 'content',
+    icon: 'CalendarDays',
+    name: 'Content & Social Automation',
+    line: 'A month of posts planned, written and scheduled from one brief, in your brand voice.',
+    points: ['Captions, hooks and hashtags', 'Auto-scheduling to Instagram', 'Weekly performance recap'],
+    demo: 'content',
+  },
+  {
+    id: 'crm',
+    icon: 'Workflow',
+    name: 'CRM & Sales Automation',
+    line: 'Every lead gets followed up on time, so deals stop slipping through the cracks.',
+    points: ['Lead routing and reminders', 'Email + WhatsApp sequences', 'Pipeline updates without typing'],
+    demo: 'crm',
+  },
+  {
+    id: 'web',
+    icon: 'LayoutTemplate',
+    name: 'AI-Built Websites',
+    line: 'Fast, premium websites and landing pages with chat, booking and tracking built in.',
+    points: ['Designed for conversions', 'WhatsApp and booking ready', 'Live in days, not months'],
+    demo: 'web',
+    size: 'full',
+  },
+]
+
+export const industries = [
+  { name: 'Salons & spas', icon: 'Scissors', uses: ['WhatsApp booking', 'No-show reminders', 'Review requests'] },
+  { name: 'Clinics & dentists', icon: 'Stethoscope', uses: ['Appointment agent', 'Report delivery', 'Follow-up care'] },
+  { name: 'Real estate', icon: 'Building2', uses: ['Lead scoring', 'Site-visit booking', 'Brochure on request'] },
+  { name: 'CA & finance firms', icon: 'Landmark', uses: ['Document collection', 'GST reminders', 'Invoice reading'] },
+  { name: 'Gyms & studios', icon: 'Dumbbell', uses: ['Trial to membership', 'Renewal reminders', 'Attendance alerts'] },
+  { name: 'D2C & e-commerce', icon: 'ShoppingBag', uses: ['Order updates', 'Abandoned-cart nudges', 'Returns on WhatsApp'] },
+  { name: 'Coaching & education', icon: 'GraduationCap', uses: ['Admission enquiries', 'Fee reminders', 'Class schedules'] },
+  { name: 'Hotels & villas', icon: 'BedDouble', uses: ['Booking enquiries', 'Check-in details', 'Guest concierge'] },
+]
+
+export const faqs = [
+  { q: 'Do I need the official WhatsApp Business API?', a: 'For automation, yes. We set it up for you on Meta’s Cloud API, including number verification and message templates. You keep full ownership of the number.' },
+  { q: 'How long does a typical build take?', a: 'A single focused automation, like a booking agent or a lead workflow, usually takes one to two weeks. Larger systems are planned in phases so something useful goes live early.' },
+  { q: 'What does it cost to run each month?', a: 'It depends on message volume and the tools involved. After the audit you get a written estimate of the monthly running cost before anything is built.' },
+  { q: 'Will the AI say something wrong to my customers?', a: 'Agents answer only from the facts you approve, and hand over to a person when they’re unsure. Every conversation is logged so you can review it.' },
+  { q: 'Can it work with the tools I already use?', a: 'Usually, yes. If a tool has an API, a webhook or even a spreadsheet export, we can connect it. We’ll tell you in the audit if something can’t be done.' },
+  { q: 'Do I own what you build?', a: 'Yes. Workflows, code and documentation are handed over to you. We can maintain it on a retainer, but you’re never locked in.' },
+]

@@ -6,8 +6,9 @@ import Magnetic from './Magnetic'
 const LINKS = [
   ['How it works', '#journey'],
   ['Services', '#demos'],
-  ['ROI', '#roi'],
+  ['Industries', '#industries'],
   ['Work', '#builds'],
+  ['FAQ', '#faq'],
 ]
 
 export default function Nav() {

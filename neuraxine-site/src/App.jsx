@@ -8,6 +8,11 @@ import WhatsAppFab from './components/WhatsAppFab'
 import Hero from './sections/Hero'
 import Journey from './sections/Journey'
 import Demos from './sections/Demos'
+import MoreServices from './sections/MoreServices'
+import Industries from './sections/Industries'
+import Faq from './sections/Faq'
+import Band from './components/Band'
+import ScrollProgress from './components/ScrollProgress'
 import Roi from './sections/Roi'
 import Process from './sections/Process'
 import Stack from './sections/Stack'
@@ -43,16 +48,21 @@ export default function App() {
       </div>
       <div className="grain" aria-hidden="true" />
       <Cursor />
+      <ScrollProgress />
       <Nav />
       <WhatsAppFab show={loaded} />
       <main className={loaded ? 'is-loaded' : ''}>
         <Hero />
         <Journey />
         <Demos />
+        <Band />
+        <MoreServices />
+        <Industries />
         <Roi />
         <Process />
         <Stack />
         <Builds />
+        <Faq />
         <Contact />
       </main>
     </>
