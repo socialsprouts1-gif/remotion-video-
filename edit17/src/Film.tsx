@@ -5,7 +5,7 @@ import {TH, Theme, fl} from './kit';
 import {CARDS as SCENES, CARD_LINE, THEMES} from './cards';
 
 const SW = CARD_LINE.map((li, i) => (i === 0 ? 0 : LINE[li] - 0.45));
-const END_AT = WE(8, 16) + 0.6;
+const END_AT = WE(8, 31) + 0.6;
 const FLIP = 0.7;
 
 const pageAt = (t: number) => {
@@ -22,7 +22,7 @@ const storyAt = (t: number): {txt: string; img: string} => {
   for (let k = 5; k >= 1; k--) if (t >= SW[k]) return t < SW[6] ? {txt: `Strategy ${k}/5`, img: ['', 'bullseye', 'camera_with_flash', 'round_pushpin', 'stopwatch', 'spiral_calendar'][k]} : {txt: '', img: ''};
   return {txt: '', img: ''};
 };
-const storyAt2 = (t: number) => (t >= SW[7] ? {txt: 'Your turn', img: 'writing_hand'} : t >= SW[6] ? {txt: 'Underrated', img: 'crown'} : storyAt(t));
+const storyAt2 = (t: number) => (t >= SW[7] ? {txt: 'Done for you', img: 'handshake'} : t >= SW[6] ? {txt: 'Underrated', img: 'crown'} : storyAt(t));
 const Header: React.FC<{t: number; theme: Theme}> = ({t, theme}) => {
   const c = storyAt2(t);
   let changed = 0;
@@ -51,7 +51,7 @@ WORDS.forEach((w, i) => {
   if (!last || !prev || prev.line !== w.line || /[,.?!]$/.test(prev.w) || last.ws.length >= 3) CHUNKS.push({ws: [w], s: w.s});
   else last.ws.push(w);
 });
-const KEY = /^"?(whatsapp|instagram|dm|ai|gym|member|members|leads|site|visits|marketing|wastage|strategies|ad|ads|reel|life|google|reply|follow-up|underrated|save|number|comment|5|500)"?[,.?!]*$/i;
+const KEY = /^"?(whatsapp|instagram|dm|ai|gym|member|members|leads|site|visits|marketing|wastage|strategies|ad|ads|reel|life|google|reply|follow-up|underrated|save|number|comment|details|guide|dm|follow|neuraxine|5|500)"?[,.?!]*$/i;
 const Captions: React.FC<{t: number; theme: Theme}> = ({t, theme}) => {
   if (t > END_AT - 0.2) return null;
   let ci = -1;

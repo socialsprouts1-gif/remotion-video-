@@ -17,7 +17,7 @@ for w in E["words"]:
 W = lambda l, k: lines[l][k]["s"]
 WE = lambda l, k: lines[l][k]["e"]
 L = E["lines"]
-END_AT = WE(8, 16) + 0.6
+END_AT = WE(8, 31) + 0.6
 
 mus = np.zeros(N)
 sfx = np.zeros(N)
@@ -96,7 +96,10 @@ put(sfx, pop(700), 0.4, 0.3)
 for s_ in [W(1, 11)]: put(sfx, thump(), s_, 0.7)
 for k in range(5): put(sfx, pop(800 + 100 * k), W(1, 5) + k * 0.15, 0.2)
 for k in range(5): put(sfx, flick(), W(1, 13) + k * 0.08, 0.3)
-for s_ in [W(7, 17), W(8, 1) + 0.3, W(8, 16) + 0.3, END_AT + 1.4]: put(sfx, chime(), s_, 0.26)
+for s_ in [W(7, 17), W(8, 14) + 0.6, W(8, 20) - 0.1, W(8, 31), END_AT + 1.4]: put(sfx, chime(), s_, 0.26)
+for k in range(5): put(sfx, pop(900 + 120 * k), W(8, 5) + k * 0.18, 0.2)
+put(sfx, thump(), W(8, 12), 0.6)
+for k in range(7): put(sfx, tick(), W(8, 14) - 0.1 + k * 0.065, 0.25)
 pops = [W(2, 10), W(2, 15), W(2, 22), W(3, 4), W(3, 7), W(3, 10), W(3, 13), W(3, 20), W(4, 12), W(4, 17), W(4, 18), W(4, 19),
         W(5, 1), W(5, 8) - 0.3, W(5, 9), W(6, 8), W(6, 10), W(6, 12), W(7, 11), W(7, 15)]
 for i, p_ in enumerate(pops): put(sfx, pop(750 + 140 * (i % 3)), p_, 0.2)
