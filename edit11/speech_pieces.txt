@@ -1,0 +1,15 @@
+# start end | words actually spoken (Whisper medium, Hindi + English passes, reconciled)
+0.10 3.72 | 2026 mein business grow karne ke liye sirf marketing karna enough nahi hai.
+3.85 6.82 | Aaj har business Instagram ads chala raha hai, content bana raha hai,
+6.82 8.93 | aur naye customer laane ki koshish kar raha hai.
+8.93 11.09 | Lekin ek important cheez miss kar raha hai.
+11.09 15.58 | Jo customer already enquiry kar rahe hain, unko properly handle nahi kar rahe. Late replies, missed WhatsApp
+15.58 16.92 | messages, no follow-up.
+16.92 19.76 | Yahi pe business apne potential customers lose kar dete hain.
+19.76 23.20 | Isliye marketing ke saath ek strong automation system bhi zaroori hai,
+23.20 24.56 | jahan AI agents customer
+24.56 28.59 | enquiries handle karein, WhatsApp follow-up automatically jaaye, appointments book ho,
+28.59 31.87 | aur leads properly manage ho. Because getting customers is marketing,
+31.87 34.85 | but managing and converting them, where automation comes in.
+34.85 39.25 | Want to automate your business? DM us "AUTOMATE" and we will share you a detailed guide.
+39.25 42.30 | And for such AI-related content, follow Neuraxine.

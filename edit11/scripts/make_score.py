@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Festive music bed + SFX for the CoinDCX Diwali giveaway reel (voice comes from the clips).
+"""Tech groove + SFX for the Neuraxine automation reel (voice comes from the clips).
 
 Everything is synthesised (no samples, no licences). Timing comes from
 src/timeline.json — the same file the picture reads — so sound and image stay locked.
@@ -227,105 +227,112 @@ def glitch(d=0.2):
     return np.round(x * 3) / 3 * (np.sin(2 * np.pi * 31 * t) > 0) * np.exp(-t / (d / 2.5))
 
 
-# ---- music: upbeat festive groove in D major (bright plucks, bells, four-on-floor at low level under the voice)
-BEAT = 60 / 112
+# ---- music: modern tech groove in A minor, 118 bpm, low under the voice; lifts in the full-graphic scenes
+BEAT = 60 / 118
 BAR = 4 * BEAT
-chords = [([62, 66, 69], 38), ([59, 62, 66], 35), ([55, 59, 62], 31), ([57, 61, 64], 33)]
-arp = [0, 1, 2, 1, 2, 0, 1, 2]
-gone = [(W[48] - 0.12, W[60] - 0.12), (W[69] - 0.1, W[79] - 0.12)]  # full-graphic scenes: lift the groove
+chords = [([57, 60, 64], 33), ([53, 57, 60], 29), ([48, 52, 55], 36), ([55, 59, 62], 31)]
+arp = [0, 2, 1, 2, 0, 2, 1, 2]
+lift = [(0, W[13] - 0.1), (W[62] - 0.1, W[72] - 0.1), (W[102] - 0.1, W[116] - 0.1)]
+danger = (W[42] - 0.1, W[72] - 0.1)
 nb = int(SPEECH / BAR) + 1
 for k in range(nb):
     t0 = k * BAR
     if t0 > SPEECH - 0.2:
         break
     notes, root = chords[k % 4]
-    place(pad(notes, BAR + 0.4, attack=0.3, release=0.8, harm=4), t0, gain=0.03, verb=0.5)
-    place(pluck(root, 0.5, 0.4), t0, gain=0.07)
-    place(pluck(root, 0.3, 0.4), t0 + BEAT * 2.5, gain=0.05)
+    place(pad(notes, BAR + 0.4, attack=0.25, release=0.8, harm=4), t0, gain=0.028, verb=0.5)
+    place(pluck(root, 0.45, 0.2), t0, gain=0.08)
+    place(pluck(root + 12, 0.25, 0.2), t0 + BEAT * 1.5, gain=0.04)
+    place(pluck(root, 0.3, 0.2), t0 + BEAT * 2.5, gain=0.06)
     for s in range(8):
         ts = t0 + s * BEAT / 2
         if ts > SPEECH - 0.2:
             break
-        lift = any(a <= ts < b for a, b in gone)
-        place(pluck(notes[arp[s]] + 12, 0.16, 0.6), ts, gain=0.022 * (1.5 if lift else 1), pan=-0.35 if s % 2 else 0.35, verb=0.35)
+        up = any(a <= ts < b for a, b in lift)
+        dg = danger[0] <= ts < danger[1]
+        note = notes[arp[s]] + (12 if not dg else 0)
+        place(pluck(note, 0.12, 0.7), ts, gain=0.018 * (1.5 if up else 1), pan=-0.4 if s % 2 else 0.4, verb=0.35)
         if s % 2 == 0:
-            place(kick(0.55), ts, gain=0.05 if lift else 0.035)
+            place(kick(0.5), ts, gain=0.055 if up else 0.035)
         else:
             place(hat(), ts, gain=0.03, pan=0.2)
         if s in (2, 6):
-            place(fft_band(rng.standard_normal(int(0.12 * SR)), 900, 6000) * np.exp(-tax(0.12) / 0.03), ts, gain=0.02 if not lift else 0.035)
+            place(fft_band(rng.standard_normal(int(0.12 * SR)), 900, 7000) * np.exp(-tax(0.12) / 0.03), ts, gain=0.035 if up else 0.02)
 
-def pop(t0, g=0.08, up=True):
-    place(bubble(up), t0, gain=g)
-    place(thud(0.08), t0, gain=g * 0.9)
+def pop(t0, g=0.07, upd=True):
+    place(bubble(upd), t0, gain=g)
+    place(thud(0.08), t0, gain=g * 0.8)
 
-def sparkle(t0, g=0.035):
-    for j in range(6):
-        place(bell(86 + (j * 5) % 12, 0.18), t0 + j * 0.045, gain=g, pan=(j % 3 - 1) * 0.5, verb=0.6)
+def stamp(t0, g=0.16):
+    place(impact(0.8, 1.4), t0, gain=g, verb=0.4)
+    place(thud(0.15), t0, gain=0.12)
 
-# hook: question sting
-place(whoosh(0.35, 600, 7000, 0.8), W[1] - 0.35, gain=0.08)
-place(thud(0.1), W[1] - 0.05, gain=0.08)
-place(bell(81, 0.4), W[2] - 0.05, gain=0.04, verb=0.5)
-# hook -> framed card
-place(whoosh(0.3, 5000, 600, 0.6), W[4] - 0.3, gain=0.06)
-place(bell(78, 0.6), W[11] - 0.06, gain=0.05, verb=0.6)  # surprise gift
-pop(W[11] - 0.08, 0.06)
-sparkle(W[19] + 0.05, 0.03)  # gift bursts
-# products: whoosh + slam on each spoken name
-place(whoosh(0.3, 500, 8000, 0.8), W[21] - 0.4, gain=0.08)
-for n, i in enumerate((22, 28, 32, 36, 41)):
-    place(whoosh(0.28, 400, 7000, 0.85), W[i] - 0.33, gain=0.09, pan=0.4)
-    place(impact(0.6, 1.0), W[i] - 0.08, gain=0.08, verb=0.3)
-    place(bell(74 + [0, 2, 4, 7, 9][n], 0.35), W[i] - 0.06, gain=0.035, verb=0.5)
-for j in range(5):
-    place(blip(1200 + j * 160, 0.04), W[46] - 0.1 + j * 0.06, gain=0.04)
-# bumper giveaway
-place(whoosh(0.4, 6000, 500, 0.5), W[48] - 0.4, gain=0.07)
-pop(W[49] - 0.08, 0.07)
-place(riser(1.6, 200, 6000), W[58] - 1.6, gain=0.05)
-place(impact(1.0, 2.2), W[58] - 0.08, gain=0.2, verb=0.5)
-sparkle(W[58], 0.045)
-for j in range(14):
-    place(keyclick(), W[58] + 0.05 + rnd(j) * 1.4, gain=0.05, pan=rnd(j * 3) * 2 - 1)  # confetti
-# ek, do, paanch... nahi
-for i in (65, 66, 67):
-    place(thud(0.1), W[i] - 0.08, gain=0.1)
-    place(blip(900, 0.05), W[i] - 0.07, gain=0.04)
-place(whoosh(0.25, 3000, 400, 0.4), W[68] - 0.08, gain=0.08)
-place(glitch(0.2), W[68] - 0.02, gain=0.05)
-# 27 WINNERS: counter roll + big hit
-place(riser(0.9, 300, 5000), W[69] - 1.0, gain=0.04)
-place(impact(1.1, 2.4), W[69] - 0.1, gain=0.22, verb=0.5)
-t = W[69] - 0.1
-while t < W[69] + 0.5:
-    place(tick(), t, gain=0.03)
-    t += 0.045
-for j in range(27):
-    place(blip(1500 + (j % 9) * 90, 0.03), W[71] + j * 0.035, gain=0.022, pan=((j % 9) / 4 - 1))
-sparkle(W[76] - 0.05, 0.04)  # sunehra mauka
-# steps
-place(whoosh(0.3, 500, 7000, 0.8), W[79] - 0.42, gain=0.07)
-pop(W[84] - 0.08, 0.07)
-place(ding(), W[86] - 0.05, gain=0.05)
-place(whoosh(0.3, 800, 6000, 0.7), W[88] - 0.35, gain=0.06, pan=0.4)
-for k in range(4):
-    place(blip(1000 + k * 120, 0.04), W[90] - 0.1 + k * 0.35, gain=0.04)
-# ending
-place(whoosh(0.35, 5000, 600, 0.6), W[97] - 0.4, gain=0.06)
-place(whoosh(0.25, 600, 6000, 0.8), W[99] - 0.35, gain=0.05)
-t = W[99]
-while t < W[110] - 0.2:
-    place(keyclick(), t, gain=0.025)
-    t += 0.13 + rnd(t) * 0.12
-place(whoosh(0.3, 700, 7000, 0.8), W[110] - 0.4, gain=0.06)
-for j in range(5):
-    pop(W[110] + j * 0.08, 0.04)
-place(bell(86, 0.5), W[123] - 0.05, gain=0.04, verb=0.6)
-# end card
+# intro: hits on 2026 / marketing / enough nahi
+place(impact(0.9, 1.6), W[0] - 0.05, gain=0.14, verb=0.4)
+place(whoosh(0.3, 600, 8000, 0.85), W[2] - 0.32, gain=0.07)
+place(whoosh(0.3, 500, 8000, 0.85), W[7] - 0.35, gain=0.09)
+place(impact(0.6, 1.0), W[8] - 0.06, gain=0.1)
+place(glitch(0.22), W[10] - 0.04, gain=0.06)
+stamp(W[11] - 0.05, 0.12)
+# into the split
+place(whoosh(0.35, 6000, 500, 0.5), W[13] - 0.4, gain=0.08)
+place(whoosh(0.3, 500, 7000, 0.8), W[16] - 0.35, gain=0.07, pan=-0.4)
+pop(W[17] - 0.06, 0.06)
+for i in range(6):
+    place(blip(1300 + i * 120, 0.03), W[21] - 0.08 + i * 0.06, gain=0.03)
+for i in range(8):
+    place(blip(900 + i * 90, 0.03), W[26] - 0.1 + i * 0.12, gain=0.03, pan=(i / 4 - 1))
+# something missing
+place(whoosh(0.3, 5000, 700, 0.6), W[34] - 0.3, gain=0.06)
+pop(W[37] - 0.06, 0.07)
+pop(W[38] - 0.06, 0.06, False)
+# the inbox
+place(whoosh(0.35, 500, 7000, 0.8), W[42] - 0.4, gain=0.08)
+for i in (43, 45, 47):
+    place(ping(1400, 1100), W[i] - 0.05, gain=0.035)
+place(ding(), W[55] - 0.06, gain=0.04)
+t = W[57] - 0.05
+while t < W[59] + 0.2:
+    place(tick(), t, gain=0.025)
+    t += 0.05
+stamp(W[60] - 0.06, 0.18)
+# customers lost
+place(whoosh(0.4, 6000, 400, 0.5), W[62] - 0.4, gain=0.07)
+for i in range(24):
+    place(blip(1100 - (i % 6) * 60, 0.03), W[62] + 0.15 + i * 0.025, gain=0.02)
+place(riser(0.9, 300, 4000), W[68] - 1.0, gain=0.04)
+stamp(W[68] - 0.08, 0.2)
+for i in range(10):
+    place(bubble(False), W[68] + 0.1 + i * 0.12, gain=0.03, pan=rnd(i) * 2 - 1)
+# marketing + automation
+place(whoosh(0.35, 500, 7000, 0.8), W[72] - 0.4, gain=0.08)
+pop(W[73] - 0.08, 0.07)
+place(thud(0.1), W[75] - 0.08, gain=0.08)
+place(impact(0.6, 1.2), W[78] - 0.08, gain=0.1, verb=0.4)
+place(bell(81, 0.5), W[81] - 0.05, gain=0.04, verb=0.5)
+# AI agent steps
+for n, i in enumerate((84, 90, 94, 98)):
+    place(whoosh(0.22, 600, 7000, 0.85), W[i] - 0.3, gain=0.06, pan=0.3)
+    place(bell(76 + [0, 3, 7, 10][n], 0.35), W[i] - 0.08, gain=0.04, verb=0.5)
+    place(ding(), W[i] + 0.25, gain=0.03)
+# the truth
+place(whoosh(0.4, 6000, 500, 0.5), W[102] - 0.4, gain=0.07)
+place(impact(0.7, 1.2), W[106] - 0.08, gain=0.12)
+place(riser(1.2, 200, 6000), W[113] - 1.2, gain=0.05)
+place(impact(1.0, 2.0), W[113] - 0.08, gain=0.2, verb=0.5)
+for i in range(4):
+    pop(W[113] + 0.1 + i * 0.08, 0.04)
+# DM + guide
+place(whoosh(0.35, 500, 7000, 0.8), W[116] - 0.4, gain=0.07)
+for i in range(8):
+    place(keyclick(), W[122] - 0.05 + i * 0.06, gain=0.06)
+place(ping(1500, 1900), W[124] - 0.06, gain=0.05)
+pop(W[130] - 0.08, 0.06)
+# follow
+place(impact(0.6, 1.2), W[135] - 0.1, gain=0.1, verb=0.4)
+place(ding(), W[137] - 0.05, gain=0.06)
 place(impact(0.8, 2.4), SPEECH, gain=0.15, verb=0.5)
-place(pad([62, 66, 69, 74], TL["endCard"], attack=0.05, release=1.0, harm=4), SPEECH, gain=0.06, verb=0.7)
-sparkle(SPEECH + 0.3, 0.04)
+place(pad([57, 64, 69, 72], TL["endCard"], attack=0.05, release=1.0, harm=4), SPEECH, gain=0.05, verb=0.7)
 
 # ------------------------------------------------------------------ room + master
 def ir(d=3.2):

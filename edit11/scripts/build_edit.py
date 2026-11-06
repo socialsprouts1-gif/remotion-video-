@@ -7,7 +7,7 @@ import numpy as np
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 FPS, END_CARD = 30, 2.6
-SRC = os.path.join(ROOT, "public", "clips", "main.mp4")
+SRC = os.path.join(ROOT, "public", "audio", "voice.wav")
 D = json.load(open(os.path.join(ROOT, "src", "segs.json")))
 words, S = D["words"], D["syl"]
 raw0 = subprocess.run(["ffmpeg", "-v", "error", "-i", SRC, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
