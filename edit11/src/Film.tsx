@@ -165,7 +165,8 @@ const CHUNKS: Chunk[] = (() => {
   WORDS.forEach((w, i) => {
     cur.push(w);
     const nx = WORDS[i + 1];
-    if (/[.,?!]$/.test(w.w) || cur.length >= 3 || !nx || nx.s - w.e > 0.3) {
+    const chars = cur.map((x) => x.w).join(' ').length + (nx ? nx.w.length + 1 : 0);
+    if (/[.,?!]$/.test(w.w) || cur.length >= 3 || !nx || nx.s - w.e > 0.3 || chars > 20) {
       out.push({words: cur, s: cur[0].s, e: 0});
       cur = [];
     }
@@ -189,8 +190,8 @@ const Captions: React.FC<{t: number}> = ({t}) => {
         const k = key(w.w);
         const on = i === cur;
         const seen = i <= cur;
-        const red = RED_W.has(k);
-        const lime = LIME_W.has(k);
+        const red = RED_W.has(k) && t < W(72);
+        const lime = LIME_W.has(k) || (k === 'followup' && !red);
         const wp = sp(t, w.s - 0.04, 520, 18);
         return (
           <span
@@ -242,7 +243,7 @@ const Intro: React.FC<{t: number}> = ({t}) => {
   const pi = t >= W(7) - 0.08 ? 1 : 0;
   const P = PHRASES[pi];
   const at = pi ? W(7) - 0.08 : 0;
-  const zooms = [{at: 0, z: 1}, {at: W(2) - 0.05, z: 1.1}, {at: W(7) - 0.06, z: 1.02}, {at: W(8) - 0.05, z: 1.16}, {at: W(10) - 0.05, z: 1.28}];
+  const zooms = [{at: 0, z: 1}, {at: W(2) - 0.05, z: 1.1}, {at: W(7) - 0.06, z: 1.02}, {at: W(8) - 0.05, z: 1.1}, {at: W(10) - 0.05, z: 1.16}];
   const zi = zooms.reduce((n, z, i) => (t >= z.at ? i : n), 0);
   const zoom = lerp(zi ? zooms[zi - 1].z : 1, zooms[zi].z, zi ? m1(sp(t, zooms[zi].at, 420, 26)) : 1) * lerp(1, 0.55, out);
   const enter = sp(t, 0, 300, 20);
@@ -273,12 +274,12 @@ const Intro: React.FC<{t: number}> = ({t}) => {
         return <div key={i} style={{position: 'absolute', left: x, top: y, width: r, height: r, borderRadius: r, background: red ? '#FF8A80' : C.lime, boxShadow: `0 0 ${r * 3}px ${red ? C.red : C.lime}`, opacity: 0.65}} />;
       })}
       {/* the speaker, background removed */}
-      <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, transformOrigin: '50% 100%', transform: `translateY(${360 + (1 - m1(enter)) * 300}px) scale(${zoom * 1.0})`}}>
+      <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, transformOrigin: '50% 100%', transform: `translateY(${400 + (1 - m1(enter)) * 300}px) scale(${zoom * 1.0})`}}>
         <Img src={staticFile(`clips/cut/f${String(fi).padStart(4, '0')}.webp`)} style={{width: 1080, height: 1920, filter: `contrast(1.08) saturate(0.95) drop-shadow(0 0 26px ${red ? 'rgba(255,60,40,0.55)' : 'rgba(200,255,62,0.45)'}) drop-shadow(0 30px 50px rgba(0,0,0,0.6))`}} />
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 360, background: `linear-gradient(180deg, transparent, ${C.bg} 80%)`}} />
       {/* kinetic words: exactly what he says */}
-      <div key={pi} style={{position: 'absolute', left: 50, right: 50, top: 130, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', columnGap: 22, opacity: pin, transform: `translateX(${(1 - pin) * 120}px)`, filter: pin < 1 ? `blur(${(1 - pin) * 10}px)` : undefined}}>
+      <div key={pi} style={{position: 'absolute', left: 40, right: 40, top: 110, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', columnGap: 22, opacity: pin, transform: `translateX(${(1 - pin) * 120}px)`, filter: pin < 1 ? `blur(${(1 - pin) * 10}px)` : undefined}}>
         {WORDS.slice(P.a, P.b + 1).map((w) => {
           const big = P.big.includes(w.i);
           const isRed = (P.red ?? []).includes(w.i);
@@ -286,7 +287,7 @@ const Intro: React.FC<{t: number}> = ({t}) => {
           if (s2 <= 0) return null;
           const year = w.i === 0;
           return (
-            <span key={w.i} style={{position: 'relative', display: 'inline-block', fontFamily: big && !year ? SERIF : SANS, fontStyle: big && !year ? 'italic' : 'normal', fontWeight: big && !year ? 400 : 900, fontSize: year ? 230 : big ? 170 : isRed ? 110 : 84, lineHeight: big || year ? 1.0 : 1.15, letterSpacing: year ? '-0.06em' : big ? '0' : '-0.03em', textTransform: big ? 'none' : 'uppercase', paddingRight: big && !year ? '0.2em' : 0, ...(year ? silverText : big ? limeText : isRed ? redText : {color: C.cream}), transform: `scale(${lerp(big || year ? 2.2 : 1.6, 1, m1(s2))})`, opacity: m1(s2 * 3), filter: 'drop-shadow(0 10px 26px rgba(0,0,0,0.75))'}}>
+            <span key={w.i} style={{position: 'relative', display: 'inline-block', fontFamily: big && !year ? SERIF : SANS, fontStyle: big && !year ? 'italic' : 'normal', fontWeight: big && !year ? 400 : 900, fontSize: year ? 230 : big ? 150 : isRed ? 96 : 76, lineHeight: big || year ? 1.0 : 1.15, letterSpacing: year ? '-0.06em' : big ? '0' : '-0.03em', textTransform: big ? 'none' : 'uppercase', paddingRight: big && !year ? '0.2em' : 0, ...(year ? silverText : big ? limeText : isRed ? redText : {color: C.cream}), transform: `scale(${lerp(big || year ? 2.2 : 1.6, 1, m1(s2))})`, opacity: m1(s2 * 3), filter: 'drop-shadow(0 10px 26px rgba(0,0,0,0.75))'}}>
               {clean(w.w).replace(/[,.]/g, '')}
             </span>
           );
@@ -294,7 +295,7 @@ const Intro: React.FC<{t: number}> = ({t}) => {
       </div>
       {pi === 1 && (
         <svg width={1080} height={700} style={{position: 'absolute', left: 0, top: 150, opacity: strike > 0.01 ? 1 : 0}}>
-          <path d="M 150 400 L 930 300" stroke={C.red} strokeWidth={18} strokeLinecap="round" strokeDasharray={`${strike * 900} 2000`} />
+          <path d="M 170 330 L 910 250" stroke={C.red} strokeWidth={18} strokeLinecap="round" strokeDasharray={`${strike * 900} 2000`} />
         </svg>
       )}
       {pi === 1 && <Ico n="cross_mark.png" size={150} style={{position: 'absolute', left: 860, top: 640, transform: `scale(${m1(sp(t, W(11) - 0.05, 420, 12))}) rotate(-10deg)`}} />}
