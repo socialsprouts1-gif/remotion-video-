@@ -29,6 +29,15 @@ For development, run `npm run server` in one terminal and `npm run dev` in anoth
 npm test                # 15 API tests (vitest + supertest)
 ```
 
+## Deploy on Vercel
+
+The repo is set up for Vercel: `vercel.json` builds the Vite site and routes every `/api/*` request to `api/index.js`, which runs the same Express app as a serverless function.
+
+1. Import the repo in Vercel. The settings are picked up from `vercel.json`.
+2. In **Project → Settings → Environment Variables**, add the keys from `.env.example` that you want live.
+3. **Set `N8N_WEBHOOK_URL` and/or `RESEND_API_KEY` + `LEAD_EMAIL_TO`.** Vercel doesn't keep files between requests, so on Vercel the audit form only reaches you through the webhook or email.
+4. Redeploy. Check `https://<your-domain>/api/health`: `services` shows which keys are active.
+
 ## Backend (`server/`)
 
 An Express app that serves the built site and the API from one port, so it deploys anywhere Node runs (Render, Railway, a VPS).

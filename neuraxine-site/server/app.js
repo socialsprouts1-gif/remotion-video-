@@ -31,7 +31,7 @@ const WorkflowRun = z.object({
 
 const bad = (res, err) => res.status(400).json({ ok: false, error: err.issues?.[0]?.message || 'Invalid request', issues: err.issues })
 
-export function createApp({ env = process.env, ai = createAI(env), store = createStore(env.DATA_DIR || 'data'), fetchImpl = fetch, limits = {} } = {}) {
+export function createApp({ env = process.env, ai = createAI(env), store = createStore(env.DATA_DIR || (env.VERCEL ? '/tmp/neuraxine-data' : 'data')), fetchImpl = fetch, limits = {} } = {}) {
   const app = express()
   app.disable('x-powered-by')
   app.set('trust proxy', 1)
