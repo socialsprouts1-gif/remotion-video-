@@ -309,7 +309,7 @@ const Manual: React.FC<{t: number}> = ({t}) => {
             <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 34, color: C.dim}}>competitor</div>
           </div>
           <Avatar i={0} size={150} style={{position: 'absolute', left: lerp(140, 760, walk), top: 1100 - Math.abs(Math.sin(walk * Math.PI * 5)) * 30, border: `4px solid ${walk > 0.95 ? C.red : C.lime}`}} />
-          <div style={{position: 'absolute', left: 0, right: 0, top: 1330, display: 'flex', justifyContent: 'center', transform: `rotate(-7deg) scale(${lerp(2.2, 1, m1(lostK))})`, opacity: m1(lostK * 3)}}>
+          <div style={{position: 'absolute', left: 0, right: 0, top: 1230, display: 'flex', justifyContent: 'center', transform: `rotate(-7deg) scale(${lerp(2.2, 1, m1(lostK))})`, opacity: m1(lostK * 3)}}>
             <div style={{border: `12px solid ${C.red}`, borderRadius: 24, padding: '4px 36px', fontFamily: SANS, fontWeight: 900, fontSize: 120, color: C.red, background: 'rgba(20,0,0,0.6)', boxShadow: '0 0 70px rgba(255,69,58,0.45)'}}>SALE LOST</div>
           </div>
         </>
