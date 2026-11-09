@@ -1,0 +1,110 @@
+{
+ "lines": [
+  {
+   "text": "Har missed call…",
+   "s": 0.25,
+   "e": 1.286
+  },
+  {
+   "text": "ek lost customer hai.",
+   "s": 1.436,
+   "e": 2.958
+  },
+  {
+   "text": "Aap meeting mein the.",
+   "s": 3.508,
+   "e": 4.871
+  },
+  {
+   "text": "Ya kisi aur customer ke saath.",
+   "s": 5.021,
+   "e": 7.077
+  },
+  {
+   "text": "Phone bajta raha…",
+   "s": 7.277,
+   "e": 8.465
+  },
+  {
+   "text": "aur customer ne seedha agle number pe call kar diya.",
+   "s": 8.615,
+   "e": 11.986
+  },
+  {
+   "text": "Woh wapas call nahi karega.",
+   "s": 12.386,
+   "e": 14.297
+  },
+  {
+   "text": "Kabhi nahi.",
+   "s": 14.447,
+   "e": 15.276
+  },
+  {
+   "text": "Ab socho, agar har missed call pe…",
+   "s": 15.826,
+   "e": 17.988
+  },
+  {
+   "text": "turant ek WhatsApp chala jaaye?",
+   "s": 18.088,
+   "e": 20.242
+  },
+  {
+   "text": "\"Hi! Sorry, abhi call nahi utha paaye.",
+   "s": 20.592,
+   "e": 22.99
+  },
+  {
+   "text": "Bataiye, kya help chahiye?\"",
+   "s": 23.14,
+   "e": 24.802
+  },
+  {
+   "text": "Customer reply karta hai, AI agent baat karta hai, details leta hai…",
+   "s": 25.202,
+   "e": 30.056
+  },
+  {
+   "text": "aur appointment wahin book ho jaati hai.",
+   "s": 30.206,
+   "e": 32.645
+  },
+  {
+   "text": "Aap free hote hi call back karte ho…",
+   "s": 33.045,
+   "e": 35.415
+  },
+  {
+   "text": "ek ready lead ko.",
+   "s": 35.515,
+   "e": 36.856
+  },
+  {
+   "text": "Missed call ab missed nahi.",
+   "s": 37.306,
+   "e": 39.006
+  },
+  {
+   "text": "Woh ek lead hai.",
+   "s": 39.156,
+   "e": 40.386
+  },
+  {
+   "text": "Apne business ke liye yeh setup chahiye?",
+   "s": 40.936,
+   "e": 43.605
+  },
+  {
+   "text": "Comment karo \"CALL\",",
+   "s": 43.855,
+   "e": 45.053
+  },
+  {
+   "text": "hum details bhejte hain.",
+   "s": 45.203,
+   "e": 46.849
+  }
+ ],
+ "speech": 47.449
+}
