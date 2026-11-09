@@ -1,0 +1,100 @@
+{
+ "lines": [
+  {
+   "text": "Customer ne bola…",
+   "s": 0.25,
+   "e": 1.526
+  },
+  {
+   "text": "\"Sochke batata hoon.\"",
+   "s": 1.626,
+   "e": 3.02
+  },
+  {
+   "text": "Aur aapne?",
+   "s": 3.47,
+   "e": 4.352
+  },
+  {
+   "text": "Dobara poocha hi nahi.",
+   "s": 4.502,
+   "e": 6.058
+  },
+  {
+   "text": "Ek hafta gaya. Do hafte gaye.",
+   "s": 6.608,
+   "e": 8.62
+  },
+  {
+   "text": "Aur woh customer… bhool gaya ki aap exist bhi karte ho.",
+   "s": 8.82,
+   "e": 12.262
+  },
+  {
+   "text": "Sach ye hai, zyada tar log pehli baar mein nahi khareedte.",
+   "s": 12.762,
+   "e": 16.349
+  },
+  {
+   "text": "Unhe yaad dilana padta hai.",
+   "s": 16.499,
+   "e": 18.42
+  },
+  {
+   "text": "Baar baar. Sahi time pe.",
+   "s": 18.62,
+   "e": 20.237
+  },
+  {
+   "text": "Isliye hum follow-up automation lagate hain.",
+   "s": 20.737,
+   "e": 23.637
+  },
+  {
+   "text": "Pehle din: thank you message.",
+   "s": 23.887,
+   "e": 25.731
+  },
+  {
+   "text": "Teesre din: offer ya review.",
+   "s": 25.881,
+   "e": 28.274
+  },
+  {
+   "text": "Saatve din: \"Abhi bhi interested ho?\"",
+   "s": 28.424,
+   "e": 30.892
+  },
+  {
+   "text": "Sab WhatsApp pe, automatically.",
+   "s": 31.292,
+   "e": 33.563
+  },
+  {
+   "text": "Aur jab customer reply kare… lead seedha aapke paas.",
+   "s": 33.813,
+   "e": 37.537
+  },
+  {
+   "text": "Aap bas deal close karo.",
+   "s": 37.987,
+   "e": 39.659
+  },
+  {
+   "text": "Yeh system chahiye?",
+   "s": 40.259,
+   "e": 41.581
+  },
+  {
+   "text": "Comment karo \"FOLLOW\",",
+   "s": 41.781,
+   "e": 43.435
+  },
+  {
+   "text": "hum details bhejte hain.",
+   "s": 43.585,
+   "e": 45.231
+  }
+ ],
+ "speech": 45.831
+}
