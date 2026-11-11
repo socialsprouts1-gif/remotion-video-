@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Audio, continueRender, delayRender, Img, OffthreadVideo, spring, staticFile, useCurrentFrame} from 'remotion';
 import {ease, lerp, pt, rand} from './anim';
 import edit from './edit.json';
+import headtrack from './headtrack.json';
 
 // Rekha — live online yoga & fitness. Calm, editorial wellness look: warm cream paper, deep forest ink, terracotta accent,
 // sage leaves. Everything moves on slow, damped springs; no shakes, no flashes. Real Fluent 3D icons + real Zoom / Meet marks.
@@ -56,7 +57,7 @@ const RECTS = {
   close: {x: 0, y: 0, w: 1080, h: 1920, r: 0, o: 1, z: 1.14},
   frame: {x: 140, y: 680, w: 800, h: 1040, r: 56, o: 1, z: 1.06},
   split: {x: 80, y: 1000, w: 920, h: 800, r: 52, o: 1, z: 1.18},
-  low: {x: 300, y: 1290, w: 480, h: 480, r: 240, o: 1, z: 1.45},
+  low: {x: 250, y: 1240, w: 580, h: 580, r: 290, o: 1, z: 1.0},
   gone: {x: 390, y: 1700, w: 300, h: 300, r: 150, o: 0, z: 1.3},
 };
 type Mode = keyof typeof RECTS;
@@ -189,7 +190,11 @@ const Intro: React.FC<{t: number}> = ({t}) => {
   const out = pt(t, T_OUT - 0.1, T_OUT + 0.8, ease.inOut);
   const enter = sp(t, 0, 60, 18);
   const fi = Math.min(CUT_FRAMES - 1, Math.floor(t * FPS));
-  const zoom = lerp(1, 1.06, pt(t, 0, T_OUT, ease.inOut));
+  // her clip zooms in during the first second: hold her head at one size and place it, frame by frame
+  const [hcx, hy0, hw] = (headtrack as number[][])[fi];
+  const sc = 443 / hw;
+  const X = Math.min(hcx * sc, Math.max(1080 - (1080 - hcx) * sc, 540)); // keep the clip's side edges off screen
+  const Y = 590;
   return (
     <AbsoluteFill style={{opacity: 1 - out}}>
       <Paper t={t} />
@@ -198,8 +203,8 @@ const Intro: React.FC<{t: number}> = ({t}) => {
       <Leaf x={70} y={1080} s={260} r={-28} t={t} at={0.3} />
       <Leaf x={150} y={1150} s={200} r={-8} t={t} at={0.45} c={C.sageDeep} />
       <Leaf x={780} y={1100} s={240} r={24} t={t} at={0.55} />
-      <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 1920, transformOrigin: '50% 100%', transform: `translateY(${190 + (1 - m1(enter)) * 160}px) scale(${zoom})`}}>
-        <Img src={staticFile(`clips/cut/f${String(fi).padStart(4, '0')}.webp`)} style={{width: 1080, height: 1920, filter: 'drop-shadow(0 30px 40px rgba(70,45,20,0.25))'}} />
+      <div style={{position: 'absolute', left: X - hcx * sc, top: Y - hy0 * sc + (1 - m1(enter)) * 160, width: 1080 * sc, height: 1920 * sc}}>
+        <Img src={staticFile(`clips/cut/f${String(fi).padStart(4, '0')}.webp`)} style={{width: '100%', height: '100%', filter: 'drop-shadow(0 30px 40px rgba(70,45,20,0.22))', WebkitMaskImage: 'linear-gradient(180deg, #000 82%, transparent 98%)', maskImage: 'linear-gradient(180deg, #000 82%, transparent 98%)'}} />
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 260, background: `linear-gradient(180deg, transparent, ${C.paper})`}} />
       {/* headline */}
