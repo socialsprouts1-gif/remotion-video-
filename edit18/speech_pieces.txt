@@ -1,0 +1,23 @@
+# start end | words actually spoken (Whisper medium, English, per pause-bounded phrase)
+0.02 3.59 | If you are over 30 and haven't started your fitness journey yet,
+4.17 4.63 | watch this
+5.01 7.38 | before another year goes by. Your body feels
+7.68 11.37 | stiffer than last year. You are tired and your sleep isn't great.
+11.69 12.69 | This is exactly
+12.98 14.70 | where my live online classes
+15.00 15.64 | can help you.
+15.93 17.05 | We work on strength
+17.44 19.06 | to help you feel more energetic,
+19.49 23.57 | mobility and flexibility to make your everyday life easier,
+23.86 24.50 | and meditation
+25.02 26.36 | to calm your mind and relieve stress.
+26.98 27.52 | Face yoga
+27.94 29.76 | to help with your glow. I am Rekha,
+30.11 32.36 | an internationally certified yoga instructor
+32.74 33.45 | and nutritionist.
+33.88 36.52 | I teach fitness online. Every class is live,
+36.96 37.92 | so I can see you,
+38.38 38.98 | guide you,
+39.39 41.24 | and help you get stronger,
+41.69 43.54 | happier and healthier. DM me
+43.92 44.62 | to get started.
