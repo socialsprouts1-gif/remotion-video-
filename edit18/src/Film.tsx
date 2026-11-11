@@ -184,12 +184,11 @@ const Card: React.FC<{style?: React.CSSProperties; children: React.ReactNode}> =
 );
 
 // ---------------------------------------------------------------- 1. HOOK — Rekha cut out on the paper; "Over 30?"
-const CUT_FRAMES = 140;
 const Intro: React.FC<{t: number}> = ({t}) => {
   if (t > T_OUT + 0.9) return null;
   const out = pt(t, T_OUT - 0.1, T_OUT + 0.8, ease.inOut);
   const enter = sp(t, 0, 60, 18);
-  const fi = Math.min(CUT_FRAMES - 1, Math.floor(t * FPS));
+  const fi = Math.min((headtrack as number[][]).length - 1, Math.floor(t * FPS));
   // her clip zooms in during the first second: hold her head at one size and place it, frame by frame
   const [hcx, hy0, hw] = (headtrack as number[][])[fi];
   const sc = 443 / hw;
@@ -198,13 +197,15 @@ const Intro: React.FC<{t: number}> = ({t}) => {
   return (
     <AbsoluteFill style={{opacity: 1 - out}}>
       <Paper t={t} />
-      {/* a big soft arch behind her, like a studio backdrop */}
-      <div style={{position: 'absolute', left: 140, top: 520, width: 800, height: 1500, borderRadius: '400px 400px 0 0', background: 'linear-gradient(180deg, #E4D6C4, #D9C7B0)', transform: `scale(${lerp(0.9, 1, m1(enter))})`, transformOrigin: '50% 100%'}} />
       <Leaf x={70} y={1080} s={260} r={-28} t={t} at={0.3} />
       <Leaf x={150} y={1150} s={200} r={-8} t={t} at={0.45} c={C.sageDeep} />
       <Leaf x={780} y={1100} s={240} r={24} t={t} at={0.55} />
-      <div style={{position: 'absolute', left: X - hcx * sc, top: Y - hy0 * sc + (1 - m1(enter)) * 160, width: 1080 * sc, height: 1920 * sc}}>
-        <Img src={staticFile(`clips/cut/f${String(fi).padStart(4, '0')}.webp`)} style={{width: '100%', height: '100%', filter: 'drop-shadow(0 30px 40px rgba(70,45,20,0.22))', WebkitMaskImage: 'linear-gradient(180deg, #000 82%, transparent 98%)', maskImage: 'linear-gradient(180deg, #000 82%, transparent 98%)'}} />
+      {/* her real video in an arch window (no background removal), head held steady while the source zooms */}
+      <div style={{position: 'absolute', left: 120, top: 470, width: 840, height: 1600, borderRadius: '420px 420px 0 0', overflow: 'hidden', boxShadow: '0 40px 90px rgba(70,45,20,0.22), 0 0 0 10px rgba(255,255,255,0.92)', transform: `translateY(${(1 - m1(enter)) * 160}px) scale(${lerp(0.94, 1, m1(enter))})`, transformOrigin: '50% 100%', opacity: m1(enter * 1.5)}}>
+        <div style={{position: 'absolute', left: X - hcx * sc - 120, top: Y - hy0 * sc - 470, width: 1080 * sc, height: 1920 * sc}}>
+          <OffthreadVideo muted src={staticFile('clips/main.mp4')} style={{width: '100%', height: '100%', filter: 'contrast(1.04) saturate(1.04) brightness(1.03) sepia(0.06)'}} />
+        </div>
+        <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(255,236,214,0.10), transparent 40%, rgba(60,40,20,0.10))', mixBlendMode: 'soft-light'}} />
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 260, background: `linear-gradient(180deg, transparent, ${C.paper})`}} />
       {/* headline */}
