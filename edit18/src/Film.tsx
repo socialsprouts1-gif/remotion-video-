@@ -234,7 +234,7 @@ const Year: React.FC<{t: number}> = ({t}) => {
         <Words t={t} at={W(14) - 0.05} text="before another year goes by" stagger={0.07} style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 92, color: C.ink}} />
       </div>
       {/* a desk calendar turning from this year to the next */}
-      <div style={{position: 'absolute', left: 340, top: 470, width: 400, height: 430, perspective: 1200}}>
+      <div style={{position: 'absolute', left: 340, top: 420, width: 400, height: 430, perspective: 1200}}>
         <Card style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
           <div style={{height: 90, background: C.sageDeep, display: 'grid', placeItems: 'center', fontFamily: SANS, fontWeight: 700, fontSize: 30, color: '#fff', letterSpacing: '0.3em'}}>JANUARY</div>
           <div style={{textAlign: 'center', fontFamily: SERIF, fontSize: 210, color: C.terra, lineHeight: 1.45}}>2027</div>
@@ -293,15 +293,19 @@ const Classes: React.FC<{t: number}> = ({t}) => {
         <Words t={t} at={W(39) - 0.1} text="Live online classes" stagger={0.08} style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 104, color: C.ink}} wordStyle={(w) => (w === 'Live' ? {color: C.terra} : {})} />
       </div>
       {/* a laptop-style call window */}
-      <Card style={{position: 'absolute', left: 110, top: 400, width: 860, height: 520, padding: 18, transform: `translateY(${(1 - m1(sp(t, W(39) - 0.2, 80, 20))) * 120}px)`, opacity: ap(t, W(39) - 0.2)}}>
+      <Card style={{position: 'absolute', left: 110, top: 370, width: 860, height: 480, padding: 18, transform: `translateY(${(1 - m1(sp(t, W(39) - 0.2, 80, 20))) * 120}px)`, opacity: ap(t, W(39) - 0.2)}}>
         <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '4px 8px 14px'}}>
           {['#FF5F57', '#FEBC2E', '#28C840'].map((c) => (
             <div key={c} style={{width: 16, height: 16, borderRadius: 16, background: c}} />
           ))}
-          <span style={{flex: 1, textAlign: 'center', fontFamily: SANS, fontWeight: 600, fontSize: 22, color: C.ink2}}>Morning Flow · with Rekha</span>
+          <span style={{flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12, fontFamily: SANS, fontWeight: 600, fontSize: 22, color: C.ink2}}>
+            <Img src={icon('zoom-icon.svg')} style={{width: 34, height: 34, transform: `scale(${m1(sp(t, W(42) - 0.1, 120, 15))})`}} />
+            <Img src={icon('google-meet.svg')} style={{width: 38, height: 34, objectFit: 'contain', transform: `scale(${m1(sp(t, W(43) - 0.1, 120, 15))})`}} />
+            Morning Flow · with Rekha
+          </span>
           <LiveDot t={t} />
         </div>
-        <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, height: 420}}>
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, height: 380}}>
           {tiles.map((i) => {
             const p = sp(t, W(40) + i * 0.08, 110, 18);
             return (
@@ -313,11 +317,7 @@ const Classes: React.FC<{t: number}> = ({t}) => {
           })}
         </div>
       </Card>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 940, display: 'flex', justifyContent: 'center', gap: 28, alignItems: 'center', opacity: ap(t, W(42) - 0.1)}}>
-        <Img src={icon('zoom-icon.svg')} style={{width: 64, height: 64, transform: `scale(${m1(sp(t, W(42) - 0.1, 120, 15))})`}} />
-        <Img src={icon('google-meet.svg')} style={{width: 72, height: 64, objectFit: 'contain', transform: `scale(${m1(sp(t, W(43) - 0.1, 120, 15))})`}} />
-        <span style={{fontFamily: SANS, fontWeight: 600, fontSize: 30, color: C.ink2}}>from your home</span>
-      </div>
+
     </div>
   );
 };
@@ -414,9 +414,8 @@ const Online: React.FC<{t: number}> = ({t}) => {
           );
         })}
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 800, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 20, opacity: m1(live * 2), transform: `scale(${lerp(0.8, 1, m1(live))})`}}>
-        <span style={{fontFamily: SANS, fontWeight: 600, fontSize: 40, color: C.ink}}>Every class is</span>
-        <div style={{transform: 'scale(1.6)', transformOrigin: '0 50%', marginRight: 60}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 760, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 20, opacity: m1(live * 2), transform: `scale(${lerp(0.8, 1, m1(live))})`}}>
+        <div style={{transform: 'scale(1.6)', transformOrigin: '50% 50%'}}>
           <LiveDot t={t} />
         </div>
       </div>
@@ -533,35 +532,51 @@ const CHUNKS: Chunk[] = (() => {
   out.forEach((c, i) => (c.e = Math.min(out[i + 1]?.s ?? 1e9, c.words[c.words.length - 1].e + 0.4)));
   return out;
 })();
-const ACCENT = new Set(['30', 'fitness', 'stiffer', 'tired', 'sleep', 'live', 'online', 'strength', 'energetic', 'mobility', 'flexibility', 'meditation', 'stress', 'face', 'yoga', 'glow', 'stronger', 'happier', 'healthier']);
+const ACCENT = new Set(['30', 'fitness', 'journey', 'stiffer', 'tired', 'sleep', 'live', 'online', 'strength', 'energetic', 'mobility', 'flexibility', 'easier', 'meditation', 'calm', 'stress', 'face', 'yoga', 'glow', 'certified', 'stronger', 'happier', 'healthier', 'see', 'guide']);
+/** Editorial captions: words rise in only as she says them; key words switch to serif italic terracotta.
+ *  They sit on the paper above her framed video (or as a lower third on her chest when she is full frame) — never on her face. */
 const Captions: React.FC<{t: number}> = ({t}) => {
   if (CAP_OFF.some(([a, b]) => t >= a && t < b)) return null;
   const c = CHUNKS.find((x) => t >= x.s - 0.04 && t < x.e);
   if (!c) return null;
   const m = modeNow(t);
   const R = rectAt(t);
-  const y = m === 'full' || m === 'close' ? 1440 : m === 'low' ? 1150 : R.y + R.h - 130;
-  const cur = c.words.reduce((n, w, i) => (t >= w.s - 0.03 ? i : n), -1);
+  const onVideo = m === 'full' || m === 'close';
+  const top = onVideo ? 1470 : m === 'low' ? 1120 : R.y - 108;
+  const out = pt(t, c.e - 0.18, c.e, ease.inOut);
   const len = c.words.map((w) => w.w).join(' ').length;
-  const fs = Math.max(48, Math.min(68, 1300 / Math.max(10, len)));
-  const pin = ap(t, c.s - 0.05, 0.35);
-  const onVideo = m !== 'low';
+  const fs = Math.max(46, Math.min(60, 1180 / Math.max(10, len)));
   return (
-    <div style={{position: 'absolute', left: 40, right: 40, top: Math.min(y, 1660), display: 'flex', justifyContent: 'center', opacity: pin, transform: `translateY(${(1 - pin) * 14}px)`}}>
-      <div style={{display: 'flex', gap: fs * 0.26, padding: onVideo ? '10px 26px 16px' : 0, borderRadius: 26, background: onVideo ? 'rgba(244,238,230,0.88)' : 'transparent', boxShadow: onVideo ? '0 14px 40px rgba(60,40,20,0.18)' : 'none'}}>
+    <>
+      {onVideo && <div style={{position: 'absolute', left: 0, right: 0, top: 1300, height: 620, background: 'linear-gradient(180deg, transparent, rgba(30,20,12,0.55) 55%, rgba(30,20,12,0.7))', pointerEvents: 'none'}} />}
+      <div style={{position: 'absolute', left: 50, right: 50, top, height: 100, display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: fs * 0.3, opacity: 1 - out, transform: `translateY(${-out * 10}px)`}}>
         {c.words.map((w, i) => {
-          const on = i === cur;
-          const seen = i <= cur;
-          const bar = on ? pt(t, w.s - 0.04, w.s + 0.16, ease.out) : 0;
+          const acc = ACCENT.has(key(w.w));
+          const p = pt(t, w.s - 0.06, w.s + 0.32, ease.out);
+          if (p <= 0) return null;
           return (
-            <span key={i} style={{position: 'relative', fontFamily: SANS, fontWeight: 650, fontSize: fs, letterSpacing: '-0.015em', color: seen ? (ACCENT.has(key(w.w)) ? C.terra : C.ink) : 'rgba(29,42,34,0.35)', whiteSpace: 'nowrap'}}>
-              {w.w}
-              <span style={{position: 'absolute', left: 0, bottom: -6, height: 4, width: `${bar * 100}%`, borderRadius: 3, background: C.terra}} />
+            <span key={i} style={{display: 'inline-block', overflow: 'hidden', paddingBottom: '0.16em', marginBottom: '-0.16em', paddingRight: acc ? '0.08em' : 0}}>
+              <span
+                style={{
+                  display: 'inline-block',
+                  transform: `translateY(${(1 - p) * 105}%)`,
+                  whiteSpace: 'nowrap',
+                  fontFamily: acc ? SERIF : SANS,
+                  fontStyle: acc ? 'italic' : 'normal',
+                  fontWeight: acc ? 400 : 600,
+                  fontSize: acc ? fs * 1.32 : fs,
+                  letterSpacing: acc ? '0' : '-0.02em',
+                  color: onVideo ? (acc ? '#F6D9C6' : '#FFFFFF') : acc ? C.terra : C.ink,
+                  textShadow: onVideo ? '0 3px 18px rgba(0,0,0,0.45)' : 'none',
+                }}
+              >
+                {w.w}
+              </span>
             </span>
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 
