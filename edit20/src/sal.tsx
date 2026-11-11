@@ -8,6 +8,10 @@ export const THEMES: Theme[] = ['dark', 'cream', 'green', 'cream', 'dark', 'crea
 // loyalty-card stamps: one per strategy
 export const STAMPS = ['calendar', 'bell', 'camera_with_flash', 'ticket', 'star'];
 type P = {t: number; th: Tok};
+/** scales a scene's content (not its headline) up around the upper-middle of the frame */
+const Big: React.FC<{s: number; children: React.ReactNode}> = ({s, children}) => (
+  <div style={{position: 'absolute', inset: 0, transform: `scale(${s})`, transformOrigin: '540px 640px'}}>{children}</div>
+);
 const s3 = (n: string) => staticFile(`sal3d/${n}.png`);
 
 /** round rubber-stamp number for each strategy */
@@ -45,6 +49,7 @@ export const C0: React.FC<P> = ({t, th}) => {
   return (
     <>
       <Headline t={t} at={-0.8} th={th} a={[[['Ek baar aayi...']], [['phir kabhi nahi?', true]]]} />
+      <Big s={1.18}>
       {leave < 1 && (
         <div style={abs(110, 700, {width: 860, opacity: 1 - leave, transform: `translateY(${-leave * 60}px)`})}>
           <div style={{display: 'flex', alignItems: 'center', gap: 16, background: '#22201D', borderRadius: 30, padding: '16px 22px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', fontFamily: SANS, color: '#fff'}}>
@@ -53,7 +58,7 @@ export const C0: React.FC<P> = ({t, th}) => {
             </div>
             <div style={{flex: 1}}>
               <div style={{fontWeight: 800, fontSize: 30}}>Neha · Haircut + spa</div>
-              <div style={{fontSize: 21, color: '#9A948C'}}>Last visit: 12 Jan</div>
+              <div style={{fontSize: 24, color: '#9A948C'}}>Last visit: 12 Jan</div>
             </div>
             <Label color={t > flipB ? C.red : '#9A948C'} size={18}>{t > flipB ? '0 repeat' : '1 visit'}</Label>
           </div>
@@ -63,7 +68,7 @@ export const C0: React.FC<P> = ({t, th}) => {
               <div style={{background: mi === 0 ? C.green : C.red, color: '#fff', fontWeight: 800, fontSize: 36, padding: '10px 0'}}>{MONTHS[mi]}</div>
               <div style={{background: '#fff', color: C.ink, height: 240, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8}}>
                 {mi === 0 ? <Img src={fl('person_getting_haircut')} style={{width: 120, height: 120}} /> : <div style={{fontWeight: 800, fontSize: 120, color: '#D6D2CA', lineHeight: 1}}>?</div>}
-                <Label color={mi === 0 ? C.green : C.red} size={17}>{mi === 0 ? 'Visit ✓' : 'No visit'}</Label>
+                <Label color={mi === 0 ? C.green : C.red} size={20}>{mi === 0 ? 'Visit ✓' : 'No visit'}</Label>
               </div>
             </div>
             <div style={{flex: 1, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12}}>
@@ -118,6 +123,7 @@ export const C0: React.FC<P> = ({t, th}) => {
           ))}
         </div>
       )}
+      </Big>
     </>
   );
 };
@@ -133,12 +139,13 @@ export const C1: React.FC<P> = ({t, th}) => {
     <>
       <NumStamp t={t} at={L - 0.15} n="01" />
       <Headline t={t} at={L - 0.1} th={th} a={[[['Checkout pe hi ']], [['agla appointment.', true]]]} />
+      <Big s={1.18}>
       <Pop t={t} at={payAt} style={abs(110, 690)} dy={40}>
         <TCard th={th} style={{width: 860, padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 16}}>
           <Img src={fl('credit_card')} style={{width: 64, height: 64}} />
           <div style={{flex: 1, fontFamily: SANS}}>
             <div style={{fontWeight: 800, fontSize: 30}}>Paid ₹1,200</div>
-            <div style={{fontSize: 21, color: th.cardSub}}>Haircut + hair spa · Neha</div>
+            <div style={{fontSize: 24, color: th.cardSub}}>Haircut + hair spa · Neha</div>
           </div>
           <Check size={54} p={ep(t, payAt + 0.3, 0.4)} />
         </TCard>
@@ -172,6 +179,7 @@ export const C1: React.FC<P> = ({t, th}) => {
           </div>
         </Pop>
       )}
+      </Big>
     </>
   );
 };
@@ -189,6 +197,7 @@ export const C2: React.FC<P> = ({t, th}) => {
     <>
       <NumStamp t={t} at={L - 0.15} n="02" dark />
       <Headline t={t} at={L - 0.1} th={th} a={[[['Har service ka ']], [['apna reminder.', true]]]} />
+      <Big s={1.18}>
       <div style={abs(110, 690, {width: 860, display: 'flex', flexDirection: 'column', gap: 16})}>
         {rows.map((r, i) =>
           t > r.at ? (
@@ -219,6 +228,7 @@ export const C2: React.FC<P> = ({t, th}) => {
           </div>
         </Pop>
       )}
+      </Big>
     </>
   );
 };
@@ -234,6 +244,7 @@ export const C3: React.FC<P> = ({t, th}) => {
     <>
       <NumStamp t={t} at={L - 0.15} n="03" />
       <Headline t={t} at={L - 0.1} th={th} a={[[['Before / after, ']], [['permission ke saath.', true]]]} />
+      <Big s={1.18}>
       <Pop t={t} at={reelAt} style={abs(110, 690)} dy={40}>
         <div style={{position: 'relative', width: 520, height: 600, borderRadius: 34, overflow: 'hidden', boxShadow: '0 24px 50px rgba(40,30,20,0.2)'}}>
           <div style={{position: 'absolute', inset: 0, background: '#E4DFD6', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
@@ -252,9 +263,9 @@ export const C3: React.FC<P> = ({t, th}) => {
         </div>
       </Pop>
       {t > permAt - 0.2 && (
-        <Pop t={t} at={permAt - 0.2} style={abs(660, 760)} dy={30}>
-          <TCard th={th} style={{width: 320, padding: '18px 20px', fontFamily: SANS}}>
-            <Label color={th.cardSub} size={15}>Consent form</Label>
+        <Pop t={t} at={permAt - 0.2} style={abs(640, 760)} dy={30}>
+          <TCard th={th} style={{width: 300, padding: '18px 20px', fontFamily: SANS}}>
+            <Label color={th.cardSub} size={19}>Consent form</Label>
             <div style={{display: 'flex', alignItems: 'center', gap: 12, marginTop: 12}}>
               <div style={{width: 40, height: 40, borderRadius: 10, border: `3px solid ${C.green}`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: t > permAt + 0.3 ? C.green : '#fff', color: '#fff', fontWeight: 900, fontSize: 26}}>{t > permAt + 0.3 ? '✓' : ''}</div>
               <span style={{fontSize: 23, fontWeight: 600}}>Photo post kar sakte hain</span>
@@ -264,10 +275,11 @@ export const C3: React.FC<P> = ({t, th}) => {
         </Pop>
       )}
       {t > trustAt && (
-        <Pop t={t} at={trustAt} style={abs(660, 1080)}>
+        <Pop t={t} at={trustAt} style={abs(640, 1080)}>
           <Chip img="handshake" txt="Bharosa ✓" good />
         </Pop>
       )}
+      </Big>
     </>
   );
 };
@@ -281,10 +293,11 @@ export const C4: React.FC<P> = ({t, th}) => {
     <>
       <NumStamp t={t} at={L - 0.15} n="04" dark />
       <Headline t={t} at={L - 0.1} th={th} a={[[['Single nahi, ']], [['package becho.', true]]]} />
+      <Big s={1.18}>
       <div style={abs(110, 700, {width: 860, display: 'flex', gap: 26})}>
         <Pop t={t} at={W(5, 1)} dy={40}>
           <div style={{width: 300, background: '#22201D', borderRadius: 30, padding: 24, boxShadow: '0 20px 40px rgba(0,0,0,0.5)', fontFamily: SANS, color: '#fff', opacity: t > pkgAt ? 0.5 : 1}}>
-            <Label color="#9A948C" size={16}>Single</Label>
+            <Label color="#9A948C" size={20}>Single</Label>
             <Img src={fl('sparkles')} style={{width: 90, height: 90, marginTop: 10}} />
             <div style={{fontWeight: 800, fontSize: 34, marginTop: 8}}>1 facial</div>
             <div style={{fontSize: 26, color: '#C9C4BC'}}>₹1,200</div>
@@ -296,7 +309,7 @@ export const C4: React.FC<P> = ({t, th}) => {
         {t > pkgAt && (
           <Pop t={t} at={pkgAt} dy={40}>
             <div style={{position: 'relative', width: 534, background: '#fff', borderRadius: 30, padding: 24, boxShadow: '0 24px 50px rgba(0,0,0,0.5)', fontFamily: SANS, color: C.ink, border: `4px solid ${C.green}`}}>
-              <Label color={C.green} size={16}>Glow package</Label>
+              <Label color={C.green} size={20}>Glow package</Label>
               <div style={{display: 'flex', alignItems: 'center', gap: 14, marginTop: 10}}>
                 <Img src={fl('ticket')} style={{width: 90, height: 90}} />
                 <div>
@@ -312,11 +325,12 @@ export const C4: React.FC<P> = ({t, th}) => {
                   return <div key={k} style={{width: 66, height: 66, borderRadius: 33, background: on ? C.green : '#EEEAE3', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: MONO, fontWeight: 800, fontSize: 24, transform: `scale(${on ? sp(t, fiveAt + k * 0.18, 1.3) : 1})`}}>{on ? k + 1 : ''}</div>;
                 })}
               </div>
-              <Label color={C.ink} size={16} style={{marginTop: 14, opacity: ep(t, fiveAt + 1, 0.3)}}>5 visits pakki</Label>
+              <Label color={C.ink} size={20} style={{marginTop: 14, opacity: ep(t, fiveAt + 1, 0.3)}}>5 visits pakki</Label>
             </div>
           </Pop>
         )}
       </div>
+      </Big>
     </>
   );
 };
@@ -333,6 +347,7 @@ export const C5: React.FC<P> = ({t, th}) => {
     <>
       <NumStamp t={t} at={L - 0.15} n="05" />
       <Headline t={t} at={L - 0.1} th={th} a={[[['2 ghante ke andar ']], [['review link.', true]]]} />
+      <Big s={1.18}>
       <div style={abs(110, 690, {width: 860, display: 'flex', alignItems: 'center', gap: 26})}>
         <Pop t={t} at={tA - 0.2}>
           <div style={{position: 'relative', width: 230, height: 230}}>
@@ -344,7 +359,7 @@ export const C5: React.FC<P> = ({t, th}) => {
               <div style={{fontSize: 46}}>
                 {Math.floor(mins / 60)}:{String(mins % 60).padStart(2, '0')}
               </div>
-              <div style={{fontSize: 16, color: '#8C8780'}}>after visit</div>
+              <div style={{fontSize: 23, color: '#8C8780'}}>after visit</div>
             </div>
             <Img src={fl('alarm_clock')} style={{position: 'absolute', right: -22, top: -22, width: 80, height: 80}} />
           </div>
@@ -372,6 +387,7 @@ export const C5: React.FC<P> = ({t, th}) => {
           </div>
         </TCard>
       </Pop>
+      </Big>
     </>
   );
 };
@@ -384,6 +400,7 @@ export const C6: React.FC<P> = ({t, th}) => {
   return (
     <>
       <Headline t={t} at={L - 0.1} th={th} a={[[['Sabse sasta marketing?']], [['Jo chair pe baitha hai.', true]]]} />
+      <Big s={1.18}>
       <Pop t={t} at={L + 0.3} style={abs(290, 680)} from={0.4}>
         <div style={{position: 'relative', width: 500, height: 500}}>
           <div style={{position: 'absolute', left: 110, right: 110, bottom: 20, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.25)', filter: 'blur(14px)'}} />
@@ -392,19 +409,20 @@ export const C6: React.FC<P> = ({t, th}) => {
         </div>
       </Pop>
       {t > cheapAt && (
-        <Pop t={t} at={cheapAt} style={abs(60, 900)} rot={-10}>
+        <Pop t={t} at={cheapAt} style={abs(170, 900)} rot={-10}>
           <div style={{display: 'flex', alignItems: 'center', gap: 10, background: '#fff', color: C.ink, borderRadius: 28, padding: '12px 22px 12px 12px', fontFamily: SANS, fontWeight: 800, fontSize: 28, boxShadow: '0 16px 30px rgba(0,0,0,0.2)'}}>
             <Img src={fl('coin')} style={{width: 46, height: 46}} /> ₹0 ad spend
           </div>
         </Pop>
       )}
       {t > chairAt + 0.4 && (
-        <Pop t={t} at={chairAt + 0.4} style={abs(720, 1080)} rot={10}>
+        <Pop t={t} at={chairAt + 0.4} style={abs(560, 1090)} rot={10}>
           <div style={{display: 'flex', alignItems: 'center', gap: 10, background: C.ink, color: '#fff', borderRadius: 28, padding: '12px 22px 12px 12px', fontFamily: SANS, fontWeight: 800, fontSize: 28}}>
             <Img src={fl('red_heart')} style={{width: 44, height: 44}} /> Already trusts you
           </div>
         </Pop>
       )}
+      </Big>
     </>
   );
 };
@@ -424,11 +442,12 @@ export const C7: React.FC<P> = ({t, th}) => {
   return (
     <>
       <Headline t={t} at={L - 0.1} th={th} a={[[['Yeh sab hum ']], [['aapke liye karein?', true]]]} />
+      <Big s={1.08}>
       <Pop t={t} at={L + 0.2} style={abs(110, 680)} dy={40}>
         <TCard th={th} style={{width: 860, padding: '18px 24px'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6}}>
             <Img src={staticFile('brand/logo-alpha.png')} style={{width: 54, height: 40, objectFit: 'contain', filter: 'brightness(0.35)'}} />
-            <Label color={C.green} size={17}>Done for you · Neuraxine</Label>
+            <Label color={C.green} size={20}>Done for you · Neuraxine</Label>
           </div>
           <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 18px'}}>
             {LIST.map((x, i) => {
@@ -474,10 +493,10 @@ export const C7: React.FC<P> = ({t, th}) => {
               </div>
               <div style={{display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 12, padding: '6px 10px', width: 'fit-content'}}>
                 <Img src={fl('page_facing_up')} style={{width: 30, height: 30}} />
-                <span style={{color: '#fff', fontSize: 21, fontWeight: 700}}>Salon & Clinic Growth Guide.pdf</span>
+                <span style={{color: '#fff', fontSize: 24, fontWeight: 700}}>Salon & Clinic Growth Guide.pdf</span>
               </div>
             </div>
-            <div style={{background: C.green, color: '#fff', borderRadius: 18, padding: '6px 14px', fontFamily: MONO, fontWeight: 800, fontSize: 17}}>DM</div>
+            <div style={{background: C.green, color: '#fff', borderRadius: 18, padding: '6px 14px', fontFamily: MONO, fontWeight: 800, fontSize: 20}}>DM</div>
           </div>
         </Pop>
       )}
@@ -501,6 +520,7 @@ export const C7: React.FC<P> = ({t, th}) => {
           </div>
         </Pop>
       )}
+      </Big>
     </>
   );
 };
