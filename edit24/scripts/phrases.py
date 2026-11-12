@@ -1,0 +1,27 @@
+# Each phrase: list of (caption word, Devanagari spoken form). `_` in the Devanagari = space.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Agar|अगर hum|हम aapke|आपके car|कार showroom|शोरूम ki|की marketing|मार्केटिंग aur|और automation|ऑटोमेशन handle|हैंडल karte,|करते,"),
+   P("toh|तो sirf|सिर्फ़ Instagram|इंस्टाग्राम par|पर new|न्यू launch|लॉन्च ki|की photos|फ़ोटोज़ post|पोस्ट nahi|नहीं karte.|करते।")],
+  [P("Hum|हम har|हर enquiry|एन्क्वायरी ko|को delivery|डिलीवरी tak|तक le|ले jaate.|जाते।"),
+   P("Dekho|देखो kaise.|कैसे।")],
+  [P("Rahul|राहुल ne|ने Instagram|इंस्टाग्राम par|पर aapki|आपकी SUV|एस_यू_वी wali|वाली reel|रील dekhi,|देखी,"),
+   P("aur|और raat|रात 9|नौ baje|बजे WhatsApp|व्हाट्सऐप kiya.|किया। Price|प्राइस kya|क्या hai?|है?")],
+  [P("AI|ए_आई ne|ने turant|तुरंत on-road|ऑन_रोड price|प्राइस bheja,|भेजा,"),
+   P("EMI|ई_एम_आई options|ऑप्शन्स diye,|दिए,"),
+   P("aur|और Sunday|संडे ka|का test|टेस्ट drive|ड्राइव book|बुक kar|कर diya.|दिया।")],
+  [P("Test|टेस्ट drive|ड्राइव se|से ek|एक ghanta|घंटा pehle|पहले reminder|रिमाइंडर aur|और location|लोकेशन gaya.|गया।"),
+   P("Rahul|राहुल family|फ़ैमिली ke|के saath|साथ aaya.|आया।")],
+  [P("Agle|अगले din,|दिन, follow-up:|फ़ॉलो_अप:"),
+   P("exchange|एक्सचेंज offer|ऑफ़र aur|और loan|लोन approval,|अप्रूवल, sab|सब WhatsApp|व्हाट्सऐप par.|पर।")],
+  [P("Delivery|डिलीवरी ke|के din,|दिन, car|कार ke|के saath|साथ family|फ़ैमिली photo,|फ़ोटो,"),
+   P("aur|और Instagram|इंस्टाग्राम pe|पे shoutout.|शाउटआउट।")],
+  [P("Aur|और har|हर 6|छह mahine,|महीने, service|सर्विस reminder.|रिमाइंडर।"),
+   P("Do|दो saal|साल baad,|बाद, Rahul|राहुल ne|ने apne|अपने bhai|भाई ko|को bhi|भी aapke|आपके paas|पास bheja.|भेजा।")],
+  [P("Kyunki|क्योंकि car|कार business|बिज़नेस sirf|सिर्फ़ launch|लॉन्च se|से nahi,|नहीं,"),
+   P("trust,|ट्रस्ट, service|सर्विस aur|और referrals|रेफ़रल्स se|से chalta|चलता hai.|है।")],
+  [P("Agar|अगर aap|आप chahte|चाहते ho|हो ki|कि yeh|यह sab|सब hum|हम aapke|आपके liye|लिए karein,|करें,"),
+   P("toh|तो comment|कमेंट kijiye|कीजिए \"DETAILS\",|डिटेल्स,"),
+   P("aur|और guide|गाइड main|मैं aapko|आपको direct|डायरेक्ट DM|डी_एम kar|कर dunga.|दूंगा।"),
+   P("Aur|और aise|ऐसे hi|ही content|कंटेंट ke|के liye,|लिए, follow|फ़ॉलो karo|करो Neuraxine.|न्यूरैक्सिन।")],
+]
