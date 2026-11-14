@@ -371,14 +371,14 @@ const Captions: React.FC<{t: number; fold: number}> = ({t, fold}) => {
 
 // ---------------------------------------------------------------- bridges: a short full-screen 3D beat over every jump cut
 // The footage cuts between takes 14 times (work/cuts.json). Each cut is covered by a 0.7 s scene built from 3D icons on a
-// rich gradient, tied to the words he is saying; it wipes in just before the cut and out just after.
+// gradient from the brand palette (logo silver + lime: forest, graphite, emerald, lime, silver, olive), tied to the words he is saying; it wipes in just before the cut and out just after.
 const G = {
-  violet: 'radial-gradient(circle at 50% 42%, #7B5CFF, #2A1B7A 62%, #140C40)',
-  coral: 'radial-gradient(circle at 50% 42%, #FF8A5B, #E0452B 60%, #7A1B12)',
-  night: 'radial-gradient(circle at 50% 40%, #23305E, #0E1430 62%, #070A1A)',
+  violet: 'radial-gradient(circle at 50% 42%, #2E5A22, #12260E 60%, #060D05)' /* forest */,
+  coral: 'radial-gradient(circle at 50% 42%, #4A5057, #1D2125 60%, #0B0C0E)' /* graphite */,
+  night: 'radial-gradient(circle at 50% 40%, #183A33, #0A1A17 62%, #040A09)' /* deep emerald */,
   lime: 'radial-gradient(circle at 50% 42%, #D4F55A, #A0D306 58%, #4F6B00)',
-  cream: 'radial-gradient(circle at 50% 40%, #FFFFFF, #F1ECE1 60%, #D9D0BF)',
-  teal: 'radial-gradient(circle at 50% 42%, #3BE0B0, #0E9C7A 60%, #04402F)',
+  cream: 'radial-gradient(circle at 50% 40%, #FFFFFF, #E4E7E1 60%, #B9BEB6)' /* silver */,
+  teal: 'radial-gradient(circle at 50% 42%, #6E8F1E, #344A0A 60%, #141E03)' /* olive */,
 };
 type BKind = 'think' | 'loop' | 'calendar' | 'bulb' | 'dizzy' | 'orbit' | 'puzzle' | 'target' | 'logo' | 'help' | 'rocket' | 'point' | 'bubble' | 'bell';
 const BRIDGES: {cut: number; kind: BKind; text?: string; bg: string; light: boolean}[] = [
@@ -640,7 +640,7 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   return (
     <AbsoluteFill style={{background: C.char}}>
       {/* a quiet backdrop for the folded layout */}
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 60% at 50% 25%, #26346A, #101631 55%, #080B1C)', opacity: fold}} />
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 60% at 50% 25%, #23302A, #111814 55%, #070A08)', opacity: fold}} />
       {fold > 0.02 && <Grain t={t} o={0.07 * fold} />}
       <div style={{position: 'absolute', left: r.x, top: r.y, width: r.w, height: r.h, borderRadius: r.r, overflow: 'hidden', boxShadow: fold > 0 ? `0 40px 80px rgba(0,0,0,${0.5 * fold})` : undefined}}>
         <div style={{position: 'absolute', left: ox, top: oy, width: 1080, height: 1920, transform: `scale(${inner})`, transformOrigin: '0 0'}}>

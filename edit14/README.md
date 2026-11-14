@@ -1,7 +1,7 @@
 # edit14: Neuraxine "automate" v3 (original concept)
 
 Same take as edit12/13 (`IMG_0126.mp4`). The reference was used for the level of polish only; the ideas here are new.
-Render: `renders/neuraxine-automate-v5.mp4` (v5: 3D cut scenes, HDR fixed). Earlier: `renders/neuraxine-automate-v4.mp4`, Previous: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS, lip sync +33 ms).
+Render: `renders/neuraxine-automate-v6.mp4` (v6: brand colour theme). Earlier: `renders/neuraxine-automate-v5.mp4`, `renders/neuraxine-automate-v4.mp4`, Previous: `renders/neuraxine-automate-v3.mp4` (1080x1920, 30 fps, 43.5 s, -14 LUFS, lip sync +33 ms).
 
 - **Type behind him:** a per-frame cutout (`scripts/matte.py`, MediaPipe selfie segmenter, temporally smoothed;
   writes `public/clips/person.webm` with alpha) is layered over the words, so "2026", "AI", "NEURAXINE" and
@@ -39,3 +39,7 @@ Rebuild: `python3 scripts/matte.py` (needs `work/selfie_segmenter.tflite` from s
   chart, a finger pointing at the viewer, a speech balloon, a ringing bell. Diagonal wipes, subtle film grain.
 - **3D icons across the edit:** above every timeline task, the stopwatch / hourglass on the free-time counter, on every
   layer of the build stack, on the benefit chips, the DM document and a bell on Follow. Window backdrop is deep midnight.
+
+## v6 changes
+- **One brand colour theme** taken from the logo (silver + lime) instead of mixed violet/coral/blue/teal: cut scenes
+  rotate through deep forest green, graphite, deep emerald, lime, silver and olive; the window backdrop is graphite green.
