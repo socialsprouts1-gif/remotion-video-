@@ -1,0 +1,25 @@
+# Each phrase: list of (caption word, Devanagari spoken form). `_` in the Devanagari = space.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Agar|अगर hum|हम aapke|आपके hotel|होटल ya|या resort|रिज़ॉर्ट ki|की marketing|मार्केटिंग aur|और automation|ऑटोमेशन handle|हैंडल karte,|करते,"),
+   P("toh|तो sirf|सिर्फ़ Instagram|इंस्टाग्राम par|पर pool|पूल ki|की photos|फ़ोटोज़ post|पोस्ट nahi|नहीं karte.|करते।")],
+  [P("Hum|हम har|हर guest|गेस्ट ko|को direct|डायरेक्ट booking|बुकिंग aur|और repeat|रिपीट stay|स्टे tak|तक le|ले jaate.|जाते।"),
+   P("Dekho|देखो kaise.|कैसे।")],
+  [P("Ananya|अनन्या ne|ने Instagram|इंस्टाग्राम par|पर aapki|आपकी pool|पूल villa|विला wali|वाली reel|रील dekhi,|देखी, aur|और WhatsApp|व्हाट्सऐप kiya.|किया।"),
+   P("Anniversary|एनिवर्सरी ke|के liye|लिए 2|दो raat|रात chahiye.|चाहिए।")],
+  [P("AI|ए_आई ne|ने turant|तुरंत room|रूम options,|ऑप्शन्स, photos|फ़ोटोज़ aur|और direct|डायरेक्ट booking|बुकिंग pe|पे 10%|दस_परसेंट off|ऑफ़ bheja.|भेजा।"),
+   P("Koi|कोई OTA|ओ_टी_ए commission|कमीशन nahi.|नहीं।")],
+  [P("Check-in|चेक_इन se|से pehle,|पहले, web|वेब check-in|चेक_इन link,|लिंक, location|लोकेशन aur|और spa|स्पा ka|का offer.|ऑफ़र।")],
+  [P("Room|रूम mein|में welcome|वेलकम cake,|केक, aur|और WhatsApp|व्हाट्सऐप pe|पे candle-light|कैंडल_लाइट dinner|डिनर ka|का option.|ऑप्शन।"),
+   P("Ananya|अनन्या ne|ने turant|तुरंत book|बुक kiya.|किया।")],
+  [P("Check-out|चेक_आउट ke|के baad,|बाद, thank|थैंक you|यू message,|मैसेज, review|रिव्यू link,|लिंक,"),
+   P("aur|और agle|अगले saal|साल ka|का anniversary|एनिवर्सरी reminder.|रिमाइंडर।")],
+  [P("Ek|एक saal|साल baad,|बाद, Ananya|अनन्या phir|फिर aayi.|आई।"),
+   P("Is|इस baar|बार 4|चार dost|दोस्त lekar.|लेकर।")],
+  [P("Kyunki|क्योंकि hotel|होटल ki|की growth|ग्रोथ OTA|ओ_टी_ए se|से nahi,|नहीं,"),
+   P("direct|डायरेक्ट bookings|बुकिंग्स aur|और repeat|रिपीट guests|गेस्ट्स se|से hoti|होती hai.|है।")],
+  [P("Agar|अगर aap|आप chahte|चाहते ho|हो ki|कि yeh|यह sab|सब hum|हम aapke|आपके liye|लिए karein,|करें,"),
+   P("toh|तो comment|कमेंट kijiye|कीजिए \"DETAILS\",|डिटेल्स,"),
+   P("aur|और guide|गाइड main|मैं aapko|आपको direct|डायरेक्ट DM|डी_एम kar|कर dunga.|दूंगा।"),
+   P("Aur|और aise|ऐसे hi|ही content|कंटेंट ke|के liye,|लिए, follow|फ़ॉलो karo|करो Neuraxine.|न्यूरैक्सिन।")],
+]
