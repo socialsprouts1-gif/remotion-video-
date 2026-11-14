@@ -1,8 +1,8 @@
 import React from 'react';
-import {AbsoluteFill, continueRender, delayRender, Easing, interpolate, OffthreadVideo, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, continueRender, delayRender, Easing, Freeze, OffthreadVideo, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {lerp, pt} from './anim';
 
-// Before/after reel for the Neuraxine "automate" edit (edit14 v6), in the layout of the earlier before/after reel:
+// Before/after reel (full length, no cuts) for the Neuraxine "automate" edit (edit14 v6), in the layout of the earlier before/after reel:
 // dark backdrop with fine vertical lines and a warm glow, a small RAW card behind a larger FINAL card, both playing the
 // same moment in sync, "DM me" at the bottom. RAW = the original footage (only converted from HDR); FINAL = v6 with audio.
 const FPS = 30;
@@ -18,21 +18,15 @@ if (!loaded && typeof document !== 'undefined') {
   f.load().then(() => continueRender(h)).catch(() => continueRender(h));
 }
 
-// moments with the biggest difference between raw and final (seconds in the edit's own timeline)
-const SEGS: [number, number][] = [
-  [0.0, 6.6], // "2026" behind him, the Socho 3D scene, the day timeline starts
-  [16.1, 20.2], // "repetitive" scene, giant AI behind him, tasks collapse into AI, robot scene
-  [26.0, 29.3], // Neuraxine logo scene, NEURAXINE behind him, "We help"
-  [35.5, 39.4], // comment bubble, AUTOMATE typed behind him, guide sent to DM
-];
-const START_F = SEGS.map((_, i) => Math.round(SEGS.slice(0, i).reduce((s, [a, b]) => s + (b - a), 0) * FPS));
-const OUTRO = 0;
-export const TOTAL = Math.round((SEGS.reduce((s, [a, b]) => s + (b - a), 0) + OUTRO) * FPS);
+// the whole video, start to finish, no cuts: both cards play the same moment; the voice is the final edit's audio
+const FINAL_DUR = 43.500; // edit14/renders/neuraxine-automate-v6.mp4 (includes its end card)
+const RAW_DUR = 41.300; // the raw footage is shorter: it holds its last frame while the final end card plays
+export const TOTAL = Math.floor(FINAL_DUR * FPS) - 1;
 
 const FINAL = {x: 395, y: 382, w: 566, h: 1006};
 const RAW = {x: 96, y: 632, w: 300, h: 533};
 
-const Card: React.FC<{r: typeof FINAL; src: string; muted: boolean; rot: number; enter: number; dx: number}> = ({r, src, muted, rot, enter, dx}) => (
+const Card: React.FC<{r: typeof FINAL; src: string; muted: boolean; rot: number; enter: number; dx: number; dur: number}> = ({r, src, muted, rot, enter, dx, dur}) => (
   <div
     style={{
       position: 'absolute',
@@ -48,21 +42,16 @@ const Card: React.FC<{r: typeof FINAL; src: string; muted: boolean; rot: number;
       opacity: enter,
     }}
   >
-    {SEGS.map(([a, b], i) => {
-      const dur = Math.round((b - a) * FPS);
-      return (
-        <Sequence key={i} from={START_F[i]} durationInFrames={dur} layout="none">
-          <OffthreadVideo
-            src={staticFile(src)}
-            muted={muted}
-            startFrom={Math.round(a * FPS)}
-            // short fades so the audio never clicks between moments
-            volume={(f) => (muted ? 0 : interpolate(f, [0, 4, dur - 4, dur], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}))}
-            style={{width: '100%', height: '100%', objectFit: 'cover'}}
-          />
-        </Sequence>
-      );
-    })}
+    <Sequence from={0} durationInFrames={Math.min(TOTAL, Math.floor(dur * FPS) - 1)} layout="none">
+      <OffthreadVideo src={staticFile(src)} muted={muted} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+    </Sequence>
+    {Math.floor(dur * FPS) - 1 < TOTAL && (
+      <Sequence from={Math.floor(dur * FPS) - 1} layout="none">
+        <Freeze frame={Math.floor(dur * FPS) - 2}>
+          <OffthreadVideo src={staticFile(src)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        </Freeze>
+      </Sequence>
+    )}
   </div>
 );
 
@@ -75,8 +64,6 @@ export const Film: React.FC = () => {
   const inF = pt(t, 0.08, 0.65, smooth);
   const label = pt(t, 0.3, 0.8, smooth);
   const glow = 0.85 + 0.15 * Math.sin(t * 2.4);
-  // a quick flash on each jump between moments, so the change reads as intentional
-  const flash = Math.max(0, ...START_F.slice(1).map((f) => (frame >= f - 2 && frame < f + 4 ? 1 - Math.abs(frame - f) / 4 : 0)));
   return (
     <AbsoluteFill style={{background: 'linear-gradient(180deg, #000 0%, #050403 45%, #1A1004 75%, #3A2408 100%)'}}>
       {/* fine vertical lines */}
@@ -87,9 +74,8 @@ export const Film: React.FC = () => {
       </svg>
       <AbsoluteFill style={{background: 'radial-gradient(ellipse 70% 30% at 50% 100%, rgba(255,160,20,0.35), transparent 70%)', opacity: glow}} />
 
-      <Card r={RAW} src="clips/raw.mp4" muted rot={-8} enter={inR} dx={-200} />
-      <Card r={FINAL} src="clips/final.mp4" muted={false} rot={6} enter={inF} dx={220} />
-      <AbsoluteFill style={{background: '#FFF6D8', opacity: flash * 0.07, mixBlendMode: 'screen'}} />
+      <Card r={RAW} src="clips/raw.mp4" muted rot={-8} enter={inR} dx={-200} dur={RAW_DUR} />
+      <Card r={FINAL} src="clips/final.mp4" muted={false} rot={6} enter={inF} dx={220} dur={FINAL_DUR} />
 
       <div style={{position: 'absolute', left: RAW.x, width: RAW.w, top: RAW.y - 66, textAlign: 'center', fontFamily: SANS, fontWeight: 700, fontSize: 40, color: '#fff', letterSpacing: '0.02em', opacity: label}}>RAW</div>
       <div style={{position: 'absolute', left: FINAL.x, width: FINAL.w, top: FINAL.y - 108, textAlign: 'center', fontFamily: SANS, fontWeight: 800, fontSize: 82, color: Y, letterSpacing: '0.01em', opacity: label, textShadow: `0 0 ${24 * glow}px rgba(255,200,30,0.55)`}}>FINAL</div>
