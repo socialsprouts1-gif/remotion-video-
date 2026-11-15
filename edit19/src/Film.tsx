@@ -5,8 +5,9 @@ import {ease, lerp, pt} from './anim';
 // RAW vs FINAL showcase for the v13 edit (Neuraxine "marketing alone is not enough" reel).
 // Black stage, warm gold light, the untouched footage in a small phone behind, the finished edit in front.
 export const FPS = 30;
-export const DURATION = 18;
-const CLIP = 17.0; // seconds of the edit shown (hook through "no follow-up")
+export const DURATION = 46;
+const CLIP = 44.97; // the whole edit, end card included
+const RAW_LEN = 42.4;
 const GOLD = '#FFC23D';
 const GOLD_GRAD = 'linear-gradient(180deg, #FFE7A3 0%, #FFC23D 45%, #E59A12 100%)';
 const SANS = 'InterV, "Liberation Sans", sans-serif';
@@ -54,10 +55,12 @@ export const Film: React.FC = () => {
   const cta = pt(t, 0.6, 1.3, ease.out);
   const end = pt(t, CLIP - 0.2, CLIP + 0.5, ease.inOut);
   const float = Math.sin(t * 0.9) * 8;
-  // final phone geometry
-  const FW = 560, FH = Math.round(FW * 16 / 9) + 22, FX = 390, FY = 300;
-  // raw phone geometry (behind, left)
-  const RW = 320, RH = Math.round(RW * 16 / 9) + 12, RX = 90, RY = FY + (FH - RH) / 2 + 40;
+  // final phone geometry (front, right)
+  const FW = 540, FH = Math.round(FW * 16 / 9) + 22, FX = 470, FY = 300;
+  // raw phone geometry (set back in depth, left, with a clear gap)
+  const RW = 300, RH = Math.round(RW * 16 / 9) + 12, RX = 70, RY = FY + 150;
+  const rawFloat = Math.sin(t * 0.75 + 1.8) * 16;
+  const rawEnd = pt(t, RAW_LEN - 0.4, RAW_LEN, ease.inOut);
   const sweep = ((t * 0.12) % 1) * 1400 - 200;
   return (
     <AbsoluteFill style={{background: '#030303', overflow: 'hidden'}}>
@@ -70,25 +73,34 @@ export const Film: React.FC = () => {
         <div key={i} style={{position: 'absolute', left: 40 + i * 76, top: 1320, width: 1, height: 600, background: 'linear-gradient(180deg, transparent, rgba(255,190,80,0.16), transparent)', opacity: 0.4 + 0.6 * Math.abs(Math.sin(t * 0.7 + i))}} />
       ))}
 
-      {/* RAW — behind */}
-      <div style={{opacity: m1(rawIn * 1.5), transform: `translateX(${(1 - m1(rawIn)) * -260}px) translateY(${-float * 0.6}px)`}}>
-        <Phone x={RX} y={RY} w={RW} h={RH} t={t} glow={0}>
-          <OffthreadVideo muted src={staticFile('clips/raw.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.9)'}} />
-        </Phone>
-        <Label text="RAW" x={RX + RW / 2} y={RY - 62} size={34} p={lab} />
+      {/* RAW — floating further back: own perspective, turned toward the final phone, hazier, darker, with its own floor shadow */}
+      <div style={{position: 'absolute', left: RX - 40, top: RY + RH + 150, width: RW + 80, height: 44, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,0,0,0.75), transparent 70%)', opacity: m1(rawIn) * (0.75 - rawFloat * 0.012), transform: `scale(${1 - rawFloat * 0.006})`}} />
+      <div style={{position: 'absolute', inset: 0, perspective: 1400, perspectiveOrigin: '30% 45%', opacity: m1(rawIn * 1.5)}}>
+        <div style={{position: 'absolute', inset: 0, transformStyle: 'preserve-3d', transform: `translateX(${(1 - m1(rawIn)) * -260}px) translateY(${rawFloat}px) translateZ(-160px) rotateY(${22 + Math.sin(t * 0.5) * 2}deg) rotateX(${3 + Math.sin(t * 0.6) * 1.5}deg)`, transformOrigin: `${RX + RW / 2}px ${RY + RH / 2}px`, filter: 'blur(0.6px) brightness(0.82) saturate(0.9)'}}>
+          <Phone x={RX} y={RY} w={RW} h={RH} t={t + 3} glow={0.25}>
+            <OffthreadVideo muted src={staticFile('clips/raw.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+            <AbsoluteFill style={{background: '#000', opacity: rawEnd * 0.6}} />
+          </Phone>
+          <Label text="RAW" x={RX + RW / 2} y={RY - 66} size={36} p={lab} />
+        </div>
       </div>
+      {/* haze between the two planes sells the distance */}
+      <div style={{position: 'absolute', left: 300, top: 250, width: 260, height: 1200, background: 'linear-gradient(90deg, transparent, rgba(255,170,60,0.05), transparent)', filter: 'blur(20px)'}} />
 
       {/* FINAL — in front */}
-      <div style={{opacity: m1(inP * 1.5), transform: `translateY(${(1 - m1(inP)) * 300 + float}px) scale(${lerp(0.9, 1, m1(inP))})`, transformOrigin: '60% 60%'}}>
+      <div style={{position: 'absolute', left: FX - 40, top: FY + FH + 120, width: FW + 80, height: 60, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,0,0,0.85), transparent 70%)', opacity: m1(inP) * (0.85 - float * 0.01)}} />
+      <div style={{position: 'absolute', inset: 0, perspective: 2200, perspectiveOrigin: '70% 45%'}}>
+      <div style={{position: 'absolute', inset: 0, opacity: m1(inP * 1.5), transform: `translateY(${(1 - m1(inP)) * 300 + float}px) rotateY(${-7 + Math.sin(t * 0.45) * 1.5}deg) scale(${lerp(0.9, 1, m1(inP))})`, transformOrigin: `${FX + FW / 2}px ${FY + FH / 2}px`}}>
         <Phone x={FX} y={FY} w={FW} h={FH} t={t} glow={1}>
           <OffthreadVideo muted src={staticFile('clips/final.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
           <AbsoluteFill style={{background: '#000', opacity: end * 0.45}} />
         </Phone>
         <Label text="FINAL" x={FX + FW / 2} y={FY - 92} size={58} gold p={lab} />
       </div>
+      </div>
 
       {/* CTA */}
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1420, textAlign: 'center', opacity: cta, transform: `translateY(${(1 - cta) * 40}px) scale(${1 + 0.04 * Math.max(0, Math.sin((t - CLIP) * 6)) * (t > CLIP ? 1 : 0)})`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1500, textAlign: 'center', opacity: cta, transform: `translateY(${(1 - cta) * 40}px) scale(${1 + 0.04 * Math.max(0, Math.sin((t - CLIP) * 6)) * (t > CLIP ? 1 : 0)})`}}>
         <div style={{fontFamily: SANS, fontWeight: 800, fontSize: 112, letterSpacing: '-0.02em', ...goldText, filter: 'drop-shadow(0 0 30px rgba(255,180,40,0.55))'}}>DM me</div>
         <div style={{fontFamily: SANS, fontWeight: 600, fontSize: 34, color: 'rgba(255,255,255,0.7)', marginTop: 4}}>for edits like this</div>
       </div>
