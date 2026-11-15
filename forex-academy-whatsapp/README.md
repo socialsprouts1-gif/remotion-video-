@@ -42,7 +42,7 @@ If you move chat messages, also check the phone camera keys (`PK` in `src/scenes
 
 - `public/sfx/*.wav` — synthesised UI sounds (`scripts/make_sfx.py`), no samples.
 - `public/audio/music.mp3` — synthesised music bed (`scripts/make_music.py`), no samples, no licensing.
-- Voiceover: record `VOICEOVER.md`, drop the file in `public/audio/` and set `AUDIO.voiceover`. Music and effects duck automatically.
+- `public/audio/voiceover.mp3` — Hinglish voiceover from `scripts/make_voiceover.py` (Kokoro, free TTS). Lines and how to swap in your own recording: `VOICEOVER.md`. Music and effects duck under the voice automatically.
 
 ## Structure
 

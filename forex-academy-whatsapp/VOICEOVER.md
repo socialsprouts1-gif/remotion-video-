@@ -1,17 +1,22 @@
-# Voiceover script (Hinglish, optional)
+# Voiceover (Hinglish)
 
-Timed to the picture. Read at a relaxed pace; each line should finish before the next time mark.
+The reel ships with a generated voiceover: `public/audio/voiceover.mp3`, made by `scripts/make_voiceover.py`
+with Kokoro (free, open-source TTS), Hindi male voice `hm_omega`. Female alternative: `hf_alpha`
+(`~/.cache/kokoro/venv/bin/python scripts/make_voiceover.py hf_alpha`). Setup steps are at the top of the script.
+
+To use your own recording instead, read the lines below at the same times, export one file,
+put it in `public/audio/` and point `AUDIO.voiceover` in `src/config.ts` at it.
 
 | Time | Line |
 |------|------|
-| 0.0 | Forex trading academy chalate ho? Sirf ek WhatsApp number se poora system automate ho sakta hai. |
-| 4.4 | Roz sau-sau messages… aur manually reply karte-karte leads haath se nikal jaate hain. |
-| 8.8 | Ab har naye lead ka swagat automatically hoga. |
-| 11.8 | Bot poochega — aap kis service mein interested ho? Free course, mentorship, ya investor program. |
-| 15.0 | Jo choose kiya, usi hisaab se sahi videos, PDFs aur next steps turant pahunch jaate hain. |
-| 20.2 | Saath hi naam, trading experience aur budget bhi automatically le liya jaata hai. |
-| 25.8 | Har lead CRM mein category ke hisaab se save hoti hai, aur follow-ups apne aap jaate hain. |
-| 31.4 | Jab lead serious ho, chat seedha aapke human agent ko handover ho jaati hai. |
-| 36.8 | Broadcast aur updates — ek click mein sab tak. |
-| 41.8 | Aur dashboard pe saaf dikhega: kitne leads aaye, kitne free mein jude, kitne ne mentorship li, aur kitne investor bane. |
-| 48.6 | Lead se customer tak — poori journey, automated. Apni academy ke liye chahiye? DM karo "AUTOMATE". |
+| 0.15 | Forex academy? Sirf ek WhatsApp number se, poora system automate. |
+| 4.5 | Roz saikdon message… aur manual reply mein, leads haath se nikal jaati hain. |
+| 9.0 | Har nayi lead ka swagat, apne aap. |
+| 11.9 | Bot poochega, aap kis service mein interested hain? |
+| 15.1 | Aur usi hisaab se, sahi videos, PDF aur instructions, turant bhej diye jaate hain. |
+| 20.3 | Saath hi naam, trading experience aur budget, sab apne aap save. |
+| 25.9 | Har lead CRM mein category ke hisaab se save hoti hai, aur follow-ups automatic jaate hain. |
+| 31.7 | Jab lead serious ho, to chat seedhe aapke human agent ko handover ho jaati hai. |
+| 37.0 | Broadcast aur updates, ek click mein, sab tak. |
+| 42.0 | Aur dashboard par saaf dikhega: kitni leads aayin, kitne free mein jude, kitnon ne mentorship li, aur kitne investor bane. |
+| 48.9 | Lead se customer tak, poori journey automated. Apni academy ke liye chahiye? DM karo, "AUTOMATE". |
