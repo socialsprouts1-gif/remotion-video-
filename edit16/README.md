@@ -1,9 +1,9 @@
 # edit16: before/after reel, cream layout with editing timeline (Neuraxine "automate")
 
-Layout of the earlier cream before/after reel: logo top-left, a tilted RAW card and a bigger tilted FINAL card with
-brown tags, "@neuraxine" under RAW, a brown band "Turn your videos into a premium masterpiece.", an editing-timeline
+Layout of the earlier cream before/after reel, unbranded (no logo, no handle): a tilted RAW card and a bigger tilted
+FINAL card with brown RAW / FINAL tags, a brown band "Turn your videos into a premium masterpiece.", an editing-timeline
 panel whose playhead runs with the video, and "DM NOW!".
-Render: `renders/neuraxine-before-after-cream.mp4` (1080x1920, 30 fps, 43.5 s, full length, no cuts; the audio is the
+Render: `renders/before-after-cream-unbranded.mp4` (the earlier branded version is `renders/neuraxine-before-after-cream.mp4`) (1080x1920, 30 fps, 43.5 s, full length, no cuts; the audio is the
 final edit's audio, verified identical).
 
 - RAW = edit14's original footage (only converted from HDR); FINAL = `edit14/renders/neuraxine-automate-v6.mp4`.

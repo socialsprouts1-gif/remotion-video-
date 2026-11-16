@@ -3,8 +3,8 @@ import {AbsoluteFill, continueRender, delayRender, Easing, Freeze, Img, Offthrea
 import {lerp, pt} from './anim';
 import tl from './tl.json';
 
-// Before/after reel (full length, no cuts) in the layout of the earlier cream reel: logo top-left, a tilted RAW card
-// and a bigger tilted FINAL card with brown tags, a brown band with the tagline, an editing-timeline panel whose
+// Before/after reel (full length, no cuts) in the layout of the earlier cream reel (unbranded: no logo, no handle):
+// a tilted RAW card and a bigger tilted FINAL card with brown tags, a brown band with the tagline, an editing-timeline panel whose
 // playhead runs with the video, and "DM NOW!". The timeline is drawn from the real edit (edit14): every take split at
 // its real cuts, the 3D cut scenes, windows, words behind him, overlays, caption clips, and the voice loudness.
 const FPS = 30;
@@ -146,8 +146,6 @@ export const Film: React.FC = () => {
   const inB = pt(t, 0.25, 0.8, smooth);
   return (
     <AbsoluteFill style={{background: 'linear-gradient(180deg, #DDBF8A 0%, #EAD3A6 22%, #F3E5C8 48%, #F8F0DF 75%, #FBF6EC 100%)'}}>
-      {/* logo top-left */}
-      <Img src={staticFile('brand/logo-alpha.png')} style={{position: 'absolute', left: 66, top: 96, width: 170, height: 124, objectFit: 'contain', opacity: 0.75 * inR, filter: 'drop-shadow(0 4px 10px rgba(80,50,0,0.25))'}} />
 
       {/* RAW card */}
       <div style={{position: 'absolute', left: 74, top: 312, width: 402, height: 715, transform: `rotate(-2deg) translateX(${(1 - inR) * -180}px)`, opacity: inR}}>
@@ -156,11 +154,10 @@ export const Film: React.FC = () => {
           <Video src="clips/raw.mp4" dur={RAW_DUR} muted />
         </div>
       </div>
-      <div style={{position: 'absolute', left: 74, width: 402, top: 1074, textAlign: 'center', fontFamily: SANS, fontWeight: 600, fontSize: 50, color: BROWN, opacity: inB}}>@neuraxine</div>
 
       {/* FINAL card */}
       <div style={{position: 'absolute', left: 496, top: 200, width: 500, height: 950, transform: `rotate(2deg) translateX(${(1 - inF) * 200}px)`, opacity: inF}}>
-        <Tag text="@neuraxine" w={356} size={34} />
+        <Tag text="FINAL" w={190} size={34} />
         <div style={{position: 'absolute', inset: 0, borderRadius: 22, overflow: 'hidden', border: '5px solid #FFFFFF', boxShadow: '0 28px 60px rgba(90,60,10,0.4)', background: '#222'}}>
           <Video src="clips/final.mp4" dur={FINAL_DUR} muted={false} />
         </div>
