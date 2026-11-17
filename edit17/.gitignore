@@ -1,0 +1,14 @@
+public/clips/
+node_modules
+out/
+footage/
+work/*.wav
+work/*.task
+work/*.png
+work/*.jpg
+work/*.log
+scripts/__pycache__/
+work/*.tflite
+work/*.tflite
+work/sdr.mp4
+work/*.log
