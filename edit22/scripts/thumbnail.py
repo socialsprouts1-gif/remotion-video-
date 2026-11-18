@@ -6,7 +6,9 @@ src, out = sys.argv[1], sys.argv[2]
 W, H = 1080, 1920
 im = Image.open(src).convert('RGB').resize((W, H))
 # person matte (human-seg, softened slightly)
-m = remove(im, session=new_session('u2net_human_seg'), only_mask=True).filter(ImageFilter.GaussianBlur(1.2))
+m1_ = np.asarray(remove(im, session=new_session('u2net_human_seg'), only_mask=True), np.float32)
+m2_ = np.asarray(remove(im, session=new_session('isnet-general-use'), only_mask=True), np.float32)
+m = Image.fromarray(np.maximum(m1_, m2_).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.2))
 # green grade: luminance into a green ramp, keep some skin colour on the person
 a = np.asarray(im, np.float32) / 255
 lum = (0.3 * a[..., 0] + 0.59 * a[..., 1] + 0.11 * a[..., 2])[..., None]
@@ -28,13 +30,13 @@ LIME = (150, 255, 92)
 # big word behind the head
 txt = Image.new('RGBA', (W, H), (0, 0, 0, 0))
 d = ImageDraw.Draw(txt)
-word = 'MARKETING'
+word = 'GIVEAWAY'
 size = 330
 f = ImageFont.truetype(F, size)
 while d.textlength(word, font=f) > W - 50:
     size -= 6; f = ImageFont.truetype(F, size)
 tw = d.textlength(word, font=f)
-d.text(((W - tw) / 2, 330), word, font=f, fill=LIME + (255,))
+d.text(((W - tw) / 2, 170), word, font=f, fill=LIME + (255,))
 sh = txt.filter(ImageFilter.GaussianBlur(14)); sh = Image.fromarray(np.dstack([np.zeros((H, W, 3), np.uint8), (np.asarray(sh)[..., 3] * 0.5).astype(np.uint8)]), 'RGBA')
 comp = base.convert('RGBA'); comp.alpha_composite(sh); comp.alpha_composite(txt)
 # the person back on top of the word
@@ -42,18 +44,18 @@ pers = base.convert('RGBA'); pers.putalpha(m)
 comp.alpha_composite(pers)
 # front words across the chest
 d2 = ImageDraw.Draw(comp)
-w2 = 'IS NOT ENOUGH'
-f2 = ImageFont.truetype(F, 150)
+w2 = '27 WINNERS'
+f2 = ImageFont.truetype(F, 200)
 tw2 = d2.textlength(w2, font=f2)
 fr = Image.new('RGBA', (W, H), (0, 0, 0, 0)); dd = ImageDraw.Draw(fr)
-dd.text(((W - tw2) / 2, 1290), w2, font=f2, fill=LIME + (255,))
+dd.text(((W - tw2) / 2, 1330), w2, font=f2, fill=LIME + (255,))
 frs = fr.filter(ImageFilter.GaussianBlur(10)); frs = Image.fromarray(np.dstack([np.zeros((H, W, 3), np.uint8), (np.asarray(frs)[..., 3] * 0.7).astype(np.uint8)]), 'RGBA')
 comp.alpha_composite(frs); comp.alpha_composite(fr)
 # small label like the reference ("agar aap")
 f3 = ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf', 56)
-lab = '2026 mein'
+lab = 'Diwali Bumper'
 lw = d2.textlength(lab, font=f3)
-x0, y0 = (W - lw) / 2 - 22, 1200
+x0, y0 = (W - lw) / 2 - 22, 1230
 d2.rounded_rectangle([x0, y0, x0 + lw + 44, y0 + 78], radius=10, fill=(10, 20, 10, 235))
 d2.text((x0 + 22, y0 + 8), lab, font=f3, fill=LIME)
 comp.convert('RGB').save(out, quality=95)
