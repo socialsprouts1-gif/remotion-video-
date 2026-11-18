@@ -30,13 +30,13 @@ LIME = (150, 255, 92)
 # big word behind the head
 txt = Image.new('RGBA', (W, H), (0, 0, 0, 0))
 d = ImageDraw.Draw(txt)
-word = 'GIVEAWAY'
+word = 'DIWALI'
 size = 330
 f = ImageFont.truetype(F, size)
 while d.textlength(word, font=f) > W - 50:
     size -= 6; f = ImageFont.truetype(F, size)
 tw = d.textlength(word, font=f)
-d.text(((W - tw) / 2, 170), word, font=f, fill=LIME + (255,))
+d.text(((W - tw) / 2, 50), word, font=f, fill=LIME + (255,))
 sh = txt.filter(ImageFilter.GaussianBlur(14)); sh = Image.fromarray(np.dstack([np.zeros((H, W, 3), np.uint8), (np.asarray(sh)[..., 3] * 0.5).astype(np.uint8)]), 'RGBA')
 comp = base.convert('RGBA'); comp.alpha_composite(sh); comp.alpha_composite(txt)
 # the person back on top of the word
@@ -44,8 +44,8 @@ pers = base.convert('RGBA'); pers.putalpha(m)
 comp.alpha_composite(pers)
 # front words across the chest
 d2 = ImageDraw.Draw(comp)
-w2 = '27 WINNERS'
-f2 = ImageFont.truetype(F, 200)
+w2 = 'WIN AN iPHONE'
+f2 = ImageFont.truetype(F, 175)
 tw2 = d2.textlength(w2, font=f2)
 fr = Image.new('RGBA', (W, H), (0, 0, 0, 0)); dd = ImageDraw.Draw(fr)
 dd.text(((W - tw2) / 2, 1330), w2, font=f2, fill=LIME + (255,))
@@ -53,7 +53,7 @@ frs = fr.filter(ImageFilter.GaussianBlur(10)); frs = Image.fromarray(np.dstack([
 comp.alpha_composite(frs); comp.alpha_composite(fr)
 # small label like the reference ("agar aap")
 f3 = ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf', 56)
-lab = 'Diwali Bumper'
+lab = 'Delta Exchange Giveaway'
 lw = d2.textlength(lab, font=f3)
 x0, y0 = (W - lw) / 2 - 22, 1230
 d2.rounded_rectangle([x0, y0, x0 + lw + 44, y0 + 78], radius=10, fill=(10, 20, 10, 235))
