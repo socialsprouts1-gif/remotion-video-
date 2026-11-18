@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { ArrowRight, Loader2, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import BrandIcon from '../components/BrandIcon'
 import { site } from '../site'
 import { SplitWords } from '../components/Reveal'
 import Magnetic from '../components/Magnetic'
 import { scrollTo } from '../lib/smooth'
-import { api } from '../lib/api'
 
 const NEEDS = ['WhatsApp agent', 'Lead generation', 'n8n workflows', 'Custom SaaS', 'Not sure yet']
 
@@ -13,18 +13,26 @@ export default function Contact() {
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
 
-  const submit = async (e) => {
+  // No backend: the form opens WhatsApp with the details already typed in.
+  const submit = (e) => {
     e.preventDefault()
-    const data = Object.fromEntries(new FormData(e.currentTarget))
-    setStatus('sending')
+    const form = e.currentTarget
+    if (!form.reportValidity()) return
+    const d = Object.fromEntries(new FormData(form))
+    const text = [
+      'Hi Neuraxine, I’d like a free automation audit.',
+      '',
+      `Name: ${d.name.trim()}`,
+      `Business: ${d.business.trim()}`,
+      `WhatsApp: ${d.phone.trim()}`,
+      `Want to automate: ${needs.length ? needs.join(', ') : 'Not sure yet'}`,
+    ].join('\n')
+    const url = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`
     setError('')
-    try {
-      await api('/api/contact', { ...data, needs })
-      setStatus('sent')
-    } catch (err) {
-      setError(err.status ? err.message : 'Couldn’t reach the server. Please try again in a moment.')
-      setStatus('idle')
-    }
+    setStatus('sent')
+    // Same tab on phones (opens the WhatsApp app); new tab on desktop.
+    if (window.matchMedia('(pointer: coarse)').matches) window.location.href = url
+    else if (!window.open(url, '_blank', 'noopener')) window.location.href = url
   }
 
   return (
@@ -43,9 +51,9 @@ export default function Contact() {
         {status === 'sent' ? (
           <div className="sent">
             <CheckCircle2 size={36} className="lime" />
-            <h3 className="h3">Request received.</h3>
-            <p className="muted">We’ll reach out on WhatsApp to book your audit.</p>
-            <button type="button" className="link" onClick={() => setStatus('idle')}>Send another</button>
+            <h3 className="h3">Opening WhatsApp…</h3>
+            <p className="muted">Your details are typed in for you. Just press send in WhatsApp and we’ll reply there.</p>
+            <button type="button" className="link" onClick={() => setStatus('idle')}>Back to the form</button>
           </div>
         ) : (
           <>
@@ -61,7 +69,6 @@ export default function Contact() {
               <span>WhatsApp number</span>
               <input id="c-phone" name="phone" required type="tel" pattern="\+?[0-9\s\-]{8,18}" autoComplete="tel" placeholder="+91 98765 43210" />
             </label>
-            <input className="hp" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <fieldset>
               <legend>What do you want to automate?</legend>
               <div className="chips">
@@ -79,12 +86,12 @@ export default function Contact() {
               </div>
             </fieldset>
             <Magnetic strength={0.2}>
-              <button className="btn btn--primary" disabled={status === 'sending'} data-cursor="Send">
-                {status === 'sending' ? <Loader2 size={18} className="spin" /> : null}
-                {status === 'sending' ? 'Sending…' : 'Book my free audit'} {status !== 'sending' && <ArrowRight size={18} />}
+              <button className="btn btn--primary" data-cursor="Send">
+                <BrandIcon name="siWhatsapp" size={18} color="currentColor" /> Book my free audit <ArrowRight size={18} />
               </button>
             </Magnetic>
             {error && <p className="err" role="alert">{error}</p>}
+            <p className="note">Opens WhatsApp with your details filled in. Nothing is stored on this website.</p>
           </>
         )}
       </form>

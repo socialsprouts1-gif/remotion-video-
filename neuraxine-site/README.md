@@ -13,7 +13,7 @@ The Neuraxine agency site. The hero shows a 3D version of the Neuraxine logo, tr
 5. **Industries:** a sideways-scrolling rail with use cases for eight trades
 6. **ROI calculator, process, integrations, builds**
 7. **FAQ:** accordion, with FAQPage structured data for search engines
-8. **Contact:** the free-audit form, a footer, and a floating WhatsApp button (number in `src/site.js`)
+8. **Contact:** the free-audit form opens WhatsApp with the visitor's details typed in (no backend, nothing stored), plus a footer and a floating WhatsApp button. The number is `whatsapp` in `src/site.js`.
 
 ## Run it
 
@@ -35,8 +35,7 @@ The repo is set up for Vercel: `vercel.json` builds the Vite site and routes eve
 
 1. Import the repo in Vercel. The settings are picked up from `vercel.json`.
 2. In **Project → Settings → Environment Variables**, add the keys from `.env.example` that you want live.
-3. **Set `N8N_WEBHOOK_URL` and/or `RESEND_API_KEY` + `LEAD_EMAIL_TO`.** Vercel doesn't keep files between requests, so on Vercel the audit form only reaches you through the webhook or email.
-4. Redeploy. Check `https://<your-domain>/api/health`: `services` shows which keys are active.
+3. Redeploy. Check `https://<your-domain>/api/health`: `services` shows which keys are active.
 
 ## Backend (`server/`)
 
@@ -45,12 +44,11 @@ An Express app that serves the built site and the API from one port, so it deplo
 | Endpoint | What it does | Real service it uses when configured |
 |---|---|---|
 | `GET /api/health` | Live status used by the nav's "All systems operational" pill and the demo badges | — |
-| `POST /api/contact` | Validates the audit form, rate-limits, saves to `data/contacts.jsonl`, forwards the lead | n8n webhook (`N8N_WEBHOOK_URL`), email via Resend (`RESEND_API_KEY`, `LEAD_EMAIL_TO`) |
 | `POST /api/agent/chat` | WhatsApp agent replies, quick replies and the "behind the scenes" events | Claude (`ANTHROPIC_API_KEY`), using structured JSON output |
 | `POST /api/leads/search` | Finds and scores businesses, then drafts a first message | Google Places API (New) (`GOOGLE_PLACES_API_KEY`) + Claude for drafts |
 | `POST /api/workflow/run` | Executes the workflow server-side with real per-node timings, stores rows, posts steps to n8n | Claude for lead scoring, n8n webhook |
 
-Every key is optional; see `.env.example`. Without a key, that feature falls back to a built-in engine and the UI badge says so ("Scripted demo", "Sample data"). If a Claude request fails or the model declines, the agent falls back to the scripted reply instead of erroring. If the API can't be reached at all (static hosting), the demos run in the browser and show "Offline demo".
+Nothing is stored in a database: demo workflow rows live in memory only. Every key is optional; see `.env.example`. Without a key, that feature falls back to a built-in engine and the UI badge says so ("Scripted demo", "Sample data"). If a Claude request fails or the model declines, the agent falls back to the scripted reply instead of erroring. If the API can't be reached at all (static hosting), the demos run in the browser and show "Offline demo".
 
 ## What's real on the page
 

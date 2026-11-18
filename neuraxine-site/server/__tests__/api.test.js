@@ -27,46 +27,30 @@ describe('GET /api/health', () => {
     const app = createApp({ env: { N8N_WEBHOOK_URL: 'https://hook' }, ai: null, store })
     const res = await request(app).get('/api/health')
     expect(res.status).toBe(200)
-    expect(res.body).toMatchObject({ ok: true, status: 'operational', services: { ai: false, places: false, webhook: true, email: false } })
+    expect(res.body).toMatchObject({ ok: true, status: 'operational', services: { ai: false, places: false, webhook: true } })
   })
 })
 
-describe('POST /api/contact', () => {
-  const valid = { name: 'Priya Sharma', business: 'Dental clinic, Pune', phone: '+91 98765 43210', needs: ['WhatsApp agent'] }
-
-  it('rejects invalid input with a readable error', async () => {
+describe('contact', () => {
+  it('has no contact endpoint: the form opens WhatsApp instead', async () => {
     const app = createApp({ env: {}, ai: null, store })
-    const res = await request(app).post('/api/contact').send({ ...valid, phone: 'abc' })
-    expect(res.status).toBe(400)
-    expect(res.body.error).toMatch(/phone/i)
+    const res = await request(app).post('/api/contact').send({ name: 'x' })
+    expect(res.status).toBe(404)
   })
+})
 
-  it('stores the lead and forwards it to the webhook and email', async () => {
-    const calls = []
-    const app = createApp({ env: { N8N_WEBHOOK_URL: 'https://hook.example', RESEND_API_KEY: 'k', LEAD_EMAIL_TO: 'me@x.com' }, ai: null, store, fetchImpl: okFetch(calls) })
-    const res = await request(app).post('/api/contact').send(valid)
-    expect(res.status).toBe(201)
-    expect(res.body.delivered).toEqual({ stored: true, webhook: true, email: true })
-    const rows = await store.list('contacts')
-    expect(rows).toHaveLength(1)
-    expect(rows[0]).toMatchObject({ name: 'Priya Sharma', phone: '+91 98765 43210' })
-    expect(calls.map((c) => c.url)).toEqual(['https://hook.example', 'https://api.resend.com/emails'])
-    expect(calls[0].body.event).toBe('audit.requested')
-  })
-
-  it('silently drops honeypot submissions', async () => {
-    const app = createApp({ env: {}, ai: null, store })
-    const res = await request(app).post('/api/contact').send({ ...valid, website: 'spam.com' })
-    expect(res.status).toBe(400) // honeypot must be empty: schema rejects
-    expect(await store.list('contacts')).toHaveLength(0)
-  })
-
-  it('rate limits repeated submissions', async () => {
-    const app = createApp({ env: {}, ai: null, store, limits: { contact: 2 } })
-    await request(app).post('/api/contact').send(valid)
-    await request(app).post('/api/contact').send(valid)
-    const res = await request(app).post('/api/contact').send(valid)
-    expect(res.status).toBe(429)
+describe('storage', () => {
+  it('keeps workflow rows in memory by default, writing no files', async () => {
+    const cwd = process.cwd()
+    process.chdir(dir)
+    try {
+      const app = createApp({ env: {}, ai: null })
+      const res = await request(app).post('/api/workflow/run').send({ template: 'lead' })
+      expect(res.body.nodes[4].out.stored).toBe(true)
+      expect(fs.readdirSync(dir)).toEqual([])
+    } finally {
+      process.chdir(cwd)
+    }
   })
 })
 

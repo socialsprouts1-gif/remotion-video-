@@ -4,18 +4,10 @@ import { z } from 'zod'
 import { industries, days, slots, leadCategories, leadCities, workflows } from '../src/demos/data.js'
 import { scriptedTurn, greeting } from '../src/demos/engine.js'
 import { aiChatTurn, createAI } from './ai.js'
-import { createStore } from './store.js'
+import { createMemoryStore } from './store.js'
 import { rateLimit } from './rateLimit.js'
 import { searchLeads } from './leads.js'
 import { runWorkflow } from './workflow.js'
-
-const Contact = z.object({
-  name: z.string().trim().min(2).max(80),
-  business: z.string().trim().min(2).max(120),
-  phone: z.string().trim().regex(/^\+?[\d\s-]{8,18}$/, 'Enter a valid phone number'),
-  needs: z.array(z.string().max(40)).max(6).default([]),
-  website: z.string().max(0).optional(), // honeypot: must stay empty
-})
 
 const Chat = z.object({
   industry: z.enum(Object.keys(industries)),
@@ -31,7 +23,7 @@ const WorkflowRun = z.object({
 
 const bad = (res, err) => res.status(400).json({ ok: false, error: err.issues?.[0]?.message || 'Invalid request', issues: err.issues })
 
-export function createApp({ env = process.env, ai = createAI(env), store = createStore(env.DATA_DIR || (env.VERCEL ? '/tmp/neuraxine-data' : 'data')), fetchImpl = fetch, limits = {} } = {}) {
+export function createApp({ env = process.env, ai = createAI(env), store = createMemoryStore(), fetchImpl = fetch, limits = {} } = {}) {
   const app = express()
   app.disable('x-powered-by')
   app.set('trust proxy', 1)
@@ -42,45 +34,10 @@ export function createApp({ env = process.env, ai = createAI(env), store = creat
     ai: Boolean(ai),
     places: Boolean(env.GOOGLE_PLACES_API_KEY),
     webhook: Boolean(env.N8N_WEBHOOK_URL),
-    email: Boolean(env.RESEND_API_KEY && env.LEAD_EMAIL_TO),
   })
 
   app.get('/api/health', (req, res) => {
     res.json({ ok: true, status: 'operational', uptime_s: Math.round((Date.now() - started) / 1000), services: services() })
-  })
-
-  app.post('/api/contact', rateLimit({ windowMs: 10 * 60e3, max: limits.contact ?? 5 }), async (req, res) => {
-    const parsed = Contact.safeParse(req.body)
-    if (!parsed.success) return bad(res, parsed.error)
-    const { website, ...lead } = parsed.data
-    const row = await store.append('contacts', { ...lead, source: 'website', ua: req.get('user-agent')?.slice(0, 200) })
-    const delivered = { stored: true, webhook: false, email: false }
-
-    const jobs = []
-    if (env.N8N_WEBHOOK_URL)
-      jobs.push(
-        fetchImpl(env.N8N_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'audit.requested', ...row }), signal: AbortSignal.timeout(8000) })
-          .then((r) => (delivered.webhook = r.ok))
-          .catch((e) => console.warn('[contact] webhook failed:', e.message)),
-      )
-    if (env.RESEND_API_KEY && env.LEAD_EMAIL_TO)
-      jobs.push(
-        fetchImpl('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.RESEND_API_KEY}` },
-          body: JSON.stringify({
-            from: env.LEAD_EMAIL_FROM || 'Neuraxine <onboarding@resend.dev>',
-            to: env.LEAD_EMAIL_TO,
-            subject: `New audit request: ${lead.business}`,
-            text: `Name: ${lead.name}\nBusiness: ${lead.business}\nWhatsApp: ${lead.phone}\nWants: ${lead.needs.join(', ') || '-'}\n`,
-          }),
-          signal: AbortSignal.timeout(8000),
-        })
-          .then((r) => (delivered.email = r.ok))
-          .catch((e) => console.warn('[contact] email failed:', e.message)),
-      )
-    await Promise.all(jobs)
-    res.status(201).json({ ok: true, id: row.id, delivered })
   })
 
   app.get('/api/agent/greeting', (req, res) => {
