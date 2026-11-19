@@ -6,47 +6,14 @@ import {ease, mix, prog, range} from '../lib/anim';
 import {AVATAR, Logo, PHONE_H, PHONE_W, Phone3D} from '../components/Phone3D';
 
 // Avatar offset from the phone centre (phone-local px).
-const AX = 20 + AVATAR.x - PHONE_W / 2;
-const AY = 20 + AVATAR.y - PHONE_H / 2;
 
-/** Glowing holographic platform: stacked ellipses and a light column. */
+/** A quiet floor under the logo: a soft shadow and one thin reflection line (no neon). */
 export const HoloRing: React.FC<{p: number; cx: number; cy: number; w?: number}> = ({p, cx, cy, w = 520}) => {
-  const frame = useCurrentFrame();
   if (p <= 0) return null;
   return (
-    <div style={{position: 'absolute', left: cx - w / 2, top: cy - w * 0.16, width: w, height: w * 0.32, opacity: p}}>
-      <div
-        style={{
-          position: 'absolute',
-          left: w * 0.18,
-          right: w * 0.18,
-          bottom: '50%',
-          height: w * 0.9 * p,
-          background: `linear-gradient(0deg, rgba(181,241,42,0.28), transparent)`,
-          filter: 'blur(14px)',
-        }}
-      />
-      {[1, 0.78, 0.56].map((k, i) => {
-        const spin = (frame * (i % 2 ? -1.6 : 2.2)) % 360;
-        return (
-          <div
-            key={i}
-            style={{
-              position: 'absolute',
-              left: (w * (1 - k)) / 2,
-              top: (w * 0.32 * (1 - k)) / 2,
-              width: w * k,
-              height: w * 0.32 * k,
-              borderRadius: '50%',
-              border: `${i === 0 ? 4 : 2}px ${i === 1 ? 'dashed' : 'solid'} ${C.accent}`,
-              boxShadow: `0 0 ${30 - i * 8}px ${C.accentGlow}, inset 0 0 ${24 - i * 6}px ${C.accentGlow}`,
-              transform: `scale(${mix(p, 0.6, 1)}) rotate(${spin * 0.02}deg)`,
-              opacity: 1 - i * 0.2,
-            }}
-          />
-        );
-      })}
-      <div style={{position: 'absolute', inset: '30%', borderRadius: '50%', background: 'radial-gradient(closest-side, rgba(181,241,42,0.55), transparent)', filter: 'blur(6px)'}} />
+    <div style={{position: 'absolute', left: cx - w / 2, top: cy - w * 0.1, width: w, height: w * 0.2, opacity: p}}>
+      <div style={{position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(closest-side, rgba(0,0,0,0.75), transparent)'}} />
+      <div style={{position: 'absolute', left: '15%', right: '15%', top: '50%', height: 2, background: 'linear-gradient(90deg, transparent, rgba(242,245,239,0.35), transparent)', transform: `scaleX(${p})`}} />
     </div>
   );
 };
@@ -58,19 +25,26 @@ export const Opener: React.FC = () => {
   const dive = prog(frame, 56, 26, ease.inOut);
   const avatarLift = prog(frame, 62, 20, ease.out);
   const phoneOut = prog(frame, 80, 12, ease.in);
-  const logoIn = prog(frame, 78, 14, ease.out);
-  const coin = range(frame, [78, 100], [180, 360], ease.out);
+  const logoIn = prog(frame, 80, 8, ease.out);
+  const coin = 0;
   const drift = Math.sin(frame / 20) * 3;
 
-  const s = mix(dive, mix(spin, 0.38, 0.8), 2.6);
-  const rotY = mix(spin, 200, -18) * (1 - dive) + drift;
-  const rotX = mix(spin, 30, 14) * (1 - dive) + dive * 40;
+  // The camera pivots on the avatar, so the dive lands it exactly where the logo appears.
+  const OX = 20 + AVATAR.x; // avatar in phone-local px (transform origin)
+  const OY = 20 + AVATAR.y;
+  const s0 = mix(spin, 0.38, 0.8);
+  const s = mix(dive, s0, 2.6);
+  const rotY = mix(spin, 200, -18) * (1 - dive) + drift * (1 - dive);
+  const rotX = mix(spin, 30, 14) * (1 - dive) + dive * 30;
   const rotZ = mix(spin, -14, -5) * (1 - dive);
-  const tx = -AX * s * dive;
-  const ty = -AY * s * dive + mix(spin, 300, 0);
+  // phone centre sits on screen centre before the dive; avatar sits on (540, 760) after it
+  const cx = PHONE_W / 2 - OX;
+  const cy = PHONE_H / 2 - OY;
+  const tx = mix(dive, cx * (1 - s0), 540 - (540 - PHONE_W / 2 + OX));
+  const ty = mix(dive, cy * (1 - s0) + mix(spin, 300, 0), 760 - (960 - PHONE_H / 2 + OY));
 
   return (
-    <AbsoluteFill style={{perspective: 2200, perspectiveOrigin: '50% 45%'}}>
+    <AbsoluteFill style={{perspective: 2200, perspectiveOrigin: '50% 39.6%'}}>
       {/* soft floor glow under the phone */}
       <div style={{position: 'absolute', left: 140, right: 140, top: 1500, height: 260, borderRadius: '50%', background: 'radial-gradient(closest-side, rgba(181,241,42,0.16), transparent)', opacity: spin * (1 - phoneOut)}} />
       <div
@@ -81,6 +55,7 @@ export const Opener: React.FC = () => {
           width: PHONE_W,
           height: PHONE_H,
           transformStyle: 'preserve-3d',
+          transformOrigin: `${OX}px ${OY}px`,
           transform: `translate(${tx}px, ${ty}px) scale(${s}) rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)`,
           opacity: (1 - phoneOut) * Math.min(1, spin * 3),
           filter: phoneOut > 0 ? `blur(${phoneOut * 18}px)` : spin < 0.6 ? `blur(${(0.6 - spin) * 14}px)` : undefined,
@@ -95,13 +70,13 @@ export const Opener: React.FC = () => {
           style={{
             position: 'absolute',
             left: 540 - 190,
-            top: 760 - 190 + (1 - logoIn) * 120,
-            transform: `perspective(1200px) rotateY(${coin}deg) scale(${mix(logoIn, 0.6, 1)})`,
+            top: 760 - 190,
+            transform: `perspective(1200px) rotateY(${coin}deg) scale(${mix(prog(frame, 80, 30, ease.out), 1, 1.06)})`,
             opacity: logoIn,
-            filter: `drop-shadow(0 0 50px ${C.accentGlow})`,
+            filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.6))',
           }}
         >
-          <Logo size={380} round style={{border: `4px solid rgba(181,241,42,0.6)`}} />
+          <Logo size={380} round style={{border: '3px solid rgba(242,245,239,0.18)'}} />
         </div>
       )}
       {logoIn > 0 && (

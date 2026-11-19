@@ -4,6 +4,7 @@ import {CHAPTERS, cue, wordAt} from '../config';
 import {C, F} from '../theme';
 import {ease, mix, prog, range} from '../lib/anim';
 import {ChapterHeader} from '../components/ChapterHeader';
+import {BrandIcon, BrandName} from '../components/BrandIcon';
 
 const fr = (s: number) => Math.round(s * 30);
 const CX = 540;
@@ -22,9 +23,9 @@ export const S4FollowUp: React.FC = () => {
   const NODES = [
     {a: -90, label: 'Visit', at: 36},
     {a: -10, label: 'Chala gaya', at: l1 + 20, bad: true},
-    {a: 55, label: 'WhatsApp', at: wa},
-    {a: 125, label: 'Email', at: em},
-    {a: 195, label: 'Ads', at: ad},
+    {a: 55, label: 'WhatsApp', at: wa, icon: 'whatsapp' as BrandName},
+    {a: 125, label: 'Email', at: em, icon: 'gmail' as BrandName},
+    {a: 195, label: 'Ads', at: ad, icon: 'meta' as BrandName},
   ];
   // the visitor's angle around the loop over time
   const ang = range(
@@ -75,6 +76,7 @@ export const S4FollowUp: React.FC = () => {
               }}
             >
               {isBad && lit > 0.5 ? '✕ ' : ''}
+              {'icon' in n && n.icon ? <BrandIcon name={n.icon} size={36} style={{marginRight: 10, verticalAlign: '-9px'}} /> : null}
               {n.label}
             </div>
           </div>

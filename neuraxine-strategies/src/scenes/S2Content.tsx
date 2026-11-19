@@ -4,6 +4,8 @@ import {CHAPTERS, POSTS, cue, wordAt} from '../config';
 import {C, F} from '../theme';
 import {ease, mix, prog} from '../lib/anim';
 import {ChapterHeader} from '../components/ChapterHeader';
+import {BrandIcon} from '../components/BrandIcon';
+import {Img, staticFile} from 'remotion';
 
 const fr = (s: number) => Math.round(s * 30);
 
@@ -13,59 +15,42 @@ const Heart: React.FC<{size: number; color: string}> = ({size, color}) => (
   </svg>
 );
 
+/** A real post from the page, shown as a reel card with Instagram's own UI chrome. */
 const Post: React.FC<{i: number; at: number}> = ({i, at}) => {
   const frame = useCurrentFrame();
   const p = prog(frame, at + i * 7, 18, ease.out);
   const post = POSTS[i];
-  const likes = Math.round(prog(frame, at + i * 7 + 10, 60, ease.soft) * post.likes);
   const off = i - 1;
-  const hearts = [0, 1, 2];
+  const W = 300;
+  const H = 400;
   return (
     <div
       style={{
         position: 'absolute',
-        left: 540 - 160 + off * 270,
-        top: 640,
-        width: 320,
-        height: 400,
+        left: 540 - W / 2 + off * 250,
+        top: 560,
+        width: W,
         opacity: p,
-        transform: `translateY(${(1 - p) * 220 + Math.abs(off) * 40}px) rotate(${off * 7 * p}deg) scale(${off === 0 ? 1.08 : 0.94})`,
+        transform: `translateY(${(1 - p) * 200 + Math.abs(off) * 36}px) rotate(${off * 6 * p}deg) scale(${off === 0 ? 1.12 : 0.92})`,
         zIndex: off === 0 ? 2 : 1,
       }}
     >
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: 26,
-          overflow: 'hidden',
-          background: '#16130F',
-          border: `1px solid ${C.lineStrong}`,
-          boxShadow: '0 30px 70px rgba(0,0,0,0.6)',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <div style={{flex: 1, position: 'relative', background: `linear-gradient(${140 + i * 40}deg, rgba(255,91,34,${0.55 - i * 0.12}), #201A14 70%)`, padding: 22}}>
-          <div style={{display: 'inline-block', padding: '6px 12px', borderRadius: 8, background: 'rgba(0,0,0,0.45)', color: C.ink, fontFamily: F.body, fontWeight: 700, fontSize: 17, letterSpacing: '0.16em'}}>{post.tag}</div>
-          <div style={{marginTop: 18, color: C.ink, fontFamily: F.display, fontWeight: 900, fontSize: 34, lineHeight: 1.08, letterSpacing: '-0.02em'}}>{post.hook}</div>
+      <div style={{borderRadius: 22, overflow: 'hidden', background: '#fff', boxShadow: '0 30px 70px rgba(0,0,0,0.55)'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px'}}>
+          <div style={{width: 30, height: 30, borderRadius: 99, overflow: 'hidden', background: '#000'}}>
+            <Img src={staticFile('brand/logo.png')} style={{width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.55)'}} />
+          </div>
+          <span style={{fontFamily: F.body, fontWeight: 700, fontSize: 18, color: '#111'}}>neuraxine</span>
+          <BrandIcon name="instagram" size={22} style={{marginLeft: 'auto'}} />
         </div>
-        <div style={{display: 'flex', alignItems: 'center', gap: 10, padding: '16px 20px', fontFamily: F.body, fontWeight: 700, fontSize: 24, color: C.ink}}>
-          <Heart size={28} color={C.accent} />
-          {likes.toLocaleString('en-IN')}
-          <span style={{marginLeft: 'auto', color: C.muted, fontWeight: 600, fontSize: 20}}>saves ↑</span>
+        <Img src={staticFile(post.img)} style={{width: W, height: H, objectFit: 'cover', objectPosition: 'top', display: 'block'}} />
+        <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', fontFamily: F.body, fontWeight: 700, fontSize: 18, color: '#111'}}>
+          <Heart size={24} color="#ED4956" />
+          <svg width={22} height={22} viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.7 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z" fill="none" stroke="#111" strokeWidth={2} /></svg>
+          <svg width={22} height={22} viewBox="0 0 24 24"><path d="M22 3L9.5 13.5M22 3l-7 18-3.5-7.5L4 10z" fill="none" stroke="#111" strokeWidth={2} strokeLinejoin="round" /></svg>
+          <span style={{marginLeft: 'auto', color: '#555', fontWeight: 600}}>{post.views} views</span>
         </div>
       </div>
-      {off === 0 &&
-        hearts.map((h) => {
-          const hp = prog(frame, at + 24 + h * 12, 40, ease.out);
-          if (hp <= 0 || hp >= 1) return null;
-          return (
-            <div key={h} style={{position: 'absolute', left: 230 + h * 22, top: 330 - hp * 300, opacity: 1 - hp, transform: `scale(${mix(hp, 0.6, 1.3)})`}}>
-              <Heart size={44} color={C.accent} />
-            </div>
-          );
-        })}
     </div>
   );
 };

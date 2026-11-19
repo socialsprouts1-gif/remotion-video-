@@ -67,7 +67,7 @@ export const Cta: React.FC = () => {
                 <div style={{width: 56, height: 56, borderRadius: 99, background: 'hsl(200 35% 40%)', display: 'grid', placeItems: 'center', color: C.ink, fontFamily: F.serif, fontSize: 30}}>Y</div>
                 <div style={{flex: 1}}>
                   <div style={{color: C.muted, fontFamily: F.body, fontWeight: 600, fontSize: 20}}>you · abhi</div>
-                  <div style={{color: C.accent, fontFamily: F.display, fontWeight: 900, fontSize: 40, textShadow: `0 0 18px ${C.accentGlow}`}}>{BRAND.keyword}</div>
+                  <div style={{color: C.accent, fontFamily: F.display, fontWeight: 900, fontSize: 40, textShadow: 'none'}}>{BRAND.keyword}</div>
                 </div>
                 <div style={{color: C.muted, fontFamily: F.body, fontSize: 21, fontWeight: 600}}>Plan DM mein aayega</div>
               </div>
@@ -105,12 +105,12 @@ export const Cta: React.FC = () => {
               opacity: lock,
             }}
           >
-            <div style={{position: 'absolute', inset: 40, borderRadius: '50%', background: 'radial-gradient(closest-side, rgba(181,241,42,0.35), transparent)', filter: 'blur(30px)'}} />
+            
             <Logo size={400} style={{background: 'transparent', maskImage: 'radial-gradient(closest-side, black 62%, transparent 100%)', WebkitMaskImage: 'radial-gradient(closest-side, black 62%, transparent 100%)', position: 'relative'}} />
           </div>
           <div style={{position: 'absolute', top: 1230, left: 0, right: 0, textAlign: 'center', opacity: prog(frame, end + 14, 14)}}>
-            <div style={{fontFamily: F.display, fontWeight: 900, fontSize: 104, letterSpacing: '0.02em', color: C.ink, textShadow: `0 0 40px rgba(242,245,239,0.35)`}}>{BRAND.name.toUpperCase()}</div>
-            <div style={{marginTop: 6, fontFamily: F.body, fontWeight: 600, fontSize: 28, letterSpacing: '0.5em', color: C.accent, textShadow: `0 0 20px ${C.accentGlow}`}}>{BRAND.tagline.toUpperCase()}</div>
+            <div style={{fontFamily: F.display, fontWeight: 900, fontSize: 104, letterSpacing: '0.02em', color: C.ink, textShadow: 'none'}}>{BRAND.name.toUpperCase()}</div>
+            <div style={{marginTop: 6, fontFamily: F.body, fontWeight: 600, fontSize: 28, letterSpacing: '0.5em', color: C.accent}}>{BRAND.tagline.toUpperCase()}</div>
             <div style={{marginTop: 40, fontFamily: F.body, fontWeight: 600, fontSize: 32, color: C.muted, opacity: prog(frame, end + 24, 14)}}>{BRAND.site}</div>
           </div>
         </>

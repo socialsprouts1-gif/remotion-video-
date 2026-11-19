@@ -202,7 +202,7 @@ export const Phone3D: React.FC<Props> = ({lift = 0, avatarLift = 0, followed = 0
                 overflow: 'hidden',
               }}
             >
-              <Tile {...t} w={tileW} h={tileH} i={i} />
+              <Img src={staticFile(`posts/p${i + 1}.png`)} style={{width: tileW, height: tileH, objectFit: 'cover', objectPosition: 'top', display: 'block'}} />
             </div>
           );
         })}
@@ -212,8 +212,8 @@ export const Phone3D: React.FC<Props> = ({lift = 0, avatarLift = 0, followed = 0
             position: 'absolute',
             left: AVATAR.x - AVATAR.r,
             top: AVATAR.y - AVATAR.r,
-            transform: `translateZ(${avatarLift * 380}px) scale(${1 + avatarLift * 0.6})`,
-            filter: avatarLift > 0 ? `drop-shadow(0 0 ${40 * avatarLift}px ${C.accentGlow})` : undefined,
+            transform: `translateZ(${avatarLift * 110}px) scale(${1 + avatarLift * 0.2})`,
+            filter: avatarLift > 0 ? `drop-shadow(0 ${30 * avatarLift}px ${40 * avatarLift}px rgba(0,0,0,0.5))` : undefined,
           }}
         >
           <Logo size={AVATAR.r * 2} round />

@@ -5,6 +5,7 @@ import {C, F} from '../theme';
 import {ease, mix, prog} from '../lib/anim';
 import {ChapterHeader} from '../components/ChapterHeader';
 import {GlassCard} from '../components/GlassCard';
+import {BrandIcon} from '../components/BrandIcon';
 
 const fr = (s: number) => Math.round(s * 30);
 
@@ -16,7 +17,7 @@ const Star: React.FC<{fill: number; size: number}> = ({fill, size}) => (
       </clipPath>
     </defs>
     <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z" fill="none" stroke={C.lineStrong} strokeWidth={1.4} />
-    <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z" fill={C.accent} clipPath={`url(#c${Math.round(fill * 100)})`} />
+    <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z" fill="#FBBC04" clipPath={`url(#c${Math.round(fill * 100)})`} />
   </svg>
 );
 
@@ -42,7 +43,9 @@ export const S3Proof: React.FC = () => {
               );
             })}
           </div>
-          <div style={{marginTop: 10, color: C.muted, fontFamily: F.body, fontWeight: 600, fontSize: 26, letterSpacing: '0.1em'}}>CUSTOMER RATING</div>
+          <div style={{marginTop: 12, display: 'flex', alignItems: 'center', gap: 10, color: C.muted, fontFamily: F.body, fontWeight: 600, fontSize: 26}}>
+            <BrandIcon name="google" size={30} /> Google Reviews
+          </div>
         </div>
       </div>
       {REVIEWS.map((r, i) => {
@@ -62,15 +65,16 @@ export const S3Proof: React.FC = () => {
               transform: `translateX(${(1 - p) * side * 300}px) rotate(${side * 1.5}deg) scale(${mix(shrink, 1, 0.92)})`,
             }}
           >
-            <GlassCard radius={26} strong style={{padding: '22px 28px', background: 'rgba(22,19,15,0.9)', display: 'flex', gap: 20, alignItems: 'center'}}>
-              <div style={{width: 70, height: 70, borderRadius: 99, flexShrink: 0, background: `hsl(${20 + i * 25} 45% ${38 + i * 6}%)`, display: 'grid', placeItems: 'center', color: C.ink, fontFamily: F.serif, fontSize: 38}}>{r.name[0]}</div>
+            <GlassCard radius={22} strong style={{padding: '22px 28px', background: '#FFFFFF', display: 'flex', gap: 20, alignItems: 'center', border: 'none'}}>
+              <div style={{width: 70, height: 70, borderRadius: 99, flexShrink: 0, background: `hsl(${20 + i * 25} 45% ${38 + i * 6}%)`, display: 'grid', placeItems: 'center', color: '#fff', fontFamily: F.body, fontWeight: 700, fontSize: 32}}>{r.name[0]}</div>
+              <BrandIcon name="google" size={34} style={{position: 'absolute', right: 22, top: 18}} />
               <div style={{flex: 1}}>
-                <div style={{color: C.ink, fontFamily: F.serif, fontSize: 40, lineHeight: 1.15}}>“{r.text}”</div>
+                <div style={{color: '#1F1F1F', fontFamily: F.body, fontWeight: 600, fontSize: 31, lineHeight: 1.2}}>{r.text}</div>
                 <div style={{display: 'flex', alignItems: 'center', gap: 10, marginTop: 6}}>
                   {[0, 1, 2, 3, 4].map((s) => (
                     <Star key={s} fill={1} size={22} />
                   ))}
-                  <span style={{color: C.muted, fontFamily: F.body, fontWeight: 600, fontSize: 22, marginLeft: 6}}>{r.name}</span>
+                  <span style={{color: '#5F6368', fontFamily: F.body, fontWeight: 600, fontSize: 22, marginLeft: 6}}>{r.name}</span>
                 </div>
               </div>
             </GlassCard>
@@ -82,13 +86,15 @@ export const S3Proof: React.FC = () => {
           const p = prog(frame, places + i * 4, 12, ease.out);
           return (
             <div
-              key={pl}
+              key={pl.label}
               style={{
                 padding: '12px 22px',
                 borderRadius: 999,
-                background: C.accentSoft,
-                border: `1.5px solid ${C.accent}`,
-                color: C.ink,
+                background: '#FFFFFF',
+                color: '#1F1F1F',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
                 fontFamily: F.body,
                 fontWeight: 700,
                 fontSize: 27,
@@ -96,7 +102,7 @@ export const S3Proof: React.FC = () => {
                 transform: `scale(${mix(p, 0.6, 1)})`,
               }}
             >
-              <span style={{color: C.accent}}>✓</span> {pl}
+              <BrandIcon name={pl.icon} size={32} /> {pl.label}
             </div>
           );
         })}

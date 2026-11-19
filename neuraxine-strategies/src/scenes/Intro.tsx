@@ -26,7 +26,7 @@ export const Intro: React.FC = () => {
           opacity: land,
           transform: `scale(${mix(land, 1.5, 1)})`,
           filter: land < 1 ? `blur(${(1 - land) * 20}px)` : undefined,
-          textShadow: `0 0 60px ${C.accentGlow}, 0 0 160px ${C.accentGlow}`,
+          textShadow: '0 20px 60px rgba(0,0,0,0.6)',
           transformOrigin: '50% 80%',
         }}
       >

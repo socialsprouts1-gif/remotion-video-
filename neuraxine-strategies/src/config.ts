@@ -83,10 +83,11 @@ export const PERSONA = {
   rows: ['Boutique owner · Jaipur', 'Instagram pe roz active', 'Problem: footfall kam'],
 };
 
+// Real posts from the page (cropped from the profile screenshot into public/posts/).
 export const POSTS = [
-  {tag: 'REEL', hook: '3 galtiyan jo aapki sales rok rahi hain', likes: 12400},
-  {tag: 'CAROUSEL', hook: '₹0 mein local marketing kaise karein', likes: 8900},
-  {tag: 'REEL', hook: 'Before → After: ek client ki kahani', likes: 15200},
+  {img: 'posts/p1.png', views: '645', caption: 'Goa package reel'},
+  {img: 'posts/p2.png', views: '2,066', caption: 'SUV wali reel'},
+  {img: 'posts/p3.png', views: '44.5K', caption: 'QR order, WhatsApp bill'},
 ];
 
 export const REVIEWS = [
@@ -94,7 +95,12 @@ export const REVIEWS = [
   {name: 'Arjun · Delhi', text: 'Ekdum premium experience.'},
   {name: 'Simran · Indore', text: 'Dobara zaroor order karungi.'},
 ];
-export const PROOF_PLACES = ['Website', 'Instagram', 'WhatsApp', 'Ads'];
+export const PROOF_PLACES = [
+  {label: 'Google', icon: 'google'},
+  {label: 'Instagram', icon: 'instagram'},
+  {label: 'WhatsApp', icon: 'whatsapp'},
+  {label: 'Ads', icon: 'meta'},
+] as const;
 
 export const AUDIO = {
   voiceover: 'audio/voiceover.mp3' as string | null,
