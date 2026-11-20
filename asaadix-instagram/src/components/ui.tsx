@@ -1,33 +1,41 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
 import {ACCENT_WORDS, DARK, LINES, SCENES, SECTION_IDS} from '../config';
 import {C, F, SHADOW} from '../theme';
 import {ease, mix, prog} from '../lib/anim';
-import {AMark} from './AsaadixLogo';
 
 /* ---------- backgrounds ---------- */
 
-export const LightBg: React.FC = () => {
-  const f = useCurrentFrame();
-  const gx = 540 + Math.sin(f / 70) * 120;
-  return (
-    <AbsoluteFill style={{background: C.cream}}>
-      <AbsoluteFill style={{background: `radial-gradient(700px 700px at ${gx}px 900px, #FFFFFF, transparent 70%)`}} />
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 75% at 50% 45%, transparent 55%, rgba(150,120,80,0.18) 100%)'}} />
-    </AbsoluteFill>
-  );
+const rnd = (n: number) => {
+  const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
 };
 
-export const DarkBg: React.FC = () => {
+/** Black wall of dark wood slats, backlit in warm gold at the top and bottom (like the brand's logo board),
+ *  with slow drifting gold dust. */
+export const LuxBg: React.FC<{intensity?: number}> = ({intensity = 1}) => {
   const f = useCurrentFrame();
-  const gx = 540 + Math.sin(f / 60) * 160;
+  const breathe = 0.85 + Math.sin(f / 50) * 0.15;
   return (
-    <AbsoluteFill style={{background: C.night}}>
-      <AbsoluteFill style={{background: `radial-gradient(760px 640px at ${gx}px 1050px, rgba(201,162,74,0.20), transparent 70%)`}} />
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 75% at 50% 45%, transparent 50%, rgba(0,0,0,0.7) 100%)'}} />
+    <AbsoluteFill style={{background: '#050505'}}>
+      <AbsoluteFill style={{backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,235,200,0.025) 0px, rgba(255,235,200,0.025) 2px, transparent 2px, transparent 120px)', opacity: 0.9}} />
+      <AbsoluteFill style={{background: `linear-gradient(180deg, rgba(226,178,90,${0.32 * intensity * breathe}) 0%, transparent 16%, transparent 84%, rgba(226,178,90,${0.28 * intensity * breathe}) 100%)`}} />
+      <AbsoluteFill style={{background: `radial-gradient(900px 700px at 50% 55%, rgba(201,162,74,${0.1 * intensity}), transparent 70%)`}} />
+      {Array.from({length: 36}).map((_, i) => {
+        const depth = 0.3 + rnd(i + 1) * 0.7;
+        const x = rnd(i + 7) * 1080;
+        const y = ((rnd(i + 3) * 2100 - f * (0.4 + depth * 1.1)) % 2100 + 2100) % 2100 - 90;
+        const s = 3 + depth * 7;
+        return (
+          <div key={i} style={{position: 'absolute', left: x + Math.sin((f + i * 30) / 40) * 12, top: y, width: s, height: s, borderRadius: 99, background: '#E8C77A', opacity: (0.15 + depth * 0.35) * (0.6 + 0.4 * Math.sin((f + i * 13) / 22)), filter: `blur(${(1 - depth) * 3 + 0.5}px)`, boxShadow: `0 0 ${s * 2}px rgba(232,199,122,0.6)`}} />
+        );
+      })}
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 85% 70% at 50% 50%, transparent 50%, rgba(0,0,0,0.75) 100%)'}} />
     </AbsoluteFill>
   );
 };
+export const LightBg = LuxBg;
+export const DarkBg = LuxBg;
 
 /* ---------- top captions (word by word, as in the reference) ---------- */
 
@@ -83,12 +91,13 @@ export const TopCaption: React.FC = () => {
               fontSize: 84,
               lineHeight: 1.12,
               letterSpacing: '-0.025em',
-              color: acc ? C.gold : dark ? C.cream : C.ink,
+              color: acc ? 'transparent' : dark ? '#F3EBDD' : C.ink,
+              background: acc ? 'linear-gradient(180deg, #F5DB97 0%, #C9A24A 60%, #9C7A2C 100%)' : undefined,
+              WebkitBackgroundClip: acc ? 'text' : undefined,
+              backgroundClip: acc ? 'text' : undefined,
               opacity: p,
               transform: `translateY(${(1 - p) * 26}px)`,
               filter: p < 1 ? `blur(${(1 - p) * 8}px)` : undefined,
-              textDecoration: acc ? `underline ${C.gold} 5px` : undefined,
-              textUnderlineOffset: 12,
               display: 'inline-block',
             }}
           >
@@ -107,8 +116,8 @@ export const Watermark: React.FC = () => {
   const dark = darkAt(t);
   return (
     <div style={{position: 'absolute', top: 62, left: 0, right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10, opacity: 0.85}}>
-      <AMark size={34} />
-      <span style={{fontFamily: F.display, fontWeight: 800, fontSize: 22, letterSpacing: '0.24em', color: dark ? C.cream : C.ink}}>ASAADIX</span>
+      <Img src={staticFile('brand/mark.png')} style={{height: 46}} />
+      <span style={{fontFamily: F.display, fontWeight: 800, fontSize: 22, letterSpacing: '0.24em', color: dark ? '#E9DCC0' : C.ink}}>ASAADIX DIGITAL</span>
     </div>
   );
 };
@@ -155,10 +164,10 @@ export const Chip: React.FC<{show: number; dark?: boolean; icon?: React.ReactNod
       gap: 14,
       padding: '14px 22px 14px 14px',
       borderRadius: 22,
-      background: gold ? `linear-gradient(140deg, ${C.goldBright}, ${C.gold})` : dark ? C.night2 : '#FFFFFF',
-      color: gold ? '#1A1206' : dark ? C.cream : C.ink,
-      border: dark && !gold ? `1px solid ${C.lineDark}` : undefined,
-      boxShadow: dark ? SHADOW.dark : SHADOW.card,
+      background: gold ? 'linear-gradient(140deg, #F5DB97, #C9A24A 60%, #A8832F)' : 'linear-gradient(160deg, rgba(40,34,26,0.92), rgba(14,12,10,0.92))',
+      color: gold ? '#1A1206' : '#F3EBDD',
+      border: gold ? undefined : '1px solid rgba(226,190,104,0.28)',
+      boxShadow: gold ? '0 20px 50px rgba(201,162,74,0.35)' : '0 24px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06)',
       fontFamily: F.body,
       fontWeight: 700,
       fontSize: 28,

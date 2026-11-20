@@ -18,7 +18,7 @@ export const LINES = vo.lines as Line[];
 export const SECTION_IDS = ['hook', 'loss', 'risk', 'crm', 'ai', 'keep', 'cta'] as const;
 export type SceneId = (typeof SECTION_IDS)[number];
 // Light or dark stage per scene (they alternate, as in the reference).
-export const DARK: Record<SceneId, boolean> = {hook: false, loss: false, risk: true, crm: false, ai: true, keep: true, cta: false};
+export const DARK: Record<SceneId, boolean> = {hook: true, loss: true, risk: true, crm: true, ai: true, keep: true, cta: true};
 
 const LEAD_IN = 0.3;
 const OVERLAP = 0.25;

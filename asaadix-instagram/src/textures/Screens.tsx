@@ -82,7 +82,7 @@ const Gone: React.FC = () => (
     <Status time="9:42" />
     <div style={{position: 'absolute', top: 92, left: 30, right: 30, display: 'flex', alignItems: 'center', gap: 12}}>
       <span style={{fontSize: 42}}>‹</span>
-      <span style={{flex: 1, fontWeight: 800, fontSize: 32}}>{BIZ.handle}</span>
+      <span style={{flex: 1, fontWeight: 800, fontSize: 32}}>asaadix_digital</span>
     </div>
     <div style={{position: 'absolute', top: 470, left: 60, right: 60, textAlign: 'center'}}>
       <div style={{width: 150, height: 150, margin: '0 auto', borderRadius: 99, border: '5px solid #111', display: 'grid', placeItems: 'center', fontSize: 80, fontWeight: 300}}>!</div>
@@ -157,11 +157,44 @@ export const TexPhone: React.FC<{id: string}> = ({id}) => {
   return <AbsoluteFill>{PHONE_SCREENS[id]}</AbsoluteFill>;
 };
 
+const ICON_PATHS: Record<string, string[]> = {
+  lock: ['M5 11h14v10H5z', 'M8 11V8a4 4 0 0 1 8 0v3'],
+  flag: ['M5 21V4', 'M5 4h11l-2 4 2 4H5'],
+  ban: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M5.6 5.6l12.8 12.8'],
+  globe: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M3 12h18', 'M12 3c2.5 3 2.5 15 0 18', 'M12 3c-2.5 3-2.5 15 0 18'],
+  db: ['M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z', 'M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6', 'M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3'],
+  chat: ['M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z'],
+};
+const RED = new Set(['lock', 'flag', 'ban']);
+
+/** Square face textures for the 3D app-icon tiles. */
 export const TexSquare: React.FC<{id: string}> = ({id}) => {
   useState(() => loadFonts());
+  if (id === 'ig')
+    return (
+      <AbsoluteFill style={{background: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)', display: 'grid', placeItems: 'center'}}>
+        <svg width={320} height={320} viewBox="0 0 24 24">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#fff" strokeWidth={2.1} />
+          <circle cx="12" cy="12" r="4.4" fill="none" stroke="#fff" strokeWidth={2.1} />
+          <circle cx="17.4" cy="6.6" r="1.35" fill="#fff" />
+        </svg>
+      </AbsoluteFill>
+    );
+  const red = RED.has(id);
   return (
-    <AbsoluteFill style={{background: '#0D0B09', display: 'grid', placeItems: 'center'}}>
-      <AMark size={330} />
+    <AbsoluteFill style={{background: red ? 'linear-gradient(160deg, #FF6B6B, #D7263D)' : 'linear-gradient(160deg, #23201C, #0B0A09)', display: 'grid', placeItems: 'center'}}>
+      <svg width={290} height={290} viewBox="0 0 24 24">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#F5DB97" />
+            <stop offset="0.55" stopColor="#C9A24A" />
+            <stop offset="1" stopColor="#9C7A2C" />
+          </linearGradient>
+        </defs>
+        {(ICON_PATHS[id] ?? []).map((d, i) => (
+          <path key={i} d={d} fill="none" stroke={red ? '#fff' : 'url(#g)'} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" />
+        ))}
+      </svg>
     </AbsoluteFill>
   );
 };

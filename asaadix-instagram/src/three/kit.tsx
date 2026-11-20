@@ -153,21 +153,23 @@ export const Logo3D: React.FC<{url: string; size?: number; depth?: number} & Thr
 
 const roundedRect = (w: number, h: number, r: number) => {
   const s = new THREE.Shape();
-  s.moveTo(-w / 2 + r, -h / 2);
-  s.lineTo(w / 2 - r, -h / 2);
-  s.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
-  s.lineTo(w / 2, h / 2 - r);
-  s.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2);
-  s.lineTo(-w / 2 + r, h / 2);
-  s.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r);
-  s.lineTo(-w / 2, -h / 2 + r);
-  s.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
+  const x = -w / 2;
+  const y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y);
+  s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x + w, y + h - r);
+  s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x + r, y + h);
+  s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x, y + r);
+  s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
   return s;
 };
 
 /** A flat rounded rectangle whose UVs span 0..1 (for screens and image cards). */
 const roundedPlane = (w: number, h: number, r: number) => {
-  const g = new THREE.ShapeGeometry(roundedRect(w, h, r), 12);
+  const g = new THREE.ShapeGeometry(roundedRect(w, h, r), 32);
   const pos = g.attributes.position;
   const uv = new Float32Array(pos.count * 2);
   for (let i = 0; i < pos.count; i++) {
@@ -178,36 +180,140 @@ const roundedPlane = (w: number, h: number, r: number) => {
   return g;
 };
 
-export const PHONE = {w: 1, h: 2.14, d: 0.085};
+export const PHONE = {w: 1, h: 2.06, d: 0.09, r: 0.17};
 
-/** A modern phone: titanium-black body, glass screen showing `screen` (an image in public/). */
+/** An iPhone-style phone: titanium frame with true rounded corners, glass front, Dynamic Island,
+ *  side buttons and a triple-lens camera plateau on the back. `screen` is an image in public/. */
 export const Phone: React.FC<{screen: string; screen2?: string; mix2?: number} & ThreeElements['group']> = ({screen, screen2, mix2 = 0, ...props}) => {
   const tex = useTex(screen);
   const tex2 = useTex(screen2 ?? screen);
-  const body = useMemo(() => new RoundedBoxGeometry(PHONE.w, PHONE.h, PHONE.d, 8, 0.13), []);
-  const glass = useMemo(() => roundedPlane(PHONE.w - 0.06, PHONE.h - 0.06, 0.1), []);
-  const island = useMemo(() => roundedPlane(0.26, 0.07, 0.035), []);
-  const bump = useMemo(() => new RoundedBoxGeometry(0.42, 0.42, 0.04, 4, 0.09), []);
+  const {w, h, d, r} = PHONE;
+  const body = useMemo(() => {
+    const bevel = 0.022;
+    const g = new THREE.ExtrudeGeometry(roundedRect(w - bevel * 2, h - bevel * 2, r - bevel), {
+      depth: d - bevel * 2,
+      bevelEnabled: true,
+      bevelThickness: bevel,
+      bevelSize: bevel,
+      bevelSegments: 8,
+      curveSegments: 40,
+    });
+    g.translate(0, 0, -(d - bevel * 2) / 2);
+    return g;
+  }, [w, h, d, r]);
+  const glass = useMemo(() => roundedPlane(w - 0.03, h - 0.03, r - 0.015), [w, h, r]);
+  const scr = useMemo(() => roundedPlane(w - 0.075, h - 0.075, r - 0.04), [w, h, r]);
+  const island = useMemo(() => roundedPlane(0.27, 0.075, 0.0375), []);
+  const plateau = useMemo(() => {
+    const g = new THREE.ExtrudeGeometry(roundedRect(0.44, 0.46, 0.11), {depth: 0.012, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.01, bevelSegments: 4, curveSegments: 24});
+    return g;
+  }, []);
+  const z = d / 2;
+  const lens = (x: number, y: number) => (
+    <group position={[x, y, -z - 0.03]} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh>
+        <cylinderGeometry args={[0.085, 0.085, 0.04, 40]} />
+        <meshPhysicalMaterial color="#8C8C90" metalness={0.9} roughness={0.25} />
+      </mesh>
+      <mesh position={[0, -0.021, 0]}>
+        <cylinderGeometry args={[0.062, 0.062, 0.005, 40]} />
+        <meshPhysicalMaterial color="#05070A" roughness={0.05} clearcoat={1} />
+      </mesh>
+    </group>
+  );
   return (
     <group {...props}>
+      {/* titanium frame */}
       <mesh geometry={body}>
-        <meshPhysicalMaterial color="#1A1C1E" metalness={0.75} roughness={0.32} clearcoat={0.6} />
+        <meshPhysicalMaterial color="#4A4744" metalness={0.92} roughness={0.32} clearcoat={0.4} envMapIntensity={1.1} />
+      </mesh>
+      {/* front glass (black border) */}
+      <mesh geometry={glass} position={[0, 0, z + 0.001]}>
+        <meshPhysicalMaterial color="#050505" roughness={0.08} clearcoat={1} clearcoatRoughness={0.05} />
       </mesh>
       {tex && (
-        <mesh geometry={glass} position={[0, 0, PHONE.d / 2 + 0.002]}>
+        <mesh geometry={scr} position={[0, 0, z + 0.002]}>
           <meshBasicMaterial map={tex} toneMapped={false} />
         </mesh>
       )}
       {tex2 && mix2 > 0 && (
-        <mesh geometry={glass} position={[0, 0, PHONE.d / 2 + 0.003]}>
+        <mesh geometry={scr} position={[0, 0, z + 0.003]}>
           <meshBasicMaterial map={tex2} toneMapped={false} transparent opacity={mix2} />
         </mesh>
       )}
-      <mesh geometry={island} position={[0, PHONE.h / 2 - 0.1, PHONE.d / 2 + 0.004]}>
+      <mesh geometry={island} position={[0, h / 2 - 0.1, z + 0.004]}>
         <meshBasicMaterial color="#000" />
       </mesh>
-      <mesh geometry={bump} position={[-0.22, PHONE.h / 2 - 0.3, -PHONE.d / 2 - 0.015]}>
-        <meshPhysicalMaterial color="#222426" metalness={0.6} roughness={0.25} />
+      {/* side buttons */}
+      <mesh position={[-w / 2 - 0.006, h / 2 - 0.42, 0]}>
+        <boxGeometry args={[0.014, 0.09, 0.035]} />
+        <meshPhysicalMaterial color="#5A5652" metalness={0.9} roughness={0.3} />
+      </mesh>
+      {[0.6, 0.8].map((k) => (
+        <mesh key={k} position={[-w / 2 - 0.006, h / 2 - k, 0]}>
+          <boxGeometry args={[0.014, 0.15, 0.035]} />
+          <meshPhysicalMaterial color="#5A5652" metalness={0.9} roughness={0.3} />
+        </mesh>
+      ))}
+      <mesh position={[w / 2 + 0.006, h / 2 - 0.68, 0]}>
+        <boxGeometry args={[0.014, 0.24, 0.035]} />
+        <meshPhysicalMaterial color="#5A5652" metalness={0.9} roughness={0.3} />
+      </mesh>
+      {/* back glass + camera */}
+      <mesh geometry={glass} position={[0, 0, -z - 0.001]} rotation={[0, Math.PI, 0]}>
+        <meshPhysicalMaterial color="#2A2826" roughness={0.45} clearcoat={0.6} />
+      </mesh>
+      <mesh geometry={plateau} position={[0.2, h / 2 - 0.3, -z - 0.012]} rotation={[0, Math.PI, 0]}>
+        <meshPhysicalMaterial color="#33302D" roughness={0.3} clearcoat={0.8} />
+      </mesh>
+      {lens(0.11, h / 2 - 0.19)}
+      {lens(0.11, h / 2 - 0.41)}
+      {lens(0.29, h / 2 - 0.3)}
+    </group>
+  );
+};
+
+/** An app-icon tile in 3D: thick rounded glass body with an image on its face (Instagram, alerts, …). */
+export const Tile3D: React.FC<{img: string; size?: number; d?: number} & ThreeElements['group']> = ({img, size = 0.5, d = 0.1, ...props}) => {
+  const tex = useTex(img);
+  const r = size * 0.225;
+  const body = useMemo(() => {
+    const bevel = Math.min(d * 0.35, r * 0.4);
+    const g = new THREE.ExtrudeGeometry(roundedRect(size - bevel * 2, size - bevel * 2, r - bevel), {depth: d - bevel * 2, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 6, curveSegments: 32});
+    g.translate(0, 0, -(d - bevel * 2) / 2);
+    return g;
+  }, [size, d, r]);
+  const face = useMemo(() => roundedPlane(size - 0.004, size - 0.004, r), [size, r]);
+  return (
+    <group {...props}>
+      <mesh geometry={body}>
+        <meshPhysicalMaterial color="#F4F1EC" roughness={0.3} clearcoat={0.8} envMapIntensity={0.6} />
+      </mesh>
+      {tex && (
+        <mesh geometry={face} position={[0, 0, d / 2 + 0.002]}>
+          <meshBasicMaterial map={tex} toneMapped={false} />
+        </mesh>
+      )}
+    </group>
+  );
+};
+
+/** A gold crescent moon. */
+export const Moon3D: React.FC<ThreeElements['group']> = (props) => {
+  const g = useMemo(() => {
+    const s = new THREE.Shape();
+    const a1 = (56.9 * Math.PI) / 180;
+    s.absarc(0, 0, 0.5, a1, Math.PI * 2 - a1, false);
+    const b1 = (85.5 * Math.PI) / 180;
+    s.absarc(0.24, 0, 0.42, Math.PI * 2 - b1, b1, true);
+    const geo = new THREE.ExtrudeGeometry(s, {depth: 0.12, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.03, bevelSegments: 6, curveSegments: 48});
+    geo.center();
+    return geo;
+  }, []);
+  return (
+    <group {...props}>
+      <mesh geometry={g}>
+        <meshPhysicalMaterial color="#D9B25C" metalness={0.85} roughness={0.25} clearcoat={0.6} />
       </mesh>
     </group>
   );
@@ -361,8 +467,15 @@ const loadSvg = (url: string) =>
         })
         .catch(() => undefined);
 
-export const TEXTURES = ['ig', 'gone', 'chat1', 'chat2', 'mark'].map((n) => `tex/${n}.png`);
-export const SVGS: string[] = [];
+export const TEXTURES = [
+  ...['gone', 'chat1', 'chat2', 'ig', 'lock', 'flag', 'ban', 'globe', 'db', 'chat'].map((n) => `tex/${n}.png`),
+  'screens/profile.png',
+  'posts/p1.png',
+  'posts/p2.png',
+  'posts/p3.png',
+  'brand/mark.png',
+];
+export const SVGS = ['icons/whatsapp-icon.svg', 'icons/shopify.svg', 'icons/google-gmail.svg'];
 
 /** Load every texture and logo before any 3D scene mounts, so first frames are never blank. */
 export const preloadAll = () => Promise.all([...TEXTURES.map(loadTex), ...SVGS.map(loadSvg)]);

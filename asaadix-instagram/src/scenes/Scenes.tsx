@@ -1,15 +1,25 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {BIZ, BRAND, CRM_ROWS, cue, wordAt} from '../config';
-import {C, F, SHADOW} from '../theme';
+import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
+import {BRAND, CRM_ROWS, cue, wordAt} from '../config';
+import {C, F} from '../theme';
 import {ease, mix, prog} from '../lib/anim';
 import {Stage} from '../three/Stage';
-import {Card3D, Phone, Shadow} from '../three/kit';
-import {Chip, DarkBg, IgLogo, Ico, LightBg} from '../components/ui';
-import {AMark} from '../components/AsaadixLogo';
+import {Card3D, Logo3D, Moon3D, Phone, Shadow, Tile3D} from '../three/kit';
+import {Chip, Ico, LuxBg} from '../components/ui';
 
 const fr = (s: number) => Math.round(s * 30);
-const POSE = {y: -0.22, s: 0.85};
+const POSE = {y: -0.22, s: 0.86};
+const GOLD_TEXT: React.CSSProperties = {background: 'linear-gradient(180deg, #F5DB97 0%, #C9A24A 60%, #9C7A2C 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent'};
+const GLASS: React.CSSProperties = {
+  background: 'linear-gradient(160deg, rgba(40,34,26,0.92), rgba(12,11,9,0.94))',
+  border: '1px solid rgba(226,190,104,0.26)',
+  boxShadow: '0 30px 80px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06)',
+};
+/** Pop-in for 3D objects: rises, turns to face camera, settles with a slow float. */
+const pop = (f: number, at: number, dur = 20) => {
+  const k = prog(f, at, dur, ease.out);
+  return {k, ry: mix(k, Math.PI * 1.1, 0) + Math.sin(f / 32) * 0.14, dy: mix(k, -0.6, 0) + Math.sin(f / 26) * 0.03, s: mix(k, 0.2, 1)};
+};
 
 /* ---------------- 1 · hook ---------------- */
 export const Hook: React.FC = () => {
@@ -18,31 +28,35 @@ export const Hook: React.FC = () => {
   const dis = fr(wordAt('hook', 0, 'disappears'));
   const tom = fr(wordAt('hook', 0, 'tomorrow'));
   const what = fr(wordAt('hook', 0, 'what'));
-  const enter = prog(f, 0, 28, ease.out);
+  const enter = prog(f, 0, 34, ease.out);
   const glitch = f >= dis && f < dis + 16 && f % 4 < 2 ? 1 : 0;
-  const shake = f >= dis && f < dis + 16 ? Math.sin(f * 2.3) * 0.03 : 0;
+  const shake = f >= dis && f < dis + 16 ? Math.sin(f * 2.3) * 0.025 : 0;
+  const icon = pop(f, ig - 4);
   return (
     <AbsoluteFill>
-      <LightBg />
+      <LuxBg />
       <Stage>
-        <group position={[0, mix(enter, -3, POSE.y), 0]} rotation={[mix(enter, 0.5, -0.08), mix(enter, 1.1, 0.3) + Math.sin(f / 60) * 0.05, shake]} scale={POSE.s}>
-          <Phone screen="tex/ig.png" screen2="tex/gone.png" mix2={glitch} />
+        <group position={[0, mix(enter, -3.2, POSE.y), 0]} rotation={[mix(enter, 0.6, -0.06), mix(enter, Math.PI * 1.15, 0.28) + Math.sin(f / 60) * 0.05, shake]} scale={POSE.s}>
+          <Phone screen="screens/profile.png" screen2="tex/gone.png" mix2={glitch} />
         </group>
-        <Shadow position={[0, -1.25, -0.2]} w={1.9} d={0.55} opacity={enter} />
+        <Shadow position={[0, -1.18, -0.2]} w={1.9} d={0.5} opacity={enter * 0.9} />
+        {icon.k > 0 && <Tile3D img="tex/ig.png" size={0.42} d={0.1} position={[0.64, 0.74 + icon.dy, 0.45]} rotation={[0.1, icon.ry - 0.35, 0.12]} scale={icon.s} />}
       </Stage>
-      <div style={{position: 'absolute', left: 700, top: 560, opacity: prog(f, ig, 10), transform: `scale(${mix(prog(f, ig, 12, ease.out), 0.4, 1)}) rotate(${mix(prog(f, ig, 12), -20, 8)}deg)`}}>
-        <IgLogo size={130} />
-      </div>
-      <Chip show={prog(f, tom - 2, 12, ease.out)} icon={<Ico.cal />} style={{left: 60, top: 980}}>
+      <Chip show={prog(f, tom - 2, 14, ease.out)} icon={<Ico.cal />} style={{left: 50, top: 990}}>
         Tomorrow · 9:42 AM
       </Chip>
-      <div style={{position: 'absolute', right: 90, top: 1180, fontFamily: F.serif, fontSize: 220, color: C.gold, opacity: prog(f, what, 10), transform: `rotate(10deg) scale(${mix(prog(f, what, 12, ease.out), 0.5, 1)})`}}>?</div>
+      <div style={{position: 'absolute', right: 80, top: 1180, fontFamily: F.serif, fontSize: 230, ...GOLD_TEXT, opacity: prog(f, what, 12), transform: `rotate(10deg) scale(${mix(prog(f, what, 14, ease.out), 0.5, 1)})`}}>?</div>
     </AbsoluteFill>
   );
 };
 
 /* ---------------- 2 · what you lose ---------------- */
-const DM_POS = [960, 1080, 1200];
+const DMS = ['Price for a Shopify store?', 'Can you build my website?', 'Are you available this week?'];
+const POSTS: {img: string; to: [number, number, number]; rz: number}[] = [
+  {img: 'posts/p1.png', to: [0.66, 0.42, 0.3], rz: -0.1},
+  {img: 'posts/p2.png', to: [0.72, -0.2, 0.45], rz: 0.06},
+  {img: 'posts/p3.png', to: [0.62, -0.82, 0.3], rz: -0.05},
+];
 export const Loss: React.FC = () => {
   const f = useCurrentFrame();
   const fol = fr(wordAt('loss', 0, 'followers'));
@@ -50,50 +64,55 @@ export const Loss: React.FC = () => {
   const work = fr(wordAt('loss', 0, 'hard'));
   const click = fr(wordAt('loss', 1, 'click'));
   const end = fr(cue('loss', 1, 'end'));
-  const fall = prog(f, click + 4, 16, ease.in);
+  const fall = prog(f, click + 4, 18, ease.in);
   const gone = prog(f, click + 2, 6);
-  const black = prog(f, end + 2, 5);
+  const black = prog(f, end + 2, 6);
   const cursor = prog(f, click - 22, 18, ease.inOut);
   const tap = prog(f, click - 2, 3) * (1 - prog(f, click + 2, 5));
-  const count = Math.round(prog(f, fol, 30, ease.out) * BIZ.followers);
-  const drop = (base: number) => ({opacity: base * (1 - fall), transform: `translateY(${fall * 400}px) rotate(${fall * 14}deg)`});
   return (
     <AbsoluteFill>
-      <LightBg />
+      <LuxBg />
       <Stage>
-        <group position={[0, POSE.y - fall * 0.1, 0]} rotation={[-0.08, 0.3 + Math.sin(f / 60) * 0.05, 0]} scale={POSE.s}>
-          <Phone screen="tex/ig.png" screen2="tex/gone.png" mix2={gone} />
+        <group position={[-0.12, POSE.y, 0]} rotation={[-0.06, 0.28 + Math.sin(f / 60) * 0.05, 0]} scale={POSE.s}>
+          <Phone screen="screens/profile.png" screen2="tex/gone.png" mix2={gone} />
         </group>
-        <Shadow position={[0, -1.25, -0.2]} w={1.9} d={0.55} />
+        <Shadow position={[-0.12, -1.18, -0.2]} w={1.9} d={0.5} opacity={0.9} />
+        {POSTS.map((p, i) => {
+          const k = prog(f, work - 6 + i * 6, 20, ease.out);
+          if (k <= 0) return null;
+          return (
+            <Card3D
+              key={p.img}
+              img={p.img}
+              w={0.42}
+              h={0.56}
+              r={0.04}
+              position={[mix(k, -0.1, p.to[0]), mix(k, 0, p.to[1]) - fall * 2.6 + Math.sin((f + i * 20) / 24) * 0.025, mix(k, -0.2, p.to[2])]}
+              rotation={[fall * 0.8, mix(k, 0.6, -0.35), p.rz * k + fall * 0.9]}
+              scale={mix(k, 0.3, 1)}
+            />
+          );
+        })}
       </Stage>
-      <div style={{position: 'absolute', inset: 0, ...drop(1)}}>
-        <Chip show={prog(f, fol - 2, 12, ease.out)} icon={<Ico.users />} style={{right: 50, top: 720}}>
-          {count.toLocaleString('en-US')} followers
+      <div style={{position: 'absolute', inset: 0, opacity: 1 - fall, transform: `translateY(${fall * 380}px)`}}>
+        <Chip show={prog(f, fol - 2, 14, ease.out)} icon={<Ico.users />} style={{left: 40, top: 760}}>
+          Your followers
         </Chip>
-        {BIZ.dms.map((d, i) => (
-          <Chip key={d} show={prog(f, dm + i * 6, 12, ease.out)} icon={<Ico.chat />} style={{left: 40, top: DM_POS[i], fontSize: 25}}>
+        {DMS.map((d, i) => (
+          <Chip key={d} show={prog(f, dm + i * 6, 14, ease.out)} icon={<Ico.chat />} style={{left: 40, top: 900 + i * 118, fontSize: 25}}>
             {d}
           </Chip>
         ))}
-        {[0, 1, 2].map((i) => {
-          const p = prog(f, work + i * 5, 16, ease.out);
-          const tiles = [['#E9DCC6', '#B89466'], ['#1C1A18', '#5A4A36'], ['#D8C3A2', '#8C6B44']];
-          return (
-            <div key={i} style={{position: 'absolute', left: 700 + i * 70, top: 1130 + i * 40, width: 170, height: 220, borderRadius: 18, background: `linear-gradient(150deg, ${tiles[i][0]}, ${tiles[i][1]})`, boxShadow: SHADOW.card, border: '4px solid #fff', opacity: p, transform: `translate(${(1 - p) * -200}px, ${(1 - p) * -100}px) rotate(${mix(p, 0, -8 + i * 8)}deg)`}} />
-          );
-        })}
       </div>
-      {/* the click */}
       {cursor > 0 && fall < 1 && (
-        <div style={{position: 'absolute', left: mix(cursor, 900, 560), top: mix(cursor, 1500, 1080), transform: `scale(${1.6 - tap * 0.3})`, filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.3))'}}>
-          <Ico.cursor s={64} />
+        <div style={{position: 'absolute', left: mix(cursor, 900, 500), top: mix(cursor, 1520, 1040), transform: `scale(${1.6 - tap * 0.3})`, filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.6))'}}>
+          <svg width={70} height={70} viewBox="0 0 24 24"><path d="M5 3l14 7-6 2-2 6z" fill="#F3EBDD" stroke="#0B0A09" strokeWidth={1.2} strokeLinejoin="round" /></svg>
         </div>
       )}
-      {/* Gone. */}
       {black > 0 && (
-        <AbsoluteFill style={{background: C.night, opacity: black, display: 'grid', placeItems: 'center'}}>
-          <div style={{fontFamily: F.display, fontWeight: 900, fontSize: 220, letterSpacing: '-0.04em', color: C.cream, transform: `scale(${mix(prog(f, end + 2, 10, ease.out), 1.2, 1)})`}}>
-            Gone<span style={{color: C.gold}}>.</span>
+        <AbsoluteFill style={{background: '#000', opacity: black, display: 'grid', placeItems: 'center'}}>
+          <div style={{fontFamily: F.display, fontWeight: 900, fontSize: 230, letterSpacing: '-0.04em', color: '#F3EBDD', transform: `scale(${mix(prog(f, end + 2, 14, ease.out), 1.15, 1)})`, filter: `blur(${(1 - prog(f, end + 2, 8)) * 10}px)`}}>
+            Gone<span style={GOLD_TEXT}>.</span>
           </div>
         </AbsoluteFill>
       )}
@@ -103,37 +122,44 @@ export const Loss: React.FC = () => {
 
 /* ---------------- 3 · the risk ---------------- */
 const ALERTS = [
-  {w: 'hacked', icon: <Ico.lock s={34} />, title: 'Account hacked', sub: 'Password changed by someone else'},
-  {w: 'reported', icon: <Ico.flag s={34} />, title: 'Mass reported', sub: '27 reports received'},
-  {w: 'disabled', icon: <Ico.ban s={34} />, title: 'Account disabled', sub: 'Your account has been disabled'},
+  {w: 'hacked', tex: 'tex/lock.png', title: 'Account hacked', sub: 'Password changed by someone else'},
+  {w: 'reported', tex: 'tex/flag.png', title: 'Mass reported', sub: '27 reports received'},
+  {w: 'disabled', tex: 'tex/ban.png', title: 'Account disabled', sub: 'Your account has been disabled'},
 ];
+const ROW_Y = [700, 880, 1060];
 export const Risk: React.FC = () => {
   const f = useCurrentFrame();
   const why = fr(wordAt('risk', 0, 'no reason'));
   return (
     <AbsoluteFill>
-      <DarkBg />
+      <LuxBg intensity={0.6} />
       {ALERTS.map((a, i) => {
         const at = fr(wordAt('risk', 0, a.w)) - 3;
-        const p = prog(f, at, 12, ease.out);
+        const p = prog(f, at, 14, ease.out);
         const next = i < ALERTS.length - 1 ? fr(wordAt('risk', 0, ALERTS[i + 1].w)) - 3 : Infinity;
         const latest = f < next;
         return (
-          <div key={a.w} style={{position: 'absolute', left: 100, right: 100, top: 620 + i * 175, opacity: p, transform: `translateY(${(1 - p) * 60}px) scale(${mix(p, 0.92, 1)})`}}>
-            <div style={{display: 'flex', alignItems: 'center', gap: 22, padding: '24px 26px', borderRadius: 26, background: C.night2, border: `1.5px solid ${latest ? 'rgba(229,72,77,0.65)' : C.lineDark}`, boxShadow: latest ? `0 0 40px rgba(229,72,77,0.25), ${SHADOW.dark}` : SHADOW.dark, fontFamily: F.body}}>
-              <div style={{width: 74, height: 74, borderRadius: 20, background: C.alert, color: '#fff', display: 'grid', placeItems: 'center', flexShrink: 0}}>{a.icon}</div>
+          <div key={a.w} style={{position: 'absolute', left: 90, right: 90, top: ROW_Y[i] - 75, opacity: p, transform: `translateX(${(1 - p) * 120}px)`}}>
+            <div style={{...GLASS, height: 150, display: 'flex', alignItems: 'center', gap: 22, padding: '0 30px 0 190px', borderRadius: 30, border: latest ? '1.5px solid rgba(229,72,77,0.7)' : GLASS.border, boxShadow: latest ? `0 0 50px rgba(229,72,77,0.25), ${GLASS.boxShadow}` : GLASS.boxShadow, fontFamily: F.body}}>
               <div style={{flex: 1}}>
-                <div style={{color: C.cream, fontWeight: 800, fontSize: 34}}>{a.title}</div>
-                <div style={{color: C.mutedDark, fontWeight: 500, fontSize: 25, marginTop: 4}}>{a.sub}</div>
+                <div style={{color: '#F3EBDD', fontWeight: 800, fontSize: 36}}>{a.title}</div>
+                <div style={{color: '#A89C88', fontWeight: 500, fontSize: 25, marginTop: 4}}>{a.sub}</div>
               </div>
-              <div style={{color: C.mutedDark, fontSize: 22}}>now</div>
+              <div style={{color: '#A89C88', fontSize: 22}}>now</div>
             </div>
           </div>
         );
       })}
-      <div style={{position: 'absolute', left: 0, right: 0, top: 1180, display: 'flex', justifyContent: 'center'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '14px 26px', borderRadius: 999, border: `2px solid ${C.gold}`, color: C.goldBright, fontFamily: F.body, fontWeight: 700, fontSize: 30, opacity: prog(f, why, 10), transform: `scale(${mix(prog(f, why, 12, ease.out), 0.8, 1)})`}}>
-          <Ico.q s={32} /> No reason given.
+      <Stage>
+        {ALERTS.map((a, i) => {
+          const sp = pop(f, fr(wordAt('risk', 0, a.w)) - 3, 18);
+          if (sp.k <= 0) return null;
+          return <Tile3D key={a.w} img={a.tex} size={0.27} d={0.08} position={[-0.68, (960 - ROW_Y[i]) / 512 + sp.dy * 0.3, 0.5]} rotation={[0.08, sp.ry * 0.6 + 0.25, 0]} scale={sp.s} />;
+        })}
+      </Stage>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1250, display: 'flex', justifyContent: 'center'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '16px 30px', borderRadius: 999, border: '2px solid #C9A24A', background: 'rgba(201,162,74,0.08)', color: '#E9CD86', fontFamily: F.body, fontWeight: 700, fontSize: 32, opacity: prog(f, why, 12), transform: `scale(${mix(prog(f, why, 14, ease.out), 0.8, 1)})`}}>
+          <Ico.q s={34} /> No reason given.
         </div>
       </div>
     </AbsoluteFill>
@@ -141,77 +167,94 @@ export const Risk: React.FC = () => {
 };
 
 /* ---------------- 4 · your own CRM ---------------- */
+const SOURCES = [
+  {kind: 'svg', src: 'icons/whatsapp-icon.svg', x: -0.6},
+  {kind: 'svg', src: 'icons/shopify.svg', x: -0.2},
+  {kind: 'tile', src: 'tex/globe.png', x: 0.2},
+  {kind: 'tile', src: 'tex/chat.png', x: 0.6},
+];
 const SRC_STYLE: Record<string, React.CSSProperties> = {
-  Website: {background: C.goldSoft, color: C.goldDeep},
-  WhatsApp: {background: 'rgba(37,211,102,0.14)', color: '#128C4B'},
-  'Chat App': {background: C.ink, color: C.goldBright},
+  Website: {background: 'rgba(201,162,74,0.16)', color: '#E9CD86'},
+  WhatsApp: {background: 'rgba(37,211,102,0.16)', color: '#5BE08F'},
+  'Chat App': {background: '#F3EBDD', color: '#15120F'},
 };
 export const Crm: React.FC = () => {
   const f = useCurrentFrame();
   const crmW = fr(wordAt('crm', 0, 'crm'));
   const plat = fr(wordAt('crm', 0, "else's"));
-  const cardIn = prog(f, 6, 18, ease.out);
+  const cardIn = prog(f, 8, 22, ease.out);
   const leads = Math.round(mix(prog(f, crmW, 60, ease.out), 236, 248));
-  const rented = prog(f, plat - 12, 12, ease.out);
+  const ig = pop(f, plat - 14, 16);
   const x = prog(f, plat + 6, 8, ease.out);
-  const rentedOut = prog(f, plat + 26, 14, ease.in);
+  const igFall = prog(f, plat + 22, 20, ease.in);
+  const beam = prog(f, crmW - 4, 24, ease.inOut);
   return (
     <AbsoluteFill>
-      <LightBg />
-      <div style={{position: 'absolute', left: 80, right: 80, top: 560, opacity: cardIn, transform: `perspective(1600px) rotateX(${mix(cardIn, 20, 6)}deg) translateY(${(1 - cardIn) * 80}px)`}}>
-        <div style={{background: '#fff', borderRadius: 34, padding: '28px 30px', boxShadow: SHADOW.card, fontFamily: F.body}}>
+      <LuxBg intensity={0.8} />
+      {/* beams from sources into the CRM */}
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+        {SOURCES.map((s, i) => {
+          const sx = 540 + s.x * 512;
+          return <line key={i} x1={sx} y1={560} x2={sx + (540 - sx) * 0.35 * beam} y2={560 + 70 * beam} stroke="#C9A24A" strokeOpacity={0.55 * beam} strokeWidth={3} strokeDasharray="6 8" />;
+        })}
+      </svg>
+      <div style={{position: 'absolute', left: 90, right: 90, top: 640, opacity: cardIn, transform: `perspective(1600px) rotateX(${mix(cardIn, 18, 4)}deg) translateY(${(1 - cardIn) * 80}px)`}}>
+        <div style={{...GLASS, borderRadius: 34, padding: '28px 30px', fontFamily: F.body}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 14}}>
-            <div style={{width: 58, height: 58, borderRadius: 16, background: C.ink, display: 'grid', placeItems: 'center'}}>
-              <AMark size={38} />
-            </div>
-            <div style={{flex: 1, fontFamily: F.display, fontWeight: 800, fontSize: 36, color: C.ink}}>Your CRM</div>
-            <div style={{padding: '8px 16px', borderRadius: 999, background: 'rgba(43,182,115,0.12)', color: C.ok, fontWeight: 800, fontSize: 22}}>● Live</div>
+            <Img src={staticFile('brand/mark.png')} style={{height: 56}} />
+            <div style={{flex: 1, fontFamily: F.display, fontWeight: 800, fontSize: 36, color: '#F3EBDD'}}>Your CRM</div>
+            <div style={{padding: '8px 16px', borderRadius: 999, background: 'rgba(43,182,115,0.15)', color: '#4CD68E', fontWeight: 800, fontSize: 22}}>● Live</div>
           </div>
-          <div style={{display: 'flex', alignItems: 'flex-end', gap: 40, marginTop: 24}}>
+          <div style={{display: 'flex', alignItems: 'flex-end', gap: 40, marginTop: 22}}>
             <div>
-              <div style={{fontFamily: F.display, fontWeight: 800, fontSize: 66, color: C.ink, lineHeight: 1}}>{leads}</div>
-              <div style={{fontSize: 22, color: C.muted, marginTop: 4}}>Leads</div>
+              <div style={{fontFamily: F.display, fontWeight: 800, fontSize: 66, lineHeight: 1, ...GOLD_TEXT}}>{leads}</div>
+              <div style={{fontSize: 22, color: '#A89C88', marginTop: 4}}>Leads</div>
             </div>
             <div>
-              <div style={{fontFamily: F.display, fontWeight: 800, fontSize: 66, color: C.ink, lineHeight: 1}}>92</div>
-              <div style={{fontSize: 22, color: C.muted, marginTop: 4}}>Customers</div>
+              <div style={{fontFamily: F.display, fontWeight: 800, fontSize: 66, color: '#F3EBDD', lineHeight: 1}}>92</div>
+              <div style={{fontSize: 22, color: '#A89C88', marginTop: 4}}>Customers</div>
             </div>
             <svg width={300} height={80} viewBox="0 0 300 80" style={{marginLeft: 'auto'}}>
-              <polyline points="0,70 40,62 80,66 120,48 160,52 200,30 240,36 300,8" fill="none" stroke={C.gold} strokeWidth={5} strokeLinecap="round" strokeDasharray={`${prog(f, 10, 40) * 400} 400`} />
+              <defs>
+                <linearGradient id="sl" x1="0" x2="1">
+                  <stop offset="0" stopColor="#9C7A2C" />
+                  <stop offset="1" stopColor="#F5DB97" />
+                </linearGradient>
+              </defs>
+              <polyline points="0,70 40,62 80,66 120,48 160,52 200,30 240,36 300,8" fill="none" stroke="url(#sl)" strokeWidth={5} strokeLinecap="round" strokeDasharray={`${prog(f, 12, 40) * 400} 400`} />
             </svg>
           </div>
-          <div style={{marginTop: 22, fontSize: 21, fontWeight: 700, letterSpacing: '0.14em', color: C.muted}}>NEW LEADS</div>
+          <div style={{marginTop: 20, fontSize: 21, fontWeight: 700, letterSpacing: '0.14em', color: '#A89C88'}}>NEW LEADS</div>
           {CRM_ROWS.map((r, i) => {
-            const p = prog(f, crmW - 6 + i * 6, 12, ease.out);
+            const p = prog(f, crmW - 6 + i * 6, 14, ease.out);
             return (
-              <div key={r.name} style={{display: 'flex', alignItems: 'center', gap: 16, padding: '16px 0', borderTop: `1px solid ${C.line}`, opacity: p, transform: `translateX(${(1 - p) * 40}px)`}}>
-                <div style={{width: 52, height: 52, borderRadius: 99, background: C.goldSoft, color: C.goldDeep, display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: 24}}>{r.name[0]}</div>
-                <div style={{flex: 1, fontWeight: 700, fontSize: 28, color: C.ink}}>{r.name}</div>
+              <div key={r.name} style={{display: 'flex', alignItems: 'center', gap: 16, padding: '15px 0', borderTop: '1px solid rgba(243,235,221,0.08)', opacity: p, transform: `translateX(${(1 - p) * 40}px)`}}>
+                <div style={{width: 50, height: 50, borderRadius: 99, background: 'rgba(201,162,74,0.16)', color: '#E9CD86', display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: 23}}>{r.name[0]}</div>
+                <div style={{flex: 1, fontWeight: 700, fontSize: 27, color: '#F3EBDD'}}>{r.name}</div>
                 <div style={{padding: '6px 14px', borderRadius: 10, fontWeight: 700, fontSize: 20, ...SRC_STYLE[r.src]}}>{r.src}</div>
-                <div style={{width: 128, textAlign: 'center', padding: '6px 0', borderRadius: 10, fontWeight: 700, fontSize: 20, background: r.status === 'Customer' ? 'rgba(43,182,115,0.12)' : '#F2EEE6', color: r.status === 'Customer' ? C.ok : C.muted}}>{r.status}</div>
+                <div style={{width: 124, textAlign: 'center', padding: '6px 0', borderRadius: 10, fontWeight: 700, fontSize: 20, background: r.status === 'Customer' ? 'rgba(43,182,115,0.15)' : 'rgba(243,235,221,0.08)', color: r.status === 'Customer' ? '#4CD68E' : '#A89C88'}}>{r.status}</div>
               </div>
             );
           })}
         </div>
       </div>
-      {/* someone else's platform */}
-      {rented > 0 && rentedOut < 1 && (
-        <div style={{position: 'absolute', right: 60, top: 1270, opacity: rented * (1 - rentedOut), transform: `translateX(${(1 - rented) * 200 + rentedOut * 400}px) rotate(${rentedOut * 12}deg)`}}>
-          <div style={{display: 'flex', alignItems: 'center', gap: 14, padding: '16px 22px', borderRadius: 22, background: '#fff', boxShadow: SHADOW.card, fontFamily: F.body, position: 'relative'}}>
-            <IgLogo size={56} />
-            <div>
-              <div style={{fontWeight: 800, fontSize: 26, color: C.ink}}>Someone else's platform</div>
-              <div style={{fontSize: 21, color: C.muted}}>Your data, their rules</div>
-            </div>
-            {x > 0 && (
-              <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center'}}>
-                <div style={{width: 90, height: 90, borderRadius: 99, background: C.alert, color: '#fff', fontSize: 56, fontWeight: 800, display: 'grid', placeItems: 'center', transform: `scale(${mix(x, 1.6, 1)})`, boxShadow: '0 10px 30px rgba(229,72,77,0.4)'}}>×</div>
-              </div>
-            )}
-          </div>
-        </div>
+      <Stage>
+        {SOURCES.map((s, i) => {
+          const sp = pop(f, crmW - 14 + i * 4, 18);
+          if (sp.k <= 0) return null;
+          const pos: [number, number, number] = [s.x, 0.84 + sp.dy * 0.4, 0.3];
+          return s.kind === 'svg' ? (
+            <Logo3D key={s.src} url={s.src} size={0.3} depth={0.06} position={pos} rotation={[0, sp.ry, 0]} scale={sp.s} />
+          ) : (
+            <Tile3D key={s.src} img={s.src} size={0.28} d={0.07} position={pos} rotation={[0, sp.ry, 0]} scale={sp.s} />
+          );
+        })}
+        {ig.k > 0 && igFall < 1 && <Tile3D img="tex/ig.png" size={0.36} d={0.09} position={[0.62, -0.98 + ig.dy - igFall * 2.4, 0.6]} rotation={[igFall * 1.2, ig.ry * 0.5 - 0.3, -0.1 + igFall * 1.6]} scale={ig.s} />}
+      </Stage>
+      {x > 0 && igFall < 0.3 && (
+        <div style={{position: 'absolute', left: 540 + 0.62 * 512 * 1.09 - 52, top: 960 + 0.98 * 512 * 1.09 - 52, width: 104, height: 104, borderRadius: 99, background: '#E5484D', color: '#fff', fontSize: 64, fontWeight: 800, display: 'grid', placeItems: 'center', transform: `scale(${mix(x, 1.6, 1)})`, opacity: 1 - igFall * 3, boxShadow: '0 10px 30px rgba(229,72,77,0.5)'}}>×</div>
       )}
-      <Chip show={prog(f, plat + 34, 12, ease.out)} gold icon={<Ico.check s={30} />} style={{left: 0, right: 0, top: 1300, margin: '0 auto', width: 'fit-content'}}>
+      <Chip show={prog(f, plat + 36, 14, ease.out)} gold icon={<Ico.check s={30} />} style={{left: 0, right: 0, top: 1440, margin: '0 auto', width: 'fit-content'}}>
         Saved in your own CRM
       </Chip>
     </AbsoluteFill>
@@ -230,21 +273,22 @@ export const Ai: React.FC = () => {
   const app = fr(wordAt('ai', 0, 'chat app'));
   const resp = fr(wordAt('ai', 1, 'responses'));
   const sleep = fr(wordAt('ai', 1, 'sleeping'));
-  const phoneIn = prog(f, app - 10, 24, ease.out);
+  const phoneIn = prog(f, app - 12, 28, ease.out);
+  const moon = pop(f, sleep - 8, 22);
   const dot = ((f - ai) % 45) / 45;
   return (
     <AbsoluteFill>
-      <DarkBg />
+      <LuxBg intensity={0.7} />
       <div style={{position: 'absolute', left: 120, right: 120, top: 470, height: 90, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-        <div style={{position: 'absolute', left: 60, right: 60, top: 43, height: 3, background: C.lineDark}}>
-          <div style={{width: `${prog(f, ai, 20) * 100}%`, height: '100%', background: C.gold}} />
-          {f > ai + 20 && <div style={{position: 'absolute', left: `${dot * 100}%`, top: -7, width: 17, height: 17, borderRadius: 99, background: C.goldBright, boxShadow: `0 0 18px ${C.goldBright}`}} />}
+        <div style={{position: 'absolute', left: 60, right: 60, top: 43, height: 3, background: 'rgba(243,235,221,0.1)'}}>
+          <div style={{width: `${prog(f, ai, 20) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #9C7A2C, #F5DB97)'}} />
+          {f > ai + 20 && <div style={{position: 'absolute', left: `${dot * 100}%`, top: -7, width: 17, height: 17, borderRadius: 99, background: '#F5DB97', boxShadow: '0 0 20px #F5DB97'}} />}
         </div>
         {FLOW.map((n, i) => {
-          const p = prog(f, ai - 4 + i * 5, 12, ease.out);
+          const p = prog(f, ai - 4 + i * 5, 14, ease.out);
           const mid = i === 1;
           return (
-            <div key={n.label} style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 10, padding: mid ? '16px 26px' : '12px 20px', borderRadius: 999, background: mid ? `linear-gradient(140deg, ${C.goldBright}, ${C.gold})` : C.night2, color: mid ? '#1A1206' : C.cream, border: mid ? undefined : `1px solid ${C.lineDark}`, fontFamily: F.body, fontWeight: 800, fontSize: mid ? 32 : 26, opacity: p, transform: `scale(${mix(p, 0.6, 1)})`, boxShadow: mid ? `0 0 40px ${C.goldGlow}` : undefined}}>
+            <div key={n.label} style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 10, padding: mid ? '16px 28px' : '12px 22px', borderRadius: 999, ...(mid ? {background: 'linear-gradient(140deg, #F5DB97, #C9A24A 60%, #A8832F)', color: '#1A1206', boxShadow: '0 0 50px rgba(201,162,74,0.45)'} : {...GLASS, color: '#F3EBDD'}), fontFamily: F.body, fontWeight: 800, fontSize: mid ? 32 : 26, opacity: p, transform: `scale(${mix(p, 0.6, 1)})`}}>
               {n.icon}
               {n.label}
             </div>
@@ -252,14 +296,16 @@ export const Ai: React.FC = () => {
         })}
       </div>
       <Stage>
-        <group position={[0, mix(phoneIn, -3, -0.32), 0]} rotation={[-0.06, -0.22 + Math.sin(f / 55) * 0.05, 0]} scale={0.78}>
-          <Phone screen="tex/chat1.png" screen2="tex/chat2.png" mix2={prog(f, resp, 12)} />
+        <group position={[0, mix(phoneIn, -3.2, -0.3), 0]} rotation={[-0.05, mix(phoneIn, -1.2, -0.2) + Math.sin(f / 55) * 0.05, 0]} scale={0.8}>
+          <Phone screen="tex/chat1.png" screen2="tex/chat2.png" mix2={prog(f, resp, 14)} />
         </group>
+        <Shadow position={[0, -1.18, -0.2]} w={1.7} d={0.45} opacity={phoneIn * 0.9} />
+        {moon.k > 0 && <Moon3D position={[0.66, 0.6 + moon.dy * 0.3, 0.4]} rotation={[0.1, moon.ry * 0.5, -0.4]} scale={0.34 * moon.s} />}
       </Stage>
-      <Chip dark show={prog(f, resp + 6, 12, ease.out)} gold icon={<Ico.bolt s={28} />} style={{left: 40, top: 1250}}>
+      <Chip show={prog(f, resp + 6, 14, ease.out)} gold icon={<Ico.bolt s={28} />} style={{left: 40, top: 1250}}>
         Replied in 3 sec
       </Chip>
-      <Chip dark show={prog(f, sleep - 4, 12, ease.out)} icon={<Ico.moon s={30} />} style={{right: 40, top: 700}}>
+      <Chip show={prog(f, sleep, 14, ease.out)} icon={<Ico.moon s={28} />} style={{right: 40, top: 830}}>
         2:47 AM · you're asleep
       </Chip>
     </AbsoluteFill>
@@ -268,43 +314,48 @@ export const Ai: React.FC = () => {
 
 /* ---------------- 6 · Instagram comes or goes ---------------- */
 const SYS = [
-  {icon: <Ico.globe s={34} />, title: 'Website', sub: 'Your domain'},
-  {icon: <Ico.db s={34} />, title: 'CRM', sub: 'Your data'},
-  {icon: <Ico.chat s={34} />, title: 'Chat App', sub: 'AI · 24/7'},
+  {tex: 'tex/globe.png', title: 'Website', sub: 'Your domain'},
+  {tex: 'tex/db.png', title: 'CRM', sub: 'Your data'},
+  {tex: 'tex/chat.png', title: 'Chat App', sub: 'AI · 24/7'},
 ];
+const CARD_X = [-0.64, 0, 0.64];
 export const Keep: React.FC = () => {
   const f = useCurrentFrame();
   const comes = fr(wordAt('keep', 0, 'comes'));
   const goes = fr(wordAt('keep', 0, 'goes'));
   const run = fr(wordAt('keep', 0, 'running'));
-  const igIn = prog(f, comes - 4, 10, ease.out);
-  const igOut = prog(f, goes, 12, ease.in);
+  const ig = pop(f, comes - 6, 14);
+  const igOut = prog(f, goes, 20, ease.in);
   const leads = Math.round(mix(prog(f, 10, 110, ease.soft), 248, 257));
   return (
     <AbsoluteFill>
-      <DarkBg />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 480, display: 'flex', justifyContent: 'center', opacity: igIn * (1 - igOut * 0.85), transform: `scale(${mix(igIn, 0.5, 1) * (1 - igOut * 0.35)}) translateY(${igOut * -30}px)`, filter: igOut > 0 ? `grayscale(${igOut})` : undefined}}>
-        <IgLogo size={150} />
-      </div>
-      <div style={{position: 'absolute', left: 60, right: 60, top: 760, display: 'flex', gap: 22, perspective: 1600}}>
+      <LuxBg />
+      <div style={{position: 'absolute', left: 60, right: 60, top: 790, display: 'flex', gap: 22, perspective: 1600}}>
         {SYS.map((s, i) => {
-          const p = prog(f, 8 + i * 6, 16, ease.out);
+          const p = prog(f, 8 + i * 6, 18, ease.out);
           const mid = i === 1;
           return (
             <div key={s.title} style={{flex: 1, opacity: p, transform: `translateY(${(1 - p) * 80 + (mid ? -30 : 0)}px) rotateY(${(i - 1) * -10}deg)`}}>
-              <div style={{background: C.night2, border: `1px solid ${mid ? C.gold : C.lineDark}`, borderRadius: 28, padding: '28px 22px', textAlign: 'center', boxShadow: mid ? `0 0 50px ${C.goldGlow}, ${SHADOW.dark}` : SHADOW.dark, fontFamily: F.body}}>
-                <div style={{width: 74, height: 74, margin: '0 auto', borderRadius: 20, background: C.goldSoft, color: C.goldBright, display: 'grid', placeItems: 'center'}}>{s.icon}</div>
-                <div style={{marginTop: 16, color: C.cream, fontWeight: 800, fontSize: 32}}>{s.title}</div>
-                <div style={{marginTop: 4, color: C.mutedDark, fontSize: 22}}>{s.sub}</div>
-                {mid && <div style={{marginTop: 14, fontFamily: F.display, fontWeight: 800, fontSize: 56, color: C.goldBright}}>{leads}</div>}
-                {mid && <div style={{color: C.mutedDark, fontSize: 20}}>leads</div>}
-                <div style={{marginTop: 14, display: 'inline-block', padding: '6px 14px', borderRadius: 999, background: 'rgba(43,182,115,0.15)', color: C.ok, fontWeight: 800, fontSize: 20}}>● Live</div>
+              <div style={{...GLASS, borderRadius: 28, padding: '110px 18px 26px', textAlign: 'center', border: mid ? '1.5px solid #C9A24A' : GLASS.border, boxShadow: mid ? `0 0 60px rgba(201,162,74,0.3), ${GLASS.boxShadow}` : GLASS.boxShadow, fontFamily: F.body}}>
+                <div style={{color: '#F3EBDD', fontWeight: 800, fontSize: 32}}>{s.title}</div>
+                <div style={{marginTop: 4, color: '#A89C88', fontSize: 22}}>{s.sub}</div>
+                {mid && <div style={{marginTop: 12, fontFamily: F.display, fontWeight: 800, fontSize: 56, ...GOLD_TEXT}}>{leads}</div>}
+                {mid && <div style={{color: '#A89C88', fontSize: 20}}>leads</div>}
+                <div style={{marginTop: 14, display: 'inline-block', padding: '6px 14px', borderRadius: 999, background: 'rgba(43,182,115,0.15)', color: '#4CD68E', fontWeight: 800, fontSize: 20}}>● Live</div>
               </div>
             </div>
           );
         })}
       </div>
-      <Chip dark show={prog(f, run - 4, 12, ease.out)} gold icon={<Ico.check s={30} />} style={{left: 0, right: 0, top: 1300, margin: '0 auto', width: 'fit-content'}}>
+      <Stage>
+        {ig.k > 0 && igOut < 1 && <Tile3D img="tex/ig.png" size={0.5} d={0.12} position={[0, 0.86 + ig.dy - igOut * 0.4, 0.4 - igOut * 2]} rotation={[igOut * 0.8, ig.ry * 0.4, igOut * 0.6]} scale={ig.s * (1 - igOut * 0.6)} />}
+        {SYS.map((s, i) => {
+          const sp = pop(f, 10 + i * 6, 20);
+          if (sp.k <= 0) return null;
+          return <Tile3D key={s.tex} img={s.tex} size={0.2} d={0.06} position={[CARD_X[i] * 0.98, (960 - (i === 1 ? 820 : 850)) / 512, 0.45]} rotation={[0.1, sp.ry * 0.5 + (1 - i) * 0.2, 0]} scale={sp.s} />;
+        })}
+      </Stage>
+      <Chip show={prog(f, run - 4, 14, ease.out)} gold icon={<Ico.check s={30} />} style={{left: 0, right: 0, top: 1320, margin: '0 auto', width: 'fit-content'}}>
         Running 24/7
       </Chip>
     </AbsoluteFill>
@@ -314,39 +365,43 @@ export const Keep: React.FC = () => {
 /* ---------------- 7 · build your own system ---------------- */
 export const Cta: React.FC = () => {
   const f = useCurrentFrame();
-  const tile = prog(f, 10, 26, ease.out);
-  const word = prog(f, 26, 16, ease.out);
-  const site = prog(f, 44, 14, ease.out);
+  const av = prog(f, 6, 20, ease.out);
+  const logo = prog(f, 16, 24, ease.out);
+  const sweep = prog(f, 34, 34, ease.inOut);
+  const serv = prog(f, 40, 16, ease.out);
+  const site = prog(f, 50, 16, ease.out);
   return (
     <AbsoluteFill>
-      <LightBg />
-      <Stage>
-        <Card3D img="tex/mark.png" w={1.0} h={1.0} r={0.22} d={0.22} position={[0, 0.62 + (1 - tile) * 1.2, 0.2]} rotation={[0.06, mix(tile, Math.PI * 1.5, 0) + Math.sin(f / 30) * 0.12, 0]} />
-        <Shadow position={[0, -0.12, 0]} w={1.4} d={0.4} opacity={tile} />
-      </Stage>
-      <div style={{position: 'absolute', top: 1010, left: 0, right: 0, textAlign: 'center', opacity: word, transform: `translateY(${(1 - word) * 30}px)`}}>
-        <div style={{fontFamily: F.display, fontWeight: 800, fontSize: 112, letterSpacing: '0.06em', color: C.ink, lineHeight: 1}}>{BRAND.name}</div>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 18, marginTop: 14}}>
-          <span style={{width: 70, height: 2, background: C.gold}} />
-          <span style={{fontFamily: F.body, fontWeight: 700, fontSize: 32, letterSpacing: '0.62em', marginRight: '-0.62em', color: C.gold}}>{BRAND.sub}</span>
-          <span style={{width: 70, height: 2, background: C.gold}} />
-        </div>
-        <div style={{marginTop: 30, fontFamily: F.body, fontWeight: 600, fontSize: 27, color: C.muted}}>{BRAND.services.join('  ·  ')}</div>
+      <LuxBg intensity={1.1} />
+      {/* founder photo in a gold ring */}
+      <div style={{position: 'absolute', left: 540 - 125, top: 400, width: 250, height: 250, borderRadius: 999, padding: 5, background: 'conic-gradient(from 200deg, #F5DB97, #9C7A2C, #F5DB97, #C9A24A, #F5DB97)', boxShadow: '0 0 60px rgba(201,162,74,0.45)', opacity: av, transform: `scale(${mix(av, 0.7, 1)})`}}>
+        <Img src={staticFile('brand/avatar.png')} style={{width: '100%', height: '100%', borderRadius: 999, objectFit: 'cover', transform: 'scale(1.12)'}} />
       </div>
-      <div style={{position: 'absolute', top: 1320, left: 0, right: 0, textAlign: 'center', opacity: site, transform: `translateY(${(1 - site) * 20}px)`}}>
-        <div style={{display: 'inline-block', padding: '18px 40px', borderRadius: 999, background: C.ink, color: C.goldBright, fontFamily: F.display, fontWeight: 800, fontSize: 46, letterSpacing: '0.01em', boxShadow: SHADOW.card}}>{BRAND.site}</div>
-        <div style={{marginTop: 16, fontFamily: F.body, fontWeight: 600, fontSize: 25, color: C.muted}}>{BRAND.city}</div>
+      {/* the real logo with a light sweep */}
+      <div style={{position: 'absolute', left: 540 - 400, top: 700, width: 800, height: 521, opacity: logo, transform: `translateY(${(1 - logo) * 40}px) scale(${mix(logo, 0.94, 1)})`, filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.6))`}}>
+        <Img src={staticFile('brand/logo.png')} style={{width: '100%', height: '100%'}} />
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `linear-gradient(115deg, transparent ${mix(sweep, -30, 100)}%, rgba(255,250,235,0.85) ${mix(sweep, -20, 110)}%, transparent ${mix(sweep, -10, 120)}%)`,
+            WebkitMaskImage: `url(${staticFile('brand/logo.png')})`,
+            maskImage: `url(${staticFile('brand/logo.png')})`,
+            WebkitMaskSize: '100% 100%',
+            maskSize: '100% 100%',
+            mixBlendMode: 'screen',
+          }}
+        />
       </div>
-      <div style={{position: 'absolute', top: 1520, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 26}}>
-        {[<Ico.db s={38} key="a" />, <Ico.bolt s={38} key="b" />, <Ico.chat s={38} key="c" />, <Ico.globe s={38} key="d" />].map((ic, i) => {
-          const p = prog(f, 54 + i * 5, 12, ease.out);
-          return (
-            <div key={i} style={{width: 92, height: 92, borderRadius: 26, background: `linear-gradient(140deg, ${C.goldBright}, ${C.gold})`, color: '#1A1206', display: 'grid', placeItems: 'center', boxShadow: `0 14px 30px ${C.goldGlow}`, opacity: p, transform: `translateY(${(1 - p) * 40 + Math.sin((f + i * 12) / 18) * 6}px)`}}>
-              {ic}
-            </div>
-          );
-        })}
+      <div style={{position: 'absolute', left: 540 - 440, top: 1250, width: 880, height: 116, opacity: serv, transform: `translateY(${(1 - serv) * 20}px)`}}>
+        <Img src={staticFile('brand/services.png')} style={{width: '100%', height: '100%'}} />
+      </div>
+      <div style={{position: 'absolute', top: 1420, left: 0, right: 0, textAlign: 'center', opacity: site, transform: `translateY(${(1 - site) * 20}px)`}}>
+        <div style={{display: 'inline-block', padding: '20px 44px', borderRadius: 999, background: 'linear-gradient(140deg, #F5DB97, #C9A24A 60%, #A8832F)', color: '#120D05', fontFamily: F.display, fontWeight: 800, fontSize: 46, boxShadow: '0 20px 60px rgba(201,162,74,0.4)'}}>{BRAND.site}</div>
       </div>
     </AbsoluteFill>
   );
 };
+
+// keep the light palette tokens referenced for the shared components
+void C;
