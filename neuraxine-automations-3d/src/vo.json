@@ -1,0 +1,102 @@
+{
+ "voice": "hm_omega",
+ "total": 73.297,
+ "lines": [
+  {
+   "section": "hook",
+   "start": 0.4,
+   "dur": 4.413,
+   "text": "Raat ke 12 baje, ek customer ne message kiya… aur aap so rahe the."
+  },
+  {
+   "section": "hook",
+   "start": 5.093,
+   "dur": 4.176,
+   "text": "Subah tak, woh customer aapke competitor ke paas ja chuka tha."
+  },
+  {
+   "section": "intro",
+   "start": 9.869,
+   "dur": 4.442,
+   "text": "Ye 5 AI automations, har business ko aaj hi lagani chahiye."
+  },
+  {
+   "section": "s1",
+   "start": 14.911,
+   "dur": 2.247,
+   "text": "Number 1. WhatsApp auto-reply."
+  },
+  {
+   "section": "s1",
+   "start": 17.438,
+   "dur": 6.087,
+   "text": "Customer kabhi bhi message kare, AI turant sahi jawab deta hai. 24 ghante, saaton din."
+  },
+  {
+   "section": "s2",
+   "start": 24.125,
+   "dur": 1.501,
+   "text": "Number 2. Lead follow-up."
+  },
+  {
+   "section": "s2",
+   "start": 25.905,
+   "dur": 6.136,
+   "text": "Ad se lead aayi? System khud WhatsApp aur email par follow-up karta hai, jab tak woh jawab na de."
+  },
+  {
+   "section": "s3",
+   "start": 32.641,
+   "dur": 2.178,
+   "text": "Number 3. Appointment booking."
+  },
+  {
+   "section": "s3",
+   "start": 35.099,
+   "dur": 5.125,
+   "text": "Customer chat mein hi slot chune, booking confirm, aur reminder bhi automatic."
+  },
+  {
+   "section": "s4",
+   "start": 40.824,
+   "dur": 1.738,
+   "text": "Number 4. Review request."
+  },
+  {
+   "section": "s4",
+   "start": 42.842,
+   "dur": 6.005,
+   "text": "Har khush customer ko apne aap message jaata hai, aur aapke Google reviews badhte rehte hain."
+  },
+  {
+   "section": "s5",
+   "start": 49.447,
+   "dur": 2.386,
+   "text": "Number 5. Auto invoice aur payment."
+  },
+  {
+   "section": "s5",
+   "start": 52.113,
+   "dur": 4.868,
+   "text": "Order aaya, bill bana, aur payment link seedhe WhatsApp par. Bina haath lagaye."
+  },
+  {
+   "section": "outro",
+   "start": 57.58,
+   "dur": 3.01,
+   "text": "Aap business chalao. Baaki kaam, AI karega."
+  },
+  {
+   "section": "cta",
+   "start": 61.19,
+   "dur": 4.665,
+   "text": "Apne business ke liye free automation plan chahiye? Comment karo, AUTOMATE."
+  },
+  {
+   "section": "cta",
+   "start": 66.135,
+   "dur": 3.962,
+   "text": "Aur aise hi systems ke liye, Neuraxine ko abhi follow karo."
+  }
+ ]
+}

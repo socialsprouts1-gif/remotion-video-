@@ -1,0 +1,28 @@
+{
+  "name": "neuraxine-before-after",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neuraxine 5 AI automations reel, 3D motion, Hindi voiceover (Remotion, 1080x1920, 30fps)",
+  "scripts": {
+    "studio": "remotion studio",
+    "sfx": "python3 scripts/make_sfx.py && python3 scripts/make_music.py && ffmpeg -y -loglevel error -i public/audio/music.wav -b:a 192k public/audio/music.mp3 && rm public/audio/music.wav",
+    "render": "remotion render BeforeAfter out/neuraxine-before-after.mp4",
+    "still": "remotion still BeforeAfter out/still.png",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.1.2",
+    "@remotion/cli": "4.0.534",
+    "@remotion/media-utils": "4.0.534",
+    "@remotion/three": "^4.0.534",
+    "@types/three": "^0.170.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.534",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.6.3"
+  }
+}

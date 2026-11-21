@@ -1,0 +1,102 @@
+{
+ "voice": "hm_omega",
+ "total": 79.331,
+ "lines": [
+  {
+   "section": "hook",
+   "start": 3.75,
+   "dur": 3.375,
+   "text": "Aapka product accha hai… phir bhi sales nahi aa rahi?"
+  },
+  {
+   "section": "hook",
+   "start": 7.405,
+   "dur": 3.365,
+   "text": "Problem product mein nahi hai. Problem hai, marketing mein."
+  },
+  {
+   "section": "intro",
+   "start": 11.37,
+   "dur": 4.812,
+   "text": "Ye 5 marketing strategies, har business owner ko pata honi chahiye."
+  },
+  {
+   "section": "s1",
+   "start": 16.782,
+   "dur": 1.719,
+   "text": "Number 1. Sahi audience."
+  },
+  {
+   "section": "s1",
+   "start": 18.781,
+   "dur": 6.33,
+   "text": "Sabko bechne ki koshish mat karo. Apna ideal customer pehchano, aur sirf usi se baat karo."
+  },
+  {
+   "section": "s2",
+   "start": 25.711,
+   "dur": 2.074,
+   "text": "Number 2. Value wala content."
+  },
+  {
+   "section": "s2",
+   "start": 28.064,
+   "dur": 6.795,
+   "text": "Sirf ads mat chalao. Aisa content banao, jo logon ki problem solve kare. Bharosa pehle, sale baad mein."
+  },
+  {
+   "section": "s3",
+   "start": 35.46,
+   "dur": 1.71,
+   "text": "Number 3. Social proof."
+  },
+  {
+   "section": "s3",
+   "start": 37.449,
+   "dur": 7.865,
+   "text": "Log aapki baat se zyada, aapke customers ki baat par bharosa karte hain. Reviews aur testimonials, har jagah dikhao."
+  },
+  {
+   "section": "s4",
+   "start": 45.914,
+   "dur": 2.403,
+   "text": "Number 4. Follow-up aur retargeting."
+  },
+  {
+   "section": "s4",
+   "start": 48.597,
+   "dur": 7.176,
+   "text": "Zyadatar log pehli baar mein nahi khareedte. WhatsApp, email aur retargeting ads se, unhe wapas laao."
+  },
+  {
+   "section": "s5",
+   "start": 56.373,
+   "dur": 1.776,
+   "text": "Number 5. Data dekho."
+  },
+  {
+   "section": "s5",
+   "start": 58.429,
+   "dur": 4.965,
+   "text": "Jo kaam kar raha hai, us par double down karo. Jo nahi kar raha, use band karo."
+  },
+  {
+   "section": "outro",
+   "start": 63.995,
+   "dur": 3.374,
+   "text": "Yaad rakho, marketing kismat nahi, ek system hai."
+  },
+  {
+   "section": "cta",
+   "start": 67.969,
+   "dur": 4.266,
+   "text": "Apne business ke liye free marketing plan chahiye? Comment karo, GROW."
+  },
+  {
+   "section": "cta",
+   "start": 72.515,
+   "dur": 3.616,
+   "text": "Aur aisi hi tips ke liye, Neuraxine ko abhi follow karo."
+  }
+ ]
+}
