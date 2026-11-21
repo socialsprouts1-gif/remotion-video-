@@ -6,7 +6,7 @@
   "scripts": {
     "vo": "python3 scripts/build_vo.py",
     "score": "python3 scripts/make_score.py",
-    "render": "remotion render Edit out/ca-tax-editorial.mp4",
+    "render": "remotion render Edit out/ca-tax-editorial-neuraxine.mp4",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

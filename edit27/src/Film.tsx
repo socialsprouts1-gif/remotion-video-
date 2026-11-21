@@ -7,9 +7,9 @@ import shots from './shots.json';
 // Editorial poster style (after the reference reel): peach + black + burnt orange,
 // huge condensed keywords, serif-italic fillers, photoreal cut-out heroes, HUD details.
 // ---------------------------------------------------------------------------------------
-const OR = '#E8541C';
-const OR2 = '#FF7A2F';
-const PEACH = '#F4E3D1';
+const OR = '#1F9D55';
+const OR2 = '#34C46E';
+const PEACH = '#FFFFFF';
 const INK = '#16110E';
 const BEBAS = '"Bebas Neue", Oswald, Impact, sans-serif';
 const S = shots.starts as number[];
@@ -48,7 +48,7 @@ const Word: React.FC<{t: number; tok: Tok; dark: boolean; size: number}> = ({t, 
   const base: React.CSSProperties = {display: 'inline-block', opacity: p, transform: `translateY(${(1 - p) * 30}px)`, filter: `blur(${(1 - p) * 10}px)`, whiteSpace: 'pre'};
   if (st === 'big' || st === 'bigw')
     return (
-      <span style={{...base, fontFamily: BEBAS, fontSize: size, lineHeight: 0.92, letterSpacing: '0.005em', color: st === 'bigw' ? (dark ? '#fff' : INK) : OR, backgroundImage: st === 'big' ? `linear-gradient(180deg, ${OR2}, ${OR} 55%, #C23D0C)` : undefined, WebkitBackgroundClip: st === 'big' ? 'text' : undefined, WebkitTextFillColor: st === 'big' ? 'transparent' : undefined, textShadow: dark && st === 'big' ? `0 0 40px rgba(232,84,28,0.35)` : undefined, transform: `translateY(${(1 - p) * 40}px) scale(${lerp(1.12, 1, p)})`}}>
+      <span style={{...base, fontFamily: BEBAS, fontSize: size, lineHeight: 0.92, letterSpacing: '0.005em', color: st === 'bigw' ? (dark ? '#fff' : INK) : OR, backgroundImage: st === 'big' ? `linear-gradient(180deg, ${OR2}, ${OR} 55%, #137A3E)` : undefined, WebkitBackgroundClip: st === 'big' ? 'text' : undefined, WebkitTextFillColor: st === 'big' ? 'transparent' : undefined, textShadow: dark && st === 'big' ? `0 0 40px rgba(31,157,85,0.35)` : undefined, transform: `translateY(${(1 - p) * 40}px) scale(${lerp(1.12, 1, p)})`}}>
         {word.toUpperCase()}
       </span>
     );
@@ -64,7 +64,9 @@ const WORDS = (edit.words as {w: string; line: number}[]).reduce<Record<number, 
 const byWord = (l: number, k: number) => WORDS[l][k];
 
 /** rows of synced words; `size` = big-word font size */
-const Kin: React.FC<{t: number; rows: Tok[][]; dark?: boolean; top: number; size?: number; gap?: number; strike?: [number, number, number]}> = ({t, rows, dark = false, top, size = 150, gap = 4, strike}) => (
+const Kin: React.FC<{t: number; rows: Tok[][]; dark?: boolean; top: number; size?: number; gap?: number; strike?: [number, number, number]}> = ({t, rows, top, size = 150, gap = 4, strike}) => {
+  const dark = false;
+  return (
   <div style={{position: 'absolute', left: 50, right: 50, top, display: 'flex', flexDirection: 'column', alignItems: 'center', gap}}>
     {rows.map((r, i) => (
       <div key={i} style={{position: 'relative', display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: size * 0.1, flexWrap: 'nowrap'}}>
@@ -75,7 +77,8 @@ const Kin: React.FC<{t: number; rows: Tok[][]; dark?: boolean; top: number; size
       </div>
     ))}
   </div>
-);
+  );
+};
 
 // ---- decor ------------------------------------------------------------------------------
 const Barcode: React.FC<{x: number; y: number; w?: number; h?: number; dark?: boolean; seed?: number}> = ({x, y, w = 180, h = 56, dark, seed = 3}) => {
@@ -126,13 +129,14 @@ const HandlePill: React.FC<{dark?: boolean}> = ({dark}) => (
 );
 
 /** photoreal cut-out hero with contact shadow, optional peach disc, idle float */
-const Hero: React.FC<{src: string; t: number; x: number; y: number; w: number; disc?: boolean; dark?: boolean; at?: number; rot?: number; seed?: number}> = ({src, t, x, y, w, disc, dark, at = 0, rot = 0, seed = 0}) => {
+const Hero: React.FC<{src: string; t: number; x: number; y: number; w: number; disc?: boolean; dark?: boolean; at?: number; rot?: number; seed?: number}> = ({src, t, x, y, w, disc, at = 0, rot = 0, seed = 0}) => {
+  const dark = false;
   const p = ep(t, at, 0.7);
   return (
     <div style={{position: 'absolute', left: x - w / 2, top: y - w / 2, width: w, height: w, opacity: p, transform: `translateY(${(1 - p) * 80 + Math.sin(t * 1.2 + seed) * 8}px) scale(${lerp(0.9, 1, p)}) rotate(${rot + Math.sin(t * 0.8 + seed) * 1.2}deg)`}}>
-      {disc && <div style={{position: 'absolute', left: w * 0.14, top: w * 0.2, width: w * 0.72, height: w * 0.72, borderRadius: '50%', background: 'radial-gradient(circle at 40% 35%, #FBD9BF, #F2C29F 70%)', opacity: 0.85}} />}
-      <div style={{position: 'absolute', left: w * 0.22, right: w * 0.22, bottom: w * 0.03, height: w * 0.07, borderRadius: '50%', background: dark ? 'rgba(232,84,28,0.25)' : 'rgba(60,30,15,0.28)', filter: `blur(${w * 0.025}px)`}} />
-      <Img src={src} style={{position: 'absolute', inset: 0, width: w, height: w, filter: dark ? 'drop-shadow(0 30px 50px rgba(0,0,0,0.7))' : 'drop-shadow(0 30px 40px rgba(90,45,20,0.28))'}} />
+      {disc && <div style={{position: 'absolute', left: w * 0.14, top: w * 0.2, width: w * 0.72, height: w * 0.72, borderRadius: '50%', background: 'radial-gradient(circle at 40% 35%, #EAF7EE, #CFEBD9 70%)', opacity: 0.85}} />}
+      <div style={{position: 'absolute', left: w * 0.22, right: w * 0.22, bottom: w * 0.03, height: w * 0.07, borderRadius: '50%', background: dark ? 'rgba(31,157,85,0.25)' : 'rgba(20,40,25,0.22)', filter: `blur(${w * 0.025}px)`}} />
+      <Img src={src} style={{position: 'absolute', inset: 0, width: w, height: w, filter: dark ? 'drop-shadow(0 30px 50px rgba(0,0,0,0.7))' : 'drop-shadow(0 30px 40px rgba(20,40,25,0.28))'}} />
     </div>
   );
 };
@@ -151,7 +155,7 @@ const SelBox: React.FC<{t: number; at: number; x: number; y: number; w: number; 
         <div key={i} style={{position: 'absolute', left: a * w - 9, top: b * h - 9, width: 18, height: 18, background: dark ? '#222' : '#fff', border: `2.5px solid ${c}`, transform: `scale(${sp(t, at + 0.3 + i * 0.03, 1.4)})`}} />
       ))}
       {tag && t > at + 0.4 && (
-        <div style={{position: 'absolute', left: w * 0.08, top: h * 0.62, background: OR, color: '#fff', borderRadius: 30, padding: '10px 22px', fontFamily: SANS, fontWeight: 700, fontSize: 28, whiteSpace: 'nowrap', transform: `scale(${sp(t, at + 0.4, 1.3)})`, transformOrigin: 'left center', boxShadow: '0 12px 24px rgba(232,84,28,0.35)'}}>{tag}</div>
+        <div style={{position: 'absolute', left: w * 0.08, top: h * 0.62, background: OR, color: '#fff', borderRadius: 30, padding: '10px 22px', fontFamily: SANS, fontWeight: 700, fontSize: 28, whiteSpace: 'nowrap', transform: `scale(${sp(t, at + 0.4, 1.3)})`, transformOrigin: 'left center', boxShadow: '0 12px 24px rgba(31,157,85,0.35)'}}>{tag}</div>
       )}
     </div>
   );
@@ -182,57 +186,45 @@ const WaBubble: React.FC<{t: number; at: number; me?: boolean; children: React.R
 /** floating phone (CSS 3D) */
 const Phone: React.FC<{x: number; y: number; w: number; ry: number; rx: number; t: number; seed: number; children: React.ReactNode; blur?: number}> = ({x, y, w, ry, rx, t, seed, children, blur = 0}) => (
   <div style={{position: 'absolute', left: x, top: y, width: w, height: w * 2.05, perspective: 1600, filter: blur ? `blur(${blur}px)` : undefined}}>
-    <div style={{width: '100%', height: '100%', borderRadius: w * 0.14, background: 'linear-gradient(145deg,#e9e9ea,#9b9ca0)', padding: w * 0.035, transform: `rotateY(${ry + Math.sin(t * 0.7 + seed) * 6}deg) rotateX(${rx}deg) translateY(${Math.sin(t * 1.1 + seed) * 14}px)`, boxShadow: '0 40px 80px rgba(0,0,0,0.6)'}}>
+    <div style={{width: '100%', height: '100%', borderRadius: w * 0.14, background: 'linear-gradient(145deg,#e9e9ea,#9b9ca0)', padding: w * 0.035, transform: `rotateY(${ry + Math.sin(t * 0.7 + seed) * 6}deg) rotateX(${rx}deg) translateY(${Math.sin(t * 1.1 + seed) * 14}px)`, boxShadow: '0 30px 60px rgba(20,40,25,0.18)', border: '2px solid #E3EAE4'}}>
       <div style={{width: '100%', height: '100%', borderRadius: w * 0.11, background: '#fff', overflow: 'hidden', position: 'relative'}}>{children}</div>
     </div>
   </div>
 );
+/** generic "deadline reminder" post — no invented handles, numbers or dates */
+const POSTS: [string, string, string, string, string][] = [
+  ['DEADLINE', 'ALERT', 'File your returns on time', 'alarm_clock', INK],
+  ['GST', 'REMINDER', 'Don’t miss the due date', 'bell', '#137A3E'],
+  ['TAX', 'TIPS', 'Save more this year', 'light_bulb', '#2B2F2C'],
+  ['FILE', 'YOUR ITR', 'Before the last date', 'page_facing_up', '#1F9D55'],
+];
 const DeadlinePost: React.FC<{v: number; s?: number}> = ({v, s = 1}) => {
-  const lines = [
-    ['LAST DATE', '31', 'JULY', 'File ITR now!'],
-    ['GST DUE', '20', 'THIS MONTH', 'Don’t miss it!'],
-    ['TDS', '7', 'JULY', 'Pay on time!'],
-  ][v % 3];
+  const [a, b, c, ic, bg] = POSTS[v % POSTS.length];
   return (
     <div style={{height: '100%', display: 'flex', flexDirection: 'column', fontFamily: SANS, color: INK, fontSize: 18 * s}}>
       <div style={{display: 'flex', alignItems: 'center', gap: 6 * s, padding: `${10 * s}px ${12 * s}px`}}>
         <Img src={logo('instagram')} style={{width: 22 * s, height: 22 * s}} />
-        <b style={{fontSize: 16 * s}}>ca.firm_{v + 1}</b>
+        <b style={{fontSize: 16 * s}}>your.ca.firm</b>
       </div>
-      <div style={{flex: 1, background: '#B3261E', color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <div style={{fontFamily: BEBAS, fontSize: 30 * s, letterSpacing: '0.05em'}}>{lines[0]}</div>
-        <div style={{fontFamily: BEBAS, fontSize: 110 * s, lineHeight: 0.9}}>{lines[1]}</div>
-        <div style={{fontFamily: BEBAS, fontSize: 36 * s}}>{lines[2]}</div>
-        <div style={{fontSize: 15 * s, opacity: 0.85, marginTop: 6 * s}}>{lines[3]}</div>
+      <div style={{flex: 1, background: bg, color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4 * s}}>
+        <Img src={fl(ic)} style={{width: 70 * s, height: 70 * s}} />
+        <div style={{fontFamily: BEBAS, fontSize: 58 * s, lineHeight: 0.9, letterSpacing: '0.02em'}}>{a}</div>
+        <div style={{fontFamily: BEBAS, fontSize: 40 * s, lineHeight: 0.9, color: bg === INK ? '#34C46E' : '#fff'}}>{b}</div>
+        <div style={{fontSize: 15 * s, opacity: 0.85, marginTop: 6 * s}}>{c}</div>
       </div>
-      <div style={{padding: `${10 * s}px ${12 * s}px`, fontSize: 15 * s}}>♡ {[6, 3, 9][v % 3]} likes · 0 enquiries</div>
+      <div style={{padding: `${10 * s}px ${12 * s}px`, fontSize: 20 * s, display: 'flex', gap: 14 * s, color: INK}}>♡ <span>💬</span> <span>➤</span></div>
     </div>
   );
 };
 
 // ---- backgrounds ------------------------------------------------------------------------
 type Bg = 'peach' | 'dark' | 'brown';
-const Back: React.FC<{bg: Bg; t: number; arc?: boolean}> = ({bg, t, arc}) => {
-  if (bg === 'peach')
-    return (
-      <AbsoluteFill style={{background: `radial-gradient(ellipse 85% 60% at 50% 45%, #FBEEE2 0%, ${PEACH} 60%, #EBD3BD 100%)`}}>
-        <AbsoluteFill style={{opacity: 0.25, backgroundImage: 'radial-gradient(rgba(80,40,20,0.35) 1px, transparent 1px)', backgroundSize: '5px 5px', mixBlendMode: 'multiply'}} />
-      </AbsoluteFill>
-    );
-  if (bg === 'brown')
-    return <AbsoluteFill style={{background: 'radial-gradient(ellipse 90% 70% at 50% 40%, #4A1E0C 0%, #2A1208 50%, #120806 100%)'}} />;
-  return (
-    <AbsoluteFill style={{background: '#0B0908', overflow: 'hidden'}}>
-      {arc && (
-        <>
-          <div style={{position: 'absolute', left: -260, right: -260, top: 1060, height: 1200, borderRadius: '50%', border: `${60 + Math.sin(t * 2) * 6}px solid rgba(232,60,20,0.85)`, filter: 'blur(70px)'}} />
-          <div style={{position: 'absolute', left: -100, right: -100, top: 1120, height: 1000, borderRadius: '50%', background: 'radial-gradient(ellipse at 50% 0%, rgba(255,90,30,0.35), transparent 60%)', filter: 'blur(30px)'}} />
-        </>
-      )}
-      <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 50% at 50% 45%, rgba(255,255,255,0.05), transparent 70%)'}} />
-    </AbsoluteFill>
-  );
-};
+const Back: React.FC<{bg: Bg; t: number; arc?: boolean}> = ({t, arc}) => (
+  <AbsoluteFill style={{background: 'radial-gradient(ellipse 85% 60% at 50% 45%, #FFFFFF 0%, #FBFCFA 55%, #EEF4EF 100%)', overflow: 'hidden'}}>
+    <AbsoluteFill style={{opacity: 0.5, backgroundImage: 'radial-gradient(rgba(20,40,25,0.10) 1.2px, transparent 1.2px)', backgroundSize: '34px 34px'}} />
+    {arc && <div style={{position: 'absolute', left: -200, right: -200, top: 1180, height: 1100, borderRadius: '50%', background: `radial-gradient(ellipse at 50% 0%, rgba(52,196,110,${0.28 + Math.sin(t * 2) * 0.03}), rgba(31,157,85,0.08) 45%, transparent 70%)`, filter: 'blur(20px)'}} />}
+  </AbsoluteFill>
+);
 /** looping text ribbon ("PROBLEM PROBLEM" style) */
 const Ribbon: React.FC<{t: number; y: number; rot: number; word: string; speed: number; blur?: number; op?: number}> = ({t, y, rot, word, speed, blur = 0, op = 1}) => (
   <div style={{position: 'absolute', left: -400, right: -400, top: y, height: 130, background: 'linear-gradient(180deg,#2C2725,#151210)', transform: `rotate(${rot}deg)`, overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.6)', filter: blur ? `blur(${blur}px)` : undefined, opacity: op}}>
@@ -249,17 +241,18 @@ type ShotFn = (t: number, lt: number) => React.ReactNode;
 type Shot = {bg: Bg; arc?: boolean; hud?: boolean; pill?: boolean; draw: ShotFn};
 
 const SHOTS: Shot[] = [
-  // 0 · hook: views counter, floating phones full of "last date" posts
+  // 0 · hook: Instagram, floating phones full of generic deadline posts
   {
     bg: 'dark',
     arc: true,
     draw: (t) => {
-      const v = Math.round(lerp(1_80_000, 2_48_317, ep(t, 0, 4.2)));
       return (
         <>
-          <div style={{position: 'absolute', left: 0, right: 0, top: 150, textAlign: 'center'}}>
-            <div style={{fontFamily: BEBAS, fontSize: 190, lineHeight: 0.9, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 30px rgba(232,84,28,0.45))'}}>{v.toLocaleString('en-IN')}</div>
-            <div style={{fontFamily: SANS, fontWeight: 700, fontSize: 52, color: '#fff', marginTop: -6, marginLeft: 260}}>views</div>
+          <div style={{position: 'absolute', left: 0, right: 0, top: 150, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14}}>
+            <div style={{width: 170, height: 170, borderRadius: 44, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 24px 50px rgba(20,40,25,0.16)', transform: `scale(${sp(t, 0, 1.2)}) rotate(${Math.sin(t * 1.5) * 4}deg)`}}>
+              <Img src={logo('instagram')} style={{width: 120, height: 120}} />
+            </div>
+            <div style={{fontFamily: SERIF, fontStyle: 'italic', fontSize: 70, color: INK, opacity: ep(t, 0.2, 0.4)}}>posting every week…</div>
           </div>
           <Phone x={90} y={520} w={230} ry={22} rx={6} t={t} seed={0}>
             <DeadlinePost v={0} s={0.85} />
@@ -284,21 +277,24 @@ const SHOTS: Shot[] = [
       <>
         <Barcode x={450} y={170} />
         <div style={{position: 'absolute', left: 140, top: 300, width: 800, height: 560, perspective: 1800}}>
-          <div style={{width: '100%', height: '100%', transform: `rotateX(14deg) rotateY(${-6 + Math.sin(t) * 2}deg)`, borderRadius: 28, background: '#1d1d1f', padding: 18, boxShadow: '0 50px 80px rgba(90,45,20,0.35)'}}>
+          <div style={{width: '100%', height: '100%', transform: `rotateX(14deg) rotateY(${-6 + Math.sin(t) * 2}deg)`, borderRadius: 28, background: '#1d1d1f', padding: 18, boxShadow: '0 50px 80px rgba(20,40,25,0.35)'}}>
             <div style={{width: '100%', height: '100%', borderRadius: 14, background: '#fff', overflow: 'hidden', display: 'flex', flexDirection: 'column'}}>
               <div style={{display: 'flex', alignItems: 'center', gap: 12, padding: '12px 18px', borderBottom: '1px solid #eee'}}>
                 <Img src={logo('instagram')} style={{width: 40, height: 40}} />
                 <b style={{fontFamily: SANS, fontSize: 26}}>Instagram</b>
-                <span style={{marginLeft: 'auto', fontFamily: SANS, fontSize: 20, color: '#888'}}>ca.firm · 248 posts</span>
+                <span style={{marginLeft: 'auto', fontFamily: SANS, fontSize: 20, color: '#888'}}>your.ca.firm</span>
               </div>
               <div style={{flex: 1, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 4, padding: 4, transform: `translateY(${-ep(t, S[1], 3) * 60}px)`}}>
-                {Array.from({length: 12}).map((_, i) => (
-                  <div key={i} style={{height: 200, background: '#B3261E', color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: BEBAS}}>
-                    <div style={{fontSize: 22}}>LAST DATE</div>
-                    <div style={{fontSize: 70, lineHeight: 0.9}}>{['31', '20', '7', '15'][i % 4]}</div>
-                    <div style={{fontSize: 22}}>{['JULY', 'GST', 'TDS', 'ADV TAX'][i % 4]}</div>
-                  </div>
-                ))}
+                {Array.from({length: 12}).map((_, i) => {
+                  const [a, b, , ic, bg] = POSTS[i % POSTS.length];
+                  return (
+                    <div key={i} style={{height: 200, background: bg, color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: BEBAS, gap: 2}}>
+                      <Img src={fl(ic)} style={{width: 54, height: 54}} />
+                      <div style={{fontSize: 34, lineHeight: 0.95}}>{a}</div>
+                      <div style={{fontSize: 24, color: bg === INK ? '#34C46E' : '#fff'}}>{b}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -343,9 +339,9 @@ const SHOTS: Shot[] = [
           {[90, 70, 85, 60].map((w, i) => (
             <div key={i} style={{height: 8, width: `${w}%`, background: '#cfc6b8', borderRadius: 4, marginTop: 10}} />
           ))}
-          <div style={{marginTop: 12, border: `3px solid ${OR}`, color: OR, fontFamily: MONO, fontWeight: 800, fontSize: 18, padding: '2px 8px', display: 'inline-block', transform: 'rotate(-6deg)'}}>REPLY IN 30 DAYS</div>
+          <div style={{marginTop: 12, border: '3px solid #E5484D', color: '#E5484D', fontFamily: MONO, fontWeight: 800, fontSize: 18, padding: '2px 8px', display: 'inline-block', transform: 'rotate(-6deg)'}}>REPLY IN 30 DAYS</div>
         </div>
-        <div style={{position: 'absolute', right: 110, top: 1250, display: 'flex', alignItems: 'center', gap: 10, fontFamily: MONO, fontWeight: 800, fontSize: 40, color: '#fff', opacity: ep(t, W(2, 3), 0.3)}}>
+        <div style={{position: 'absolute', right: 110, top: 1250, display: 'flex', alignItems: 'center', gap: 10, fontFamily: MONO, fontWeight: 800, fontSize: 40, color: INK, opacity: ep(t, W(2, 3), 0.3)}}>
           <Img src={fl('crescent_moon')} style={{width: 56, height: 56}} /> 11:20 PM
         </div>
       </>
@@ -362,10 +358,10 @@ const SHOTS: Shot[] = [
       return (
         <>
           <div style={{position: 'absolute', left: 0, right: 0, top: 230, display: 'flex', justifyContent: 'center', opacity: ep(t, S[4], 0.4), transform: `scale(${lerp(0.7, 1, sp(t, S[4], 1.2))})`}}>
-            <Img src={logo('google')} style={{width: 220, height: 220, filter: 'drop-shadow(0 20px 30px rgba(90,45,20,0.25))'}} />
+            <Img src={logo('google')} style={{width: 220, height: 220, filter: 'drop-shadow(0 20px 30px rgba(20,40,25,0.25))'}} />
           </div>
           <Kin t={t} top={490} size={150} rows={[[[2, 7], [2, 8, 'mid'], [2, 9]], [[2, 10, 'big'], [2, 11, 'big'], [2, 12, 'big']], [[2, 13, 'it'], [2, 14, 'it']]]} />
-          <div style={{position: 'absolute', left: 110, right: 110, top: 1000, height: 120, borderRadius: 60, background: '#fff', boxShadow: '0 20px 40px rgba(90,45,20,0.18)', display: 'flex', alignItems: 'center', gap: 20, padding: '0 36px', opacity: ep(t, W(2, 9), 0.3)}}>
+          <div style={{position: 'absolute', left: 110, right: 110, top: 1000, height: 120, borderRadius: 60, background: '#fff', boxShadow: '0 20px 40px rgba(20,40,25,0.18)', display: 'flex', alignItems: 'center', gap: 20, padding: '0 36px', opacity: ep(t, W(2, 9), 0.3)}}>
             <Img src={logo('google')} style={{width: 54, height: 54}} />
             <span style={{fontFamily: SANS, fontSize: 46, color: '#202124'}}>{typed}</span>
             <span style={{width: 3, height: 50, background: '#1a73e8', opacity: Math.sin(t * 10) > 0 ? 1 : 0}} />
@@ -375,7 +371,7 @@ const SHOTS: Shot[] = [
             ['Shah & Co. · Chartered Accountants', '4.9 ★ (326) · Open now'],
             ['Verma Tax Consultants', '4.1 ★ (48)'],
           ].map(([a, b], i) => (
-            <div key={i} style={{position: 'absolute', left: 110, right: 110, top: 1160 + i * 160, borderRadius: 26, background: '#fff', padding: '22px 30px', fontFamily: SANS, boxShadow: '0 14px 30px rgba(90,45,20,0.12)', opacity: ep(t, W(2, 13) + i * 0.2, 0.3) * (i ? 0.55 : 1), transform: `translateY(${(1 - ep(t, W(2, 13) + i * 0.2, 0.4)) * 30}px)`, border: i ? 'none' : `3px solid ${OR}`}}>
+            <div key={i} style={{position: 'absolute', left: 110, right: 110, top: 1160 + i * 160, borderRadius: 26, background: '#fff', padding: '22px 30px', fontFamily: SANS, boxShadow: '0 14px 30px rgba(20,40,25,0.12)', opacity: ep(t, W(2, 13) + i * 0.2, 0.3) * (i ? 0.55 : 1), transform: `translateY(${(1 - ep(t, W(2, 13) + i * 0.2, 0.4)) * 30}px)`, border: i ? 'none' : `3px solid ${OR}`}}>
               <div style={{fontSize: 34, fontWeight: 700, color: '#1a0dab'}}>{a}</div>
               <div style={{fontSize: 26, color: '#5f6368', marginTop: 4}}>{b}</div>
             </div>
@@ -394,7 +390,7 @@ const SHOTS: Shot[] = [
         <>
           <Barcode x={450} y={110} seed={11} />
           <div style={{position: 'absolute', left: 0, right: 0, top: 200, textAlign: 'center', fontFamily: SANS, fontWeight: 700, fontSize: 48, color: INK, opacity: ep(t, W(2, 15), 0.3)}}>aapke</div>
-          <div style={{position: 'absolute', left: 0, right: 0, top: 250, textAlign: 'center', fontFamily: BEBAS, fontSize: 420, lineHeight: 1, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #C23D0C)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', opacity: ep(t, W(2, 16), 0.3)}}>{r.toFixed(1)}</div>
+          <div style={{position: 'absolute', left: 0, right: 0, top: 250, textAlign: 'center', fontFamily: BEBAS, fontSize: 420, lineHeight: 1, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #137A3E)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', opacity: ep(t, W(2, 16), 0.3)}}>{r.toFixed(1)}</div>
           <div style={{position: 'absolute', left: 0, right: 0, top: 690, display: 'flex', justifyContent: 'center', gap: 14}}>
             {[0, 1, 2, 3, 4].map((k) => (
               <Img key={k} src={fl('star')} style={{width: 110, height: 110, opacity: ep(t, W(2, 17) + k * 0.1, 0.2), transform: `scale(${sp(t, W(2, 17) + k * 0.1, 1.3)})`}} />
@@ -429,7 +425,7 @@ const SHOTS: Shot[] = [
             Ghabraiye mat Mehta ji 🙏 Notice ki photo bhej dijiye
           </WaBubble>
           {t > W(3, 7) && (
-            <div style={{position: 'absolute', left: 560, top: 1080, width: 400, background: '#fff', borderRadius: 24, padding: 14, boxShadow: '0 20px 40px rgba(90,45,20,0.25)', transform: `rotate(4deg) translateY(${(1 - ep(t, W(3, 7), 0.5)) * 200}px)`}}>
+            <div style={{position: 'absolute', left: 560, top: 1080, width: 400, background: '#fff', borderRadius: 24, padding: 14, boxShadow: '0 20px 40px rgba(20,40,25,0.25)', transform: `rotate(4deg) translateY(${(1 - ep(t, W(3, 7), 0.5)) * 200}px)`}}>
               <div style={{height: 260, borderRadius: 14, background: '#F4EFE6', padding: 18, position: 'relative', overflow: 'hidden'}}>
                 <div style={{fontFamily: MONO, fontWeight: 800, fontSize: 22, color: INK}}>FORM ASMT-10</div>
                 {[92, 76, 86, 64, 80].map((w, i) => (
@@ -456,7 +452,7 @@ const SHOTS: Shot[] = [
       return (
         <>
           <Kin t={t} dark top={200} size={170} rows={[[[3, 9], [3, 10, 'mid'], [3, 11, 'mid'], [3, 12], [3, 13]], [[3, 14, 'big'], [3, 15, 'big']], [[3, 16, 'it'], [3, 17, 'it']]]} />
-          <div style={{position: 'absolute', left: 140, right: 140, top: 760, borderRadius: 36, background: '#fff', overflow: 'hidden', boxShadow: '0 40px 80px rgba(0,0,0,0.6)', transform: `translateY(${(1 - ep(t, S[7], 0.6)) * 120}px) rotate(-2deg)`, opacity: ep(t, S[7], 0.4)}}>
+          <div style={{position: 'absolute', left: 140, right: 140, top: 760, borderRadius: 36, background: '#fff', overflow: 'hidden', boxShadow: '0 30px 60px rgba(20,40,25,0.18)', border: '2px solid #E3EAE4', transform: `translateY(${(1 - ep(t, S[7], 0.6)) * 120}px) rotate(-2deg)`, opacity: ep(t, S[7], 0.4)}}>
             <div style={{display: 'flex', alignItems: 'center', gap: 16, padding: '22px 28px', borderBottom: '1px solid #eee'}}>
               <Img src={logo('googlecalendar')} style={{width: 60, height: 60}} />
               <b style={{fontFamily: SANS, fontSize: 34, color: '#202124'}}>Google Calendar</b>
@@ -496,7 +492,7 @@ const SHOTS: Shot[] = [
       return (
         <>
           <Kin t={t} top={190} size={170} rows={[[[4, 0, 'mid'], [4, 1], [4, 2], [4, 3]], [[4, 4, 'big']], [[4, 5, 'it'], [4, 6], [4, 7], [4, 8], [4, 9, 'mid']], [[4, 10, 'mid'], [4, 11], [4, 12], [4, 13, 'it'], [4, 14, 'it']]]} gap={2} />
-          <div style={{position: 'absolute', left: 90, top: 860, width: 560, background: '#fff', borderRadius: 30, padding: '24px 28px', boxShadow: '0 30px 60px rgba(90,45,20,0.22)', transform: `rotate(-3deg) translateY(${(1 - ep(t, W(4, 4), 0.6)) * 200}px)`, opacity: ep(t, W(4, 4) - 0.2, 0.3)}}>
+          <div style={{position: 'absolute', left: 90, top: 860, width: 560, background: '#fff', borderRadius: 30, padding: '24px 28px', boxShadow: '0 30px 60px rgba(20,40,25,0.22)', transform: `rotate(-3deg) translateY(${(1 - ep(t, W(4, 4), 0.6)) * 200}px)`, opacity: ep(t, W(4, 4) - 0.2, 0.3)}}>
             <div style={{display: 'flex', alignItems: 'center', gap: 12, fontFamily: SANS, fontWeight: 800, fontSize: 32, color: INK}}>
               <Img src={fl('clipboard')} style={{width: 56, height: 56}} /> Documents checklist
             </div>
@@ -559,7 +555,7 @@ const SHOTS: Shot[] = [
         <Kin t={t} dark top={170} size={170} rows={[[[5, 0, 'mid'], [5, 1, 'big']], [[5, 2, 'it'], [5, 3, 'it']], [[5, 4, 'mid'], [5, 5, 'big']]]} gap={0} />
         <Hero src={hero('watch')} t={t} x={540} y={1180} w={860} dark at={S[10]} />
         {[0, 1, 2].map((k) => (
-          <div key={k} style={{position: 'absolute', left: 540 - 300 - k * 60, top: 1180 - 300 - k * 60, width: 600 + k * 120, height: 600 + k * 120, borderRadius: '50%', border: `3px solid rgba(232,84,28,${0.5 - k * 0.15})`, transform: `scale(${1 + ((t * 0.6 + k * 0.33) % 1) * 0.2})`, opacity: 1 - ((t * 0.6 + k * 0.33) % 1)}} />
+          <div key={k} style={{position: 'absolute', left: 540 - 300 - k * 60, top: 1180 - 300 - k * 60, width: 600 + k * 120, height: 600 + k * 120, borderRadius: '50%', border: `3px solid rgba(31,157,85,${0.5 - k * 0.15})`, transform: `scale(${1 + ((t * 0.6 + k * 0.33) % 1) * 0.2})`, opacity: 1 - ((t * 0.6 + k * 0.33) % 1)}} />
         ))}
       </>
     ),
@@ -579,8 +575,8 @@ const SHOTS: Shot[] = [
           <Hero src={hero('watch')} t={t} x={830} y={420} w={420} dark rot={14} seed={1} />
           {items.map(([n, at, s], i) => (
             <div key={n} style={{position: 'absolute', left: 90, top: 260 + i * 300, opacity: ep(t, at - 0.05, 0.25)}}>
-              <div style={{fontFamily: BEBAS, fontSize: 280, lineHeight: 0.85, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #C23D0C)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', transform: `translateX(${(1 - ep(t, at - 0.05, 0.4)) * -80}px)`}}>{n}</div>
-              <div style={{position: 'absolute', left: 330, top: 110, display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(37,211,102,0.15)', border: '2px solid #25D366', color: '#7CE0A3', borderRadius: 30, padding: '8px 20px', fontFamily: SANS, fontWeight: 700, fontSize: 30, whiteSpace: 'nowrap', transform: `scale(${sp(t, at + 0.3, 1.3)})`, transformOrigin: 'left center'}}>• {s}</div>
+              <div style={{fontFamily: BEBAS, fontSize: 280, lineHeight: 0.85, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #137A3E)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', transform: `translateX(${(1 - ep(t, at - 0.05, 0.4)) * -80}px)`}}>{n}</div>
+              <div style={{position: 'absolute', left: 330, top: 110, display: 'flex', alignItems: 'center', gap: 10, background: '#E7F7EC', border: '2px solid #25D366', color: '#137A3E', borderRadius: 30, padding: '8px 20px', fontFamily: SANS, fontWeight: 700, fontSize: 30, whiteSpace: 'nowrap', transform: `scale(${sp(t, at + 0.3, 1.3)})`, transformOrigin: 'left center'}}>• {s}</div>
             </div>
           ))}
           <Kin t={t} dark top={1260} size={190} rows={[[[5, 9, 'mid'], [5, 10, 'big'], [5, 11, 'it'], [5, 12, 'it']]]} strike={[0, 5, 11]} />
@@ -598,7 +594,7 @@ const SHOTS: Shot[] = [
       <>
         <Kin t={t} top={180} size={130} rows={[[[6, 0, 'mid'], [6, 1], [6, 2, 'it']], [[6, 3, 'big']], [[6, 4], [6, 5, 'mid'], [6, 6, 'it']]]} />
         <Hero src={hero('queen_w')} t={t} x={300} y={1180} w={700} disc at={S[12]} />
-        <div style={{position: 'absolute', left: 470, top: 820, width: 520, background: '#D9FDD3', borderRadius: 30, borderTopRightRadius: 6, padding: '18px 20px', boxShadow: '0 24px 50px rgba(90,45,20,0.22)', opacity: ep(t, W(6, 5) - 0.2, 0.3), transform: `translateY(${(1 - ep(t, W(6, 5) - 0.2, 0.5)) * 60}px)`}}>
+        <div style={{position: 'absolute', left: 470, top: 820, width: 520, background: '#D9FDD3', borderRadius: 30, borderTopRightRadius: 6, padding: '18px 20px', boxShadow: '0 24px 50px rgba(20,40,25,0.22)', opacity: ep(t, W(6, 5) - 0.2, 0.3), transform: `translateY(${(1 - ep(t, W(6, 5) - 0.2, 0.5)) * 60}px)`}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 10, fontFamily: MONO, fontWeight: 700, fontSize: 18, color: '#128C7E', letterSpacing: '0.1em'}}>
             <Img src={logo('whatsapp')} style={{width: 28, height: 28}} /> SHAH & CO. · FILED
           </div>
@@ -631,7 +627,7 @@ const SHOTS: Shot[] = [
           <Barcode x={450} y={110} seed={23} />
           <Kin t={t} top={200} size={190} rows={[[[6, 7, 'it'], [6, 8], [6, 9]], [[6, 10, 'big'], [6, 11, 'big']], [[6, 12, 'it']]]} />
           <Hero src={hero('calculator')} t={t} x={300} y={1140} w={620} disc at={S[13]} rot={-6} />
-          <div style={{position: 'absolute', left: 560, top: 880, width: 440, background: '#fff', borderRadius: 30, padding: '22px 24px', boxShadow: '0 24px 50px rgba(90,45,20,0.2)'}}>
+          <div style={{position: 'absolute', left: 560, top: 880, width: 440, background: '#fff', borderRadius: 30, padding: '22px 24px', boxShadow: '0 24px 50px rgba(20,40,25,0.2)'}}>
             <div style={{fontFamily: MONO, fontWeight: 700, fontSize: 18, letterSpacing: '0.12em', color: OR}}>NEXT YEAR · SAVE</div>
             {tips.map(([k, v], i) => (
               <div key={k} style={{display: 'flex', justifyContent: 'space-between', fontFamily: SANS, fontSize: 25, color: INK, padding: '12px 0', borderBottom: '1px solid #EFE6DC', opacity: ep(t, W(6, 10) + i * 0.2, 0.25)}}>
@@ -717,7 +713,7 @@ const SHOTS: Shot[] = [
         <Kin t={t} dark top={560} size={170} rows={[[[9, 0], [9, 1], [9, 2], [9, 3], [9, 4], [9, 5], [9, 6]], [[9, 7, 'big'], [9, 8, 'big'], [9, 9, 'big']], [[9, 10, 'it']]]} />
         <div style={{position: 'absolute', left: 0, right: 0, top: 1060, display: 'flex', justifyContent: 'center', gap: 22}}>
           {['Instant AI reply', 'Docs on WhatsApp', 'Deadline reminders'].map((s, i) => (
-            <div key={s} style={{border: '2px solid rgba(255,255,255,0.35)', color: '#fff', borderRadius: 30, padding: '10px 20px', fontFamily: SANS, fontWeight: 600, fontSize: 25, opacity: ep(t, W(9, 9) + i * 0.15, 0.3)}}>• {s}</div>
+            <div key={s} style={{border: `2px solid ${INK}`, color: INK, background: '#fff', borderRadius: 30, padding: '10px 20px', fontFamily: SANS, fontWeight: 600, fontSize: 25, opacity: ep(t, W(9, 9) + i * 0.15, 0.3)}}>• {s}</div>
           ))}
         </div>
         <Hero src={hero('king_hero')} t={t} x={540} y={1460} w={720} dark at={W(9, 7)} />
@@ -735,18 +731,18 @@ const SHOTS: Shot[] = [
       const dm = W(9, 20) - 0.2;
       return (
         <>
-          <div style={{position: 'absolute', left: 0, right: 0, top: 330, textAlign: 'center', fontFamily: SANS, fontWeight: 600, fontSize: 60, color: '#fff', opacity: ep(t, W(9, 11), 0.3)}}>
+          <div style={{position: 'absolute', left: 0, right: 0, top: 330, textAlign: 'center', fontFamily: SANS, fontWeight: 600, fontSize: 60, color: INK, opacity: ep(t, W(9, 11), 0.3)}}>
             Just <span style={{fontWeight: 800}}>comment</span>
           </div>
           <div style={{position: 'absolute', left: 0, right: 0, top: 400, textAlign: 'center'}}>
-            <span style={{position: 'relative', display: 'inline-block', fontFamily: BEBAS, fontSize: 260, lineHeight: 1, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #C23D0C)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', opacity: ep(t, W(9, 14) - 0.1, 0.25), transform: `scale(${lerp(1.2, 1, ep(t, W(9, 14) - 0.1, 0.4))})`}}>
+            <span style={{position: 'relative', display: 'inline-block', fontFamily: BEBAS, fontSize: 260, lineHeight: 1, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #137A3E)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', opacity: ep(t, W(9, 14) - 0.1, 0.25), transform: `scale(${lerp(1.2, 1, ep(t, W(9, 14) - 0.1, 0.4))})`}}>
               “DETAILS”
             </span>
             <svg width="700" height="60" style={{position: 'absolute', left: 190, top: 245}}>
               <path d="M 10 40 Q 180 10 360 30 T 690 22" fill="none" stroke={OR} strokeWidth="9" strokeLinecap="round" strokeDasharray="800" strokeDashoffset={800 * (1 - ep(t, W(9, 14) + 0.2, 0.5))} />
             </svg>
           </div>
-          <div style={{position: 'absolute', left: 120, right: 120, top: 790, height: 110, borderRadius: 55, background: '#fff', display: 'flex', alignItems: 'center', gap: 18, padding: '0 16px 0 30px', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', opacity: ep(t, W(9, 12), 0.3)}}>
+          <div style={{position: 'absolute', left: 120, right: 120, top: 790, height: 110, borderRadius: 55, background: '#fff', display: 'flex', alignItems: 'center', gap: 18, padding: '0 16px 0 30px', boxShadow: '0 24px 50px rgba(20,40,25,0.16)', border: '2px solid #E3EAE4', opacity: ep(t, W(9, 12), 0.3)}}>
             <Img src={logo('instagram')} style={{width: 52, height: 52}} />
             <span style={{flex: 1, fontFamily: SANS, fontWeight: 700, fontSize: 38, color: posted ? '#0095F6' : INK}}>
               {typed || <span style={{color: '#999', fontWeight: 400}}>Add a comment…</span>}
@@ -757,7 +753,7 @@ const SHOTS: Shot[] = [
           </div>
           <Kin t={t} dark top={980} size={150} rows={[[[9, 15], [9, 16, 'big'], [9, 17], [9, 18]], [[9, 19, 'mid'], [9, 20, 'big'], [9, 21, 'it'], [9, 22, 'it']]]} />
           {t > dm && (
-            <div style={{position: 'absolute', left: 110, right: 110, top: 1380, display: 'flex', alignItems: 'center', gap: 18, background: 'rgba(255,255,255,0.97)', borderRadius: 32, padding: '22px 26px', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', transform: `translateY(${(1 - ep(t, dm, 0.5)) * -80}px)`, opacity: ep(t, dm, 0.3)}}>
+            <div style={{position: 'absolute', left: 110, right: 110, top: 1380, display: 'flex', alignItems: 'center', gap: 18, background: 'rgba(255,255,255,0.97)', borderRadius: 32, padding: '22px 26px', boxShadow: '0 24px 50px rgba(20,40,25,0.16)', border: '2px solid #E3EAE4', transform: `translateY(${(1 - ep(t, dm, 0.5)) * -80}px)`, opacity: ep(t, dm, 0.3)}}>
               <Img src={logo('instagram')} style={{width: 64, height: 64}} />
               <div style={{flex: 1, fontFamily: SANS}}>
                 <div style={{fontSize: 28, color: INK}}>
@@ -784,7 +780,7 @@ const SHOTS: Shot[] = [
         <>
           <Kin t={t} dark top={450} size={230} rows={[[[9, 23], [9, 24], [9, 25], [9, 26, 'mid'], [9, 27], [9, 28]], [[9, 29, 'it'], [9, 30, 'it']], [[9, 31, 'big']]]} gap={6} />
           <div style={{position: 'absolute', left: 0, right: 0, top: 1120, display: 'flex', justifyContent: 'center', opacity: ep(t, W(9, 29), 0.3)}}>
-            <div style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 22, background: '#fff', borderRadius: 40, padding: '20px 24px', boxShadow: '0 30px 60px rgba(0,0,0,0.5)'}}>
+            <div style={{position: 'relative', display: 'flex', alignItems: 'center', gap: 22, background: '#fff', borderRadius: 40, padding: '20px 24px', boxShadow: '0 24px 50px rgba(20,40,25,0.16)', border: '2px solid #E3EAE4'}}>
               <div style={{width: 96, height: 96, borderRadius: 48, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Img src={staticFile('brand/logo-alpha.png')} style={{width: 76, height: 57, objectFit: 'contain'}} />
               </div>
@@ -807,10 +803,10 @@ const EndCard: React.FC<{t: number}> = ({t}) => {
   const a = END_AT;
   const p = ep(t, a, 0.6);
   return (
-    <AbsoluteFill style={{background: 'radial-gradient(ellipse 80% 60% at 50% 45%, #4A1E0C 0%, #1C0B06 60%, #0B0504 100%)', opacity: p, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-      <Img src={staticFile('brand/logo-alpha.png')} style={{width: 240, height: 180, objectFit: 'contain', transform: `scale(${lerp(0.6, 1, sp(t, a + 0.1))})`, filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.6))'}} />
-      <div style={{fontFamily: BEBAS, fontSize: 200, lineHeight: 1, marginTop: 10, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #C23D0C)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', opacity: ep(t, a + 0.25, 0.4)}}>NEURAXINE</div>
-      <div style={{fontFamily: MONO, fontWeight: 700, fontSize: 26, letterSpacing: '0.32em', color: '#E9D8C8', marginTop: 8, opacity: ep(t, a + 0.45, 0.4)}}>COMMENT “DETAILS” FOR THE GUIDE</div>
+    <AbsoluteFill style={{background: 'radial-gradient(ellipse 80% 60% at 50% 45%, #FFFFFF 0%, #F4F8F4 60%, #E6EFE7 100%)', opacity: p, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+      <Img src={staticFile('brand/logo-dark.png')} style={{width: 260, height: 190, objectFit: 'contain', transform: `scale(${lerp(0.6, 1, sp(t, a + 0.1))})`, filter: 'drop-shadow(0 16px 30px rgba(20,40,25,0.2))'}} />
+      <div style={{fontFamily: BEBAS, fontSize: 200, lineHeight: 1, marginTop: 10, backgroundImage: `linear-gradient(180deg, ${OR2}, ${OR} 60%, #137A3E)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', opacity: ep(t, a + 0.25, 0.4)}}>NEURAXINE</div>
+      <div style={{fontFamily: MONO, fontWeight: 700, fontSize: 26, letterSpacing: '0.32em', color: INK, marginTop: 8, opacity: ep(t, a + 0.45, 0.4)}}>COMMENT “DETAILS” FOR THE GUIDE</div>
     </AbsoluteFill>
   );
 };
@@ -829,7 +825,7 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
   const i = shotAt(t);
   const sh = SHOTS[i];
   const lt = t - S[i];
-  const dark = sh.bg !== 'peach';
+  const dark = false;
   // punch-in cut: quick zoom settle + motion blur on the first frames, then a slow push
   const punch = 1 + (1 - ep(lt, 0, 0.45)) * 0.07 + lt * 0.006;
   const blur = Math.max(0, 1 - lt / 0.12) * 10;
@@ -844,12 +840,11 @@ export const Film: React.FC<{withMusic?: boolean}> = ({withMusic = true}) => {
           <Back bg={sh.bg} t={t} arc={sh.arc} />
           {sh.draw(t, lt)}
         </AbsoluteFill>
-        <SideText dark={dark} t={t} />
         {sh.hud && <CamHud dark={dark} />}
         {sh.pill && <HandlePill dark={dark} />}
-        <AbsoluteFill style={{background: dark ? '#FF6A2A' : '#fff', opacity: i > 0 ? flash * 0.25 : 0, pointerEvents: 'none'}} />
+        <AbsoluteFill style={{background: '#fff', opacity: i > 0 ? flash * 0.35 : 0, pointerEvents: 'none'}} />
         {/* film grain + vignette */}
-        <AbsoluteFill style={{background: 'radial-gradient(ellipse 75% 65% at 50% 50%, transparent 60%, rgba(0,0,0,0.28) 100%)', pointerEvents: 'none'}} />
+        <AbsoluteFill style={{background: 'radial-gradient(ellipse 75% 65% at 50% 50%, transparent 65%, rgba(20,40,25,0.10) 100%)', pointerEvents: 'none'}} />
         {t > END_AT && <EndCard t={t} />}
       </AbsoluteFill>
       {withMusic ? <Audio src={staticFile('audio/mix.wav')} /> : <Audio src={staticFile('audio/vo.wav')} />}
