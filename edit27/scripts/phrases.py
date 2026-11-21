@@ -1,0 +1,27 @@
+# Each phrase: list of (caption word, Devanagari spoken form). `_` in the Devanagari = space.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Agar|अगर hum|हम aapki|आपकी CA|सी_ए firm|फ़र्म ki|की marketing|मार्केटिंग aur|और automation|ऑटोमेशन handle|हैंडल karte,|करते,"),
+   P("toh|तो sirf|सिर्फ़ Instagram|इंस्टाग्राम par|पर deadline|डेडलाइन wali|वाली posts|पोस्ट्स nahi|नहीं daalte.|डालते।")],
+  [P("Hum|हम har|हर client|क्लाइंट ko|को tension-free|टेंशन_फ़्री filing|फ़ाइलिंग aur|और saal|साल bhar|भर ka|का bharosa|भरोसा dete.|देते।"),
+   P("Dekho|देखो kaise.|कैसे।")],
+  [P("Mehta|मेहता ji|जी ko|को raat|रात GST|जी_एस_टी notice|नोटिस aaya.|आया।"),
+   P("Unhone|उन्होंने Google|गूगल par|पर CA|सी_ए near|नियर me|मी search|सर्च kiya,|किया,"),
+   P("aapke|आपके 4.9|फ़ोर_पॉइंट_नाइन reviews|रिव्यूज़ dekhe,|देखे, aur|और WhatsApp|व्हाट्सऐप kiya.|किया।")],
+  [P("AI|ए_आई ne|ने turant|तुरंत reply|रिप्लाई kiya,|किया, notice|नोटिस ki|की photo|फ़ोटो maangi,|माँगी,"),
+   P("aur|और usi|उसी din|दिन aapke|आपके saath|साथ call|कॉल book|बुक kar|कर di.|दी।")],
+  [P("Documents|डॉक्यूमेंट्स ke|के liye|लिए ek|एक checklist|चेकलिस्ट gayi.|गई।"),
+   P("Mehta|मेहता ji|जी ne|ने sab|सब WhatsApp|व्हाट्सऐप pe|पे hi|ही bhej|भेज diya.|दिया।"),
+   P("Office|ऑफ़िस ke|के chakkar|चक्कर nahi.|नहीं।")],
+  [P("Har|हर deadline|डेडलाइन se|से pehle|पहले automatic|ऑटोमैटिक reminder.|रिमाइंडर।"),
+   P("GST,|जी_एस_टी, TDS,|टी_डी_एस, ITR,|आई_टी_आर, kuch|कुछ miss|मिस nahi|नहीं hua.|हुआ।")],
+  [P("Filing|फ़ाइलिंग ke|के baad,|बाद, acknowledgement|अक्नॉलेजमेंट seedha|सीधा WhatsApp|व्हाट्सऐप par,|पर,"),
+   P("aur|और saath|साथ mein|में tax|टैक्स saving|सेविंग tips.|टिप्स।")],
+  [P("Saal|साल ke|के end|एंड mein,|में, Mehta|मेहता ji|जी ne|ने 3|तीन business|बिज़नेस dost|दोस्त refer|रेफ़र kiye.|किए।")],
+  [P("Kyunki|क्योंकि CA|सी_ए ki|की growth|ग्रोथ sirf|सिर्फ़ deadline|डेडलाइन posts|पोस्ट्स se|से nahi,|नहीं,"),
+   P("bharose|भरोसे aur|और referrals|रेफ़रल्स se|से hoti|होती hai.|है।")],
+  [P("Agar|अगर aap|आप chahte|चाहते ho|हो ki|कि yeh|यह sab|सब hum|हम aapke|आपके liye|लिए karein,|करें,"),
+   P("toh|तो comment|कमेंट kijiye|कीजिए \"DETAILS\",|डिटेल्स,"),
+   P("aur|और guide|गाइड main|मैं aapko|आपको direct|डायरेक्ट DM|डी_एम kar|कर dunga.|दूंगा।"),
+   P("Aur|और aise|ऐसे hi|ही content|कंटेंट ke|के liye,|लिए, follow|फ़ॉलो karo|करो Neuraxine.|न्यूरैक्सिन।")],
+]
