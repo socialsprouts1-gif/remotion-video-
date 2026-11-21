@@ -1,0 +1,27 @@
+# Each phrase: list of (caption word, Devanagari spoken form). `_` in the Devanagari = space.
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Leads|लीड्स aa|आ rahi|रही hain,|हैं, par|पर sale|सेल nahi|नहीं ho|हो rahi?|रही?"),
+   P("Problem|प्रॉब्लम marketing|मार्केटिंग mein|में nahi,|नहीं, follow-up|फ़ॉलो_अप mein|में hai.|है।")],
+  [P("Yeh|ये 5|पाँच galtiyan|ग़लतियाँ check|चेक karo.|करो।")],
+  [P("Ek.|एक। Late|लेट reply.|रिप्लाई।"),
+   P("Jo|जो business|बिज़नेस 5|पाँच minute|मिनट mein|में reply|रिप्लाई karta|करता hai,|है,"),
+   P("uske|उसके close|क्लोज़ hone|होने ke|के chances|चांसेज़ kai|कई guna|गुना zyada|ज़्यादा hote|होते hain.|हैं।")],
+  [P("Do.|दो। Sirf|सिर्फ़ ek|एक follow-up.|फ़ॉलो_अप।"),
+   P("Zyadatar|ज़्यादातर sales|सेल्स teesre|तीसरे ya|या chauthe|चौथे follow-up|फ़ॉलो_अप ke|के baad|बाद hoti|होती hai,|है,"),
+   P("par|पर log|लोग pehle|पहले pe|पे hi|ही ruk|रुक jaate|जाते hain.|हैं।")],
+  [P("Teen.|तीन। Price|प्राइस pehle,|पहले, value|वैल्यू baad|बाद mein.|में।"),
+   P("Pehle|पहले problem|प्रॉब्लम aur|और result|रिज़ल्ट dikhao,|दिखाओ, phir|फिर price|प्राइस batao.|बताओ।")],
+  [P("Chaar.|चार। Koi|कोई proof|प्रूफ़ nahi.|नहीं।"),
+   P("Reviews,|रिव्यूज़, before|बिफ़ोर after,|आफ़्टर, client|क्लाइंट stories.|स्टोरीज़।"),
+   P("Bina|बिना proof|प्रूफ़ ke|के bharosa|भरोसा nahi|नहीं banta.|बनता।")],
+  [P("Paanch.|पाँच। Next|नेक्स्ट step|स्टेप clear|क्लियर nahi.|नहीं।"),
+   P("Har|हर message|मैसेज ke|के end|एंड mein|में batao,|बताओ, ab|अब kya|क्या karna|करना hai.|है।"),
+   P("Call|कॉल book|बुक karo,|करो, ya|या visit|विज़िट karo.|करो।")],
+  [P("Leads|लीड्स laana|लाना mehenga|महँगा hai,|है, sambhalna|सँभालना sasta.|सस्ता।"),
+   P("Jo|जो follow-up|फ़ॉलो_अप jeet|जीत leta|लेता hai,|है, wahi|वही market|मार्केट jeet|जीत leta|लेता hai.|है।")],
+  [P("Agar|अगर aap|आप chahte|चाहते ho|हो ki|कि yeh|यह sab|सब hum|हम aapke|आपके liye|लिए karein,|करें,"),
+   P("toh|तो comment|कमेंट kijiye|कीजिए \"DETAILS\",|डिटेल्स,"),
+   P("aur|और guide|गाइड main|मैं aapko|आपको direct|डायरेक्ट DM|डी_एम kar|कर dunga.|दूंगा।"),
+   P("Aur|और aise|ऐसे hi|ही content|कंटेंट ke|के liye,|लिए, follow|फ़ॉलो karo|करो Neuraxine.|न्यूरैक्सिन।")],
+]
