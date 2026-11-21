@@ -1,0 +1,84 @@
+{
+ "voice": "hm_omega",
+ "total": 65.795,
+ "lines": [
+  {
+   "section": "hook",
+   "start": 0.4,
+   "dur": 1.912,
+   "text": "Ek hi business. Do alag din."
+  },
+  {
+   "section": "hook",
+   "start": 2.592,
+   "dur": 3.641,
+   "text": "Ek, bina automation ke… aur ek, Neuraxine ke saath."
+  },
+  {
+   "section": "b1",
+   "start": 7.033,
+   "dur": 6.037,
+   "text": "Subah 9 baje se phone bajna shuru. 50 message, aur sabka ek hi sawaal, price kya hai?"
+  },
+  {
+   "section": "b2",
+   "start": 13.87,
+   "dur": 6.892,
+   "text": "Reply karte karte dopahar ho gayi. Aadhe leads ne intezaar kiya, aadhe competitor ke paas chale gaye."
+  },
+  {
+   "section": "b3",
+   "start": 21.562,
+   "dur": 2.648,
+   "text": "Raat ko thak kar soye… aur kal phir wahi."
+  },
+  {
+   "section": "switch",
+   "start": 25.01,
+   "dur": 2.191,
+   "text": "Ab, wahi din, Neuraxine ke saath."
+  },
+  {
+   "section": "a1",
+   "start": 28.001,
+   "dur": 5.94,
+   "text": "Har message ka jawab, 3 second mein. Price, catalogue, location, sab AI deta hai."
+  },
+  {
+   "section": "a2",
+   "start": 34.741,
+   "dur": 4.355,
+   "text": "Serious leads khud CRM mein save, aur appointment calendar mein book."
+  },
+  {
+   "section": "a3",
+   "start": 39.896,
+   "dur": 3.942,
+   "text": "Follow-ups apne aap jaate hain, aur aap sirf deals close karte ho."
+  },
+  {
+   "section": "a4",
+   "start": 44.638,
+   "dur": 3.577,
+   "text": "Raat ko aap so rahe ho, aur business phir bhi chal raha hai."
+  },
+  {
+   "section": "compare",
+   "start": 49.014,
+   "dur": 5.751,
+   "text": "Pehle, late reply, khoye hue leads, aur tension. Ab, instant reply, saved leads, aur sukoon."
+  },
+  {
+   "section": "cta",
+   "start": 55.565,
+   "dur": 3.691,
+   "text": "Apna business bhi aise chalana hai? Comment karo, AUTOMATE."
+  },
+  {
+   "section": "cta",
+   "start": 59.536,
+   "dur": 2.259,
+   "text": "Aur Neuraxine ko abhi follow karo."
+  }
+ ]
+}
