@@ -5,7 +5,7 @@ import {preloadAll} from './three/kit';
 import {SceneShell} from './components/SceneShell';
 import {SfxTrack} from './components/SfxTrack';
 import {TopCaption, Watermark} from './components/ui';
-import {Ai, Crm, Cta, Hook, Keep, Loss, Risk} from './scenes/Scenes';
+import {Ai, Crm, Cta, Details, Hook, Keep, Loss, Offer, Risk} from './scenes/Scenes';
 import {C} from './theme';
 
 export const AsaadixReel: React.FC = () => {
@@ -39,8 +39,14 @@ export const AsaadixReel: React.FC = () => {
       <SceneShell id="keep" enter="fade" exit="zoomThrough">
         <Keep />
       </SceneShell>
-      <SceneShell id="cta" enter="zoomIn" exit="none">
+      <SceneShell id="cta" enter="zoomIn" exit="fade">
         <Cta />
+      </SceneShell>
+      <SceneShell id="offer" enter="fade" exit="fade">
+        <Offer />
+      </SceneShell>
+      <SceneShell id="details" enter="fade" exit="none">
+        <Details />
       </SceneShell>
       <TopCaption />
       <Watermark />

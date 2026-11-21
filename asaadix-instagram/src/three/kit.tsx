@@ -468,7 +468,7 @@ const loadSvg = (url: string) =>
         .catch(() => undefined);
 
 export const TEXTURES = [
-  ...['gone', 'chat1', 'chat2', 'ig', 'lock', 'flag', 'ban', 'globe', 'db', 'chat'].map((n) => `tex/${n}.png`),
+  ...['gone', 'chat1', 'chat2', 'ig', 'lock', 'flag', 'ban', 'globe', 'db', 'chat', 'bolt'].map((n) => `tex/${n}.png`),
   'screens/profile.png',
   'posts/p1.png',
   'posts/p2.png',

@@ -15,10 +15,10 @@ export const BRAND = {
 export type Line = {section: string; start: number; dur: number; text: string};
 export const LINES = vo.lines as Line[];
 
-export const SECTION_IDS = ['hook', 'loss', 'risk', 'crm', 'ai', 'keep', 'cta'] as const;
+export const SECTION_IDS = ['hook', 'loss', 'risk', 'crm', 'ai', 'keep', 'cta', 'offer', 'details'] as const;
 export type SceneId = (typeof SECTION_IDS)[number];
 // Light or dark stage per scene (they alternate, as in the reference).
-export const DARK: Record<SceneId, boolean> = {hook: true, loss: true, risk: true, crm: true, ai: true, keep: true, cta: true};
+export const DARK: Record<SceneId, boolean> = {hook: true, loss: true, risk: true, crm: true, ai: true, keep: true, cta: true, offer: true, details: true};
 
 const LEAD_IN = 0.3;
 const OVERLAP = 0.25;
@@ -45,7 +45,7 @@ export const wordAt = (id: SceneId, n: number, word: string) => {
 };
 
 // Words painted gold in the on-screen captions (compared lower-case, punctuation stripped).
-export const ACCENT_WORDS = ['disappears', 'tomorrow', 'followers', 'dms', 'hard', 'work', 'gone', 'click', 'hacked', 'reported', 'disabled', 'reason', 'own', 'crm', "else's", 'ai', 'automation', 'chat', 'app', 'responses', 'sleeping', 'comes', 'goes', 'keep', 'running', 'system'];
+export const ACCENT_WORDS = ['disappears', 'tomorrow', 'followers', 'dms', 'hard', 'work', 'gone', 'click', 'hacked', 'reported', 'disabled', 'reason', 'own', 'crm', "else's", 'ai', 'automation', 'chat', 'app', 'responses', 'sleeping', 'comes', 'goes', 'keep', 'running', 'system', 'website', 'aipowered', 'details', 'dms'];
 
 // The sample UAE business whose Instagram the story is about.
 export const BIZ = {

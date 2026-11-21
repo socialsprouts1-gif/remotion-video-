@@ -1,6 +1,6 @@
 {
  "voice": "am_michael",
- "total": 40.583,
+ "total": 52.181,
  "lines": [
   {
    "section": "hook",
@@ -55,6 +55,18 @@
    "start": 35.284,
    "dur": 1.299,
    "text": "Build your own system."
+  },
+  {
+   "section": "offer",
+   "start": 37.383,
+   "dur": 4.926,
+   "text": "Want to build your own website, CRM, and AI-powered automation system?"
+  },
+  {
+   "section": "details",
+   "start": 43.109,
+   "dur": 5.472,
+   "text": "Comment \"DETAILS\" below, and we'll share all the information directly in your DMs."
   }
  ]
 }

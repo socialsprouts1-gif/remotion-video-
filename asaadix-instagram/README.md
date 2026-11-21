@@ -1,6 +1,6 @@
 # Asaadix Digital — "What if your Instagram disappeared?" (English, UAE)
 
-A 40-second vertical (1080 × 1920, 30 fps) Remotion reel for **Asaadix Digital** (Dubai), modelled on the
+A 52-second vertical (1080 × 1920, 30 fps) Remotion reel for **Asaadix Digital** (Dubai), modelled on the
 reference reel's structure, in the brand's black-and-gold look: a backlit dark wood-slat wall (as on the logo board),
 drifting gold dust, word-by-word captions with gold-gradient key words, dark glass cards, and real 3D:
 an iPhone-style phone showing the real @asaadix_digital profile, the real posts as 3D cards, extruded WhatsApp and
@@ -23,7 +23,9 @@ npm run render                     # → out/asaadix-instagram.mp4  (headless: a
 | Save your data in your own CRM, not on someone else's platform. | "Your CRM" dashboard filling with UAE leads (Website / WhatsApp / Chat App); "Someone else's platform" card gets an ✕; "Saved in your own CRM" |
 | And with AI automation and your own chat app, your customers will continue getting responses, even while you're sleeping. | Lead → AI → CRM flow; 3D phone with the business's own chat app answering at 2:47 AM (price, delivery to Abu Dhabi, order confirmed); "Replied in 3 sec", "2:47 AM · you're asleep" |
 | Whether Instagram comes or goes, your business will keep running. | Instagram icon appears and fades to grey; Website, CRM (leads ticking up) and Chat App cards stay Live; "Running 24/7" |
-| Build your own system. | 3D Asaadix "A" tile, ASAADIX DIGITAL lockup, services, **asaadixdigital.com**, Dubai, UAE |
+| Build your own system. | Founder photo in a gold ring, the real logo with a light sweep, services line |
+| Want to build your own website, CRM, and AI-powered automation system? | Three gold 3D tiles land in their slots on each word (Website, CRM, AI Automation) and link into one system: "One system · Built for UAE brands" |
+| Comment "DETAILS" below, and we'll share all the information directly in your DMs. | Instagram comment sheet: others' DETAILS comments, "DETAILS" typed and sent; an Instagram DM from asaadix_digital drops in; "Comment “DETAILS”" pill; final lockup with the logo, services and **asaadixdigital.com** |
 
 ## Notes
 

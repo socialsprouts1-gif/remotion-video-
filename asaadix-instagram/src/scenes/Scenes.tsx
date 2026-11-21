@@ -405,3 +405,153 @@ export const Cta: React.FC = () => {
 
 // keep the light palette tokens referenced for the shared components
 void C;
+
+/* ---------------- 8 · the offer: website + CRM + AI ---------------- */
+const OFFER = [
+  {w: 'website', tex: 'tex/globe.png', label: 'Website', x: -0.64},
+  {w: 'crm', tex: 'tex/db.png', label: 'CRM', x: 0},
+  {w: 'ai-powered', tex: 'tex/bolt.png', label: 'AI Automation', x: 0.64},
+];
+export const Offer: React.FC = () => {
+  const f = useCurrentFrame();
+  const ats = OFFER.map((o) => fr(wordAt('offer', 0, o.w)) - 4);
+  const link = prog(f, ats[2] + 6, 24, ease.inOut);
+  const badge = prog(f, ats[2] + 22, 14, ease.out);
+  return (
+    <AbsoluteFill>
+      <LuxBg intensity={1.1} />
+      {/* empty slots the three parts land in */}
+      {OFFER.map((o, i) => {
+        const p = prog(f, 4 + i * 4, 14, ease.out) * (1 - prog(f, ats[i] + 6, 8));
+        return <div key={o.label + 'slot'} style={{position: 'absolute', left: 540 + o.x * 512 - 112, top: 812 - 112, width: 224, height: 224, borderRadius: 52, border: '3px dashed rgba(226,190,104,0.45)', opacity: p, transform: `scale(${mix(p, 0.8, 1)})`}} />;
+      })}
+      {/* the three parts join into one system */}
+      <div style={{position: 'absolute', left: 540 - 0.64 * 512, width: 2 * 0.64 * 512 * link, top: 812, height: 4, borderRadius: 4, background: 'linear-gradient(90deg, #9C7A2C, #F5DB97, #9C7A2C)', boxShadow: '0 0 20px rgba(226,190,104,0.6)'}} />
+      <Stage>
+        {OFFER.map((o, i) => {
+          const sp = pop(f, ats[i], 20);
+          if (sp.k <= 0) return null;
+          return <Tile3D key={o.tex} img={o.tex} size={0.4} d={0.11} position={[o.x, 0.29 + sp.dy * 0.4, 0.4]} rotation={[0.08, sp.ry * 0.7 + (i - 1) * -0.25, 0]} scale={sp.s * (1 + Math.sin(prog(f, ats[i] + 14, 10) * Math.PI) * 0.06)} />;
+        })}
+      </Stage>
+      {OFFER.map((o, i) => {
+        const p = prog(f, ats[i] + 8, 12, ease.out);
+        return (
+          <div key={o.label} style={{position: 'absolute', top: 990, left: 540 + o.x * 512 - 170, width: 340, textAlign: 'center', opacity: p, transform: `translateY(${(1 - p) * 20}px)`}}>
+            <div style={{fontFamily: F.display, fontWeight: 800, fontSize: 38, ...GOLD_TEXT}}>{o.label}</div>
+          </div>
+        );
+      })}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 1170, display: 'flex', justifyContent: 'center', opacity: badge, transform: `translateY(${(1 - badge) * 30}px)`}}>
+        <div style={{...GLASS, display: 'flex', alignItems: 'center', gap: 14, padding: '16px 28px', borderRadius: 999, fontFamily: F.body, fontWeight: 700, fontSize: 30, color: '#F3EBDD'}}>
+          <Img src={staticFile('brand/mark.png')} style={{height: 44}} />
+          One system · Built for UAE brands
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------------- 9 · comment DETAILS → we DM you ---------------- */
+const OTHERS = [
+  {u: 'ahmed.dxb', t: 'DETAILS', ago: '2m'},
+  {u: 'fatima.boutique.ae', t: 'DETAILS 🙌', ago: '5m'},
+];
+export const Details: React.FC = () => {
+  const f = useCurrentFrame();
+  const word = fr(wordAt('details', 0, 'details'));
+  const dms = fr(wordAt('details', 0, 'dms'));
+  const end = fr(cue('details', 0, 'end'));
+  const sheet = prog(f, 4, 20, ease.out);
+  const typeP = prog(f, word - 6, 16, (x) => x);
+  const typed = 'DETAILS'.slice(0, Math.round(typeP * 7));
+  const sent = prog(f, word + 14, 10, ease.out);
+  const press = prog(f, word + 11, 3) * (1 - prog(f, word + 15, 6));
+  const dm = prog(f, dms - 8, 16, ease.out);
+  const out = prog(f, end + 4, 14, ease.in);
+  const lock = prog(f, end + 12, 22, ease.out);
+  const sweep = prog(f, end + 26, 34, ease.inOut);
+  const site = prog(f, end + 30, 16, ease.out);
+  return (
+    <AbsoluteFill>
+      <LuxBg intensity={1.1} />
+      <div style={{opacity: 1 - out, transform: `scale(${1 - out * 0.05})`}}>
+        {/* Instagram DM arriving */}
+        <div style={{position: 'absolute', left: 60, right: 60, top: 420, opacity: dm, transform: `translateY(${(1 - dm) * -80}px)`}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 18, padding: '18px 22px', borderRadius: 30, background: 'rgba(245,242,236,0.96)', boxShadow: '0 30px 70px rgba(0,0,0,0.6)', fontFamily: F.body}}>
+            <Img src={staticFile('brand/avatar.png')} style={{width: 76, height: 76, borderRadius: 99, objectFit: 'cover', border: '3px solid #C9A24A'}} />
+            <div style={{flex: 1, minWidth: 0}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: 21, color: '#6E6A63', fontWeight: 600}}>
+                <span>INSTAGRAM · DIRECT</span>
+                <span>now</span>
+              </div>
+              <div style={{fontWeight: 800, fontSize: 28, color: '#15120F'}}>asaadix_digital</div>
+              <div style={{fontSize: 25, color: '#2A2621'}}>Hi! Here are all the details for your website, CRM & AI system 👇</div>
+            </div>
+          </div>
+        </div>
+        {/* comment sheet */}
+        <div style={{position: 'absolute', left: 60, right: 60, top: 720, opacity: sheet, transform: `translateY(${(1 - sheet) * 80}px)`}}>
+          <div style={{...GLASS, borderRadius: 34, padding: '24px 26px', fontFamily: F.body}}>
+            <div style={{textAlign: 'center', fontWeight: 800, fontSize: 28, color: '#F3EBDD', marginBottom: 10}}>Comments</div>
+            {OTHERS.map((c, i) => (
+              <div key={c.u} style={{display: 'flex', alignItems: 'center', gap: 16, padding: '14px 0', opacity: prog(f, 10 + i * 8, 12), borderTop: '1px solid rgba(243,235,221,0.08)'}}>
+                <div style={{width: 58, height: 58, borderRadius: 99, background: i ? 'linear-gradient(140deg, #6B4F2E, #2A2117)' : 'linear-gradient(140deg, #3A4A5A, #1C242C)', color: '#F3EBDD', display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: 24}}>{c.u[0].toUpperCase()}</div>
+                <div style={{flex: 1}}>
+                  <div style={{fontSize: 22, color: '#A89C88', fontWeight: 600}}>{c.u} · {c.ago}</div>
+                  <div style={{fontSize: 30, color: '#F3EBDD', fontWeight: 800}}>{c.t}</div>
+                </div>
+              </div>
+            ))}
+            {sent > 0 && (
+              <div style={{display: 'grid', gridTemplateRows: `${sent}fr`}}>
+                <div style={{minHeight: 0, overflow: 'hidden'}}>
+                  <div style={{display: 'flex', alignItems: 'center', gap: 16, padding: '14px 0', borderTop: '1px solid rgba(243,235,221,0.08)'}}>
+                    <div style={{width: 58, height: 58, borderRadius: 99, background: 'linear-gradient(140deg, #F5DB97, #C9A24A)', color: '#15120F', display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: 24}}>Y</div>
+                    <div style={{flex: 1}}>
+                      <div style={{fontSize: 22, color: '#A89C88', fontWeight: 600}}>you · now</div>
+                      <div style={{fontSize: 32, fontWeight: 900, ...GOLD_TEXT}}>DETAILS</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div style={{display: 'flex', alignItems: 'center', gap: 14, marginTop: 12}}>
+              <div style={{flex: 1, height: 78, borderRadius: 999, border: '1.5px solid rgba(226,190,104,0.35)', display: 'flex', alignItems: 'center', paddingLeft: 28, fontFamily: F.display, fontWeight: 800, fontSize: 36, color: '#F3EBDD'}}>
+                {typed && sent < 0.5 ? (
+                  <span>
+                    {typed}
+                    <span style={{color: '#C9A24A', opacity: Math.floor(f / 10) % 2 ? 1 : 0}}>|</span>
+                  </span>
+                ) : (
+                  <span style={{color: '#6E6457', fontFamily: F.body, fontWeight: 500, fontSize: 28}}>Add a comment…</span>
+                )}
+              </div>
+              <div style={{width: 78, height: 78, borderRadius: 99, background: 'linear-gradient(140deg, #F5DB97, #C9A24A)', display: 'grid', placeItems: 'center', transform: `scale(${1 - press * 0.15})`, boxShadow: '0 0 30px rgba(201,162,74,0.45)'}}>
+                <svg width={34} height={34} viewBox="0 0 24 24"><path d="M3 11.5L21 3l-7.5 18-2.6-7.4z" fill="#15120F" /></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 1360, display: 'flex', justifyContent: 'center', opacity: prog(f, word, 12), transform: `scale(${mix(prog(f, word, 14, ease.out), 0.85, 1)})`}}>
+          <div style={{padding: '18px 40px', borderRadius: 999, background: 'linear-gradient(140deg, #F5DB97, #C9A24A 60%, #A8832F)', color: '#120D05', fontFamily: F.display, fontWeight: 900, fontSize: 44, letterSpacing: '0.02em', boxShadow: '0 20px 60px rgba(201,162,74,0.4)'}}>Comment “DETAILS”</div>
+        </div>
+      </div>
+      {/* final lockup */}
+      {lock > 0 && (
+        <>
+          <div style={{position: 'absolute', left: 540 - 400, top: 560, width: 800, height: 521, opacity: lock, transform: `translateY(${(1 - lock) * 40}px) scale(${mix(lock, 0.94, 1)})`}}>
+            <Img src={staticFile('brand/logo.png')} style={{width: '100%', height: '100%'}} />
+            <div style={{position: 'absolute', inset: 0, background: `linear-gradient(115deg, transparent ${mix(sweep, -30, 100)}%, rgba(255,250,235,0.85) ${mix(sweep, -20, 110)}%, transparent ${mix(sweep, -10, 120)}%)`, WebkitMaskImage: `url(${staticFile('brand/logo.png')})`, maskImage: `url(${staticFile('brand/logo.png')})`, WebkitMaskSize: '100% 100%', maskSize: '100% 100%', mixBlendMode: 'screen'}} />
+          </div>
+          <div style={{position: 'absolute', left: 540 - 440, top: 1110, width: 880, height: 116, opacity: lock}}>
+            <Img src={staticFile('brand/services.png')} style={{width: '100%', height: '100%'}} />
+          </div>
+          <div style={{position: 'absolute', top: 1290, left: 0, right: 0, textAlign: 'center', opacity: site, transform: `translateY(${(1 - site) * 20}px)`}}>
+            <div style={{display: 'inline-block', padding: '20px 44px', borderRadius: 999, background: 'linear-gradient(140deg, #F5DB97, #C9A24A 60%, #A8832F)', color: '#120D05', fontFamily: F.display, fontWeight: 800, fontSize: 46, boxShadow: '0 20px 60px rgba(201,162,74,0.4)'}}>{BRAND.site}</div>
+          </div>
+        </>
+      )}
+    </AbsoluteFill>
+  );
+};

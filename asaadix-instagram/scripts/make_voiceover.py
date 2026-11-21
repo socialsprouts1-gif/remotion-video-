@@ -26,7 +26,7 @@ SPEED = 1.0
 LEAD = 0.4    # voice starts right away; the phone story plays under it
 GAP = 0.28    # pause between lines inside a section
 BREAK = 0.8   # pause between sections
-TAIL = 4.0    # logo lockup after the last line
+TAIL = 3.6    # logo lockup after the last line
 
 # (section, Devanagari for the voice, Roman Hinglish for captions)
 LINES = [
@@ -39,13 +39,15 @@ LINES = [
     ("ai", "your customers will continue getting responses, even while you're sleeping."),
     ("keep", "Whether Instagram comes or goes, your business will keep running."),
     ("cta", "Build your own system."),
+    ("offer", "Want to build your own website, CRM, and AI-powered automation system?", "Want to build your own website, C R M, and A I powered automation system?"),
+    ("details", "Comment \"DETAILS\" below, and we'll share all the information directly in your DMs.", "Comment, details, below, and we'll share all the information directly in your D Ms."),
 ]
 
 k = Kokoro(os.path.join(CACHE, "kokoro-v1.0.onnx"), os.path.join(CACHE, "voices-v1.0.bin"))
 SR = 24000
 clips = []
-for sec, text in LINES:
-    audio, sr = k.create(text, voice=VOICE, speed=SPEED, lang="en-us")
+for sec, text, *say in LINES:
+    audio, sr = k.create(say[0] if say else text, voice=VOICE, speed=SPEED, lang="en-us")
     idx = np.where(np.abs(audio) > 0.01)[0]
     if len(idx):
         audio = audio[max(0, idx[0] - 480): idx[-1] + 1800]
@@ -53,7 +55,7 @@ for sec, text in LINES:
 
 t = LEAD
 timeline = []
-for i, (sec, roman) in enumerate(LINES):
+for i, (sec, roman, *_) in enumerate(LINES):
     if i > 0:
         t += GAP if LINES[i - 1][0] == sec else BREAK
     d = len(clips[i]) / SR
