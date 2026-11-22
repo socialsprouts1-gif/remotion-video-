@@ -1,0 +1,72 @@
+{
+ "voice": "hm_omega",
+ "total": 55.982,
+ "lines": [
+  {
+   "section": "hook",
+   "start": 0.4,
+   "dur": 5.413,
+   "text": "Lead dhoondhna, email, LinkedIn message, call… yeh sab ek system karta hai. Main nahi."
+  },
+  {
+   "section": "nine",
+   "start": 6.613,
+   "dur": 2.919,
+   "text": "9 workflows hain. Dikhata hoon kaise jude hain."
+  },
+  {
+   "section": "apollo",
+   "start": 10.332,
+   "dur": 3.073,
+   "text": "Pehla, Apollo se target companies ki list."
+  },
+  {
+   "section": "email",
+   "start": 14.206,
+   "dur": 5.24,
+   "text": "Phir har lead ke liye personalized email sequence. Template wala “Dear Sir” nahi."
+  },
+  {
+   "section": "linkedin",
+   "start": 20.246,
+   "dur": 2.288,
+   "text": "LinkedIn outreach, Unipile se."
+  },
+  {
+   "section": "vapi",
+   "start": 23.334,
+   "dur": 2.534,
+   "text": "Aur calls? Vapi ka AI voice agent."
+  },
+  {
+   "section": "crm",
+   "start": 26.668,
+   "dur": 5.354,
+   "text": "Sab kuch Supabase CRM mein sync. Ek dashboard pe dikhta hai kaun kahan hai."
+  },
+  {
+   "section": "honest",
+   "start": 32.823,
+   "dur": 3.103,
+   "text": "Ab honest baat. Yeh “set and forget” nahi hai."
+  },
+  {
+   "section": "wrong",
+   "start": 36.725,
+   "dur": 5.723,
+   "text": "Galat list daali? Toh 9 workflows milke galat logon ko spam karenge. Bas tezi se."
+  },
+  {
+   "section": "speed",
+   "start": 43.248,
+   "dur": 4.025,
+   "text": "System speed deta hai. Sahi target aapko hi chunna padega."
+  },
+  {
+   "section": "cta",
+   "start": 48.073,
+   "dur": 3.909,
+   "text": "Aapki sales team ko bhi aisa chahiye? DM karo “LEADS”."
+  }
+ ]
+}
