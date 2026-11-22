@@ -22,21 +22,21 @@ from kokoro_onnx import Kokoro
 HERE = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.path.expanduser("~/.cache/kokoro")
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "hm_omega"
-SPEED = 1.1
+SPEED = 1.24
 LEAD = 0.4    # voice starts right away; the phone story plays under it
-GAP = 0.28    # pause between lines inside a section
-BREAK = 0.8   # pause between sections
-TAIL = 4.0    # logo lockup after the last line
+GAP = 0.22    # pause between lines inside a section
+BREAK = 0.45  # pause between sections
+TAIL = 2.8    # logo lockup after the last line
 
 # (section, Devanagari for the voice, Roman Hinglish for captions)
 LINES = [
     ("hook", "लीड ढूँढना, ईमेल, लिंक्डइन मैसेज, कॉल... ये सब एक सिस्टम करता है। मैं नहीं।", "Lead dhoondhna, email, LinkedIn message, call… yeh sab ek system karta hai. Main nahi."),
     ("nine", "नौ वर्कफ़्लोज़ हैं। दिखाता हूँ, कैसे जुड़े हैं।", "9 workflows hain. Dikhata hoon kaise jude hain."),
-    ("apollo", "पहला, अपोलो से टारगेट कंपनीज़ की लिस्ट।", "Pehla, Apollo se target companies ki list."),
+    ("apollo", "पहला, सही टारगेट कंपनीज़ की लिस्ट, ख़ुद बनती है।", "Pehla, sahi target companies ki list khud banti hai."),
     ("email", "फिर हर लीड के लिए पर्सनलाइज़्ड ईमेल सीक्वेंस। टेम्पलेट वाला, डियर सर, नहीं।", "Phir har lead ke liye personalized email sequence. Template wala “Dear Sir” nahi."),
-    ("linkedin", "लिंक्डइन आउटरीच, यूनिपाइल से।", "LinkedIn outreach, Unipile se."),
-    ("vapi", "और कॉल्स? वापी का ए आई वॉइस एजेंट।", "Aur calls? Vapi ka AI voice agent."),
-    ("crm", "सब कुछ सुपाबेस सी आर एम में सिंक। एक डैशबोर्ड पे दिखता है, कौन कहाँ है।", "Sab kuch Supabase CRM mein sync. Ek dashboard pe dikhta hai kaun kahan hai."),
+    ("linkedin", "उसके बाद लिंक्डइन पे कनेक्शन और मैसेज। ख़ुद से।", "Uske baad LinkedIn pe connection aur message. Khud se."),
+    ("vapi", "और कॉल्स? ए आई वॉइस एजेंट ख़ुद करता है।", "Aur calls? AI voice agent khud karta hai."),
+    ("crm", "फिर हर लीड का अपडेट, एक सी आर एम में। एक डैशबोर्ड पे दिखता है, कौन कहाँ है।", "Phir har lead ka update ek CRM mein. Ek dashboard pe dikhta hai kaun kahan hai."),
     ("honest", "अब ऑनेस्ट बात। ये, सेट एंड फ़ॉरगेट, नहीं है।", "Ab honest baat. Yeh “set and forget” nahi hai."),
     ("wrong", "ग़लत लिस्ट डाली? तो नौ वर्कफ़्लोज़ मिलके ग़लत लोगों को स्पैम करेंगे। बस, तेज़ी से।", "Galat list daali? Toh 9 workflows milke galat logon ko spam karenge. Bas tezi se."),
     ("speed", "सिस्टम स्पीड देता है। सही टारगेट, आपको ही चुनना पड़ेगा।", "System speed deta hai. Sahi target aapko hi chunna padega."),

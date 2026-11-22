@@ -14,7 +14,7 @@ const CUES: Cue[] = [
   ...[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({t: at('nine', 0.2 + i * 0.233), sfx: 'tick', vol: 0.3})),
   {t: at('apollo', wordAt('apollo', 0, 'list')), sfx: 'shimmer', vol: 0.35},
   {t: at('email', wordAt('email', 0, 'dear')) + 0.2, sfx: 'click', vol: 0.55},
-  {t: at('linkedin', wordAt('linkedin', 0, 'unipile')) + 0.3, sfx: 'pop', vol: 0.45},
+  {t: at('linkedin', wordAt('linkedin', 0, 'khud')) + 0.1, sfx: 'pop', vol: 0.45},
   {t: at('vapi', wordAt('vapi', 0, 'voice')), sfx: 'shimmer', vol: 0.35},
   {t: at('crm', wordAt('crm', 0, 'dashboard')), sfx: 'pop', vol: 0.4},
   {t: at('honest', wordAt('honest', 0, 'set')) + 0.8, sfx: 'impact', vol: 0.5},

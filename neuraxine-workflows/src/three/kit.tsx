@@ -468,10 +468,10 @@ const loadSvg = (url: string) =>
         .catch(() => undefined);
 
 export const TEXTURES = [
-  ...['call', 'search', 'mail', 'phone', 'warn', 'apollo', 'unipile', 'nx'].map((n) => `tex/${n}.png`),
+  ...['call', 'search', 'mail', 'phone', 'warn', 'chat', 'db', 'bolt', 'nx'].map((n) => `tex/${n}.png`),
   'screens/profile.png',
 ];
-export const SVGS = ['icons/linkedin.svg', 'icons/supabase.svg', 'icons/vapi.svg', 'icons/gmail.svg', 'icons/n8n.svg', 'icons/whatsapp-icon.svg'];
+export const SVGS = ['icons/linkedin.svg', 'icons/gmail.svg'];
 
 /** Load every texture and logo before any 3D scene mounts, so first frames are never blank. */
 export const preloadAll = () => Promise.all([...TEXTURES.map(loadTex), ...SVGS.map(loadSvg)]);

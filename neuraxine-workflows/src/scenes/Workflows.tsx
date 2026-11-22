@@ -62,14 +62,14 @@ const Chart: React.FC<{s: number}> = ({s}) => (
   <svg width={s} height={s} viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="#141414" strokeWidth={2.2} fill="none" strokeLinecap="round" /></svg>
 );
 const NODES: {label: string; img?: string; svg?: string; el?: React.ReactNode}[] = [
-  {label: 'Apollo list', img: 'tex/apollo.png'},
-  {label: 'Enrich leads', img: 'tex/search.png'},
+  {label: 'Target list', img: 'tex/search.png'},
+  {label: 'Enrich data', img: 'tex/bolt.png'},
   {label: 'Personal email', svg: 'icons/gmail.svg'},
   {label: 'Follow-up sequence', img: 'tex/mail.png'},
-  {label: 'LinkedIn outreach', svg: 'icons/linkedin.svg'},
-  {label: 'Unipile sync', img: 'tex/unipile.png'},
-  {label: 'AI voice call', svg: 'icons/vapi.svg'},
-  {label: 'Supabase CRM', svg: 'icons/supabase.svg'},
+  {label: 'LinkedIn connect', svg: 'icons/linkedin.svg'},
+  {label: 'LinkedIn message', img: 'tex/chat.png'},
+  {label: 'AI voice call', img: 'tex/phone.png'},
+  {label: 'CRM update', img: 'tex/db.png'},
   {label: 'Dashboard', el: <Chart s={64} />},
 ];
 // snake layout: row 0 left→right, row 1 right→left, row 2 left→right
@@ -114,7 +114,7 @@ export const Nine: React.FC = () => {
   );
 };
 
-/* ---------------- 1 · Apollo list (paper) ---------------- */
+/* ---------------- 1 · the target list builds itself (paper) ---------------- */
 const COMPANIES = [
   ['Sharma Interiors', 'Interior design · Jaipur'],
   ['UrbanNest Realty', 'Real estate · Pune'],
@@ -131,7 +131,7 @@ export const Apollo: React.FC = () => {
     <AbsoluteFill>
       <Paper disc={{x: 820, y: 640, r: 230}} />
       <Stage>
-        {badge.k > 0 && <Tile3D img="tex/apollo.png" size={0.46} d={0.11} position={[0.55, 0.62 + badge.dy * 0.3, 0.4]} rotation={[0.06, badge.ry * 0.6 - 0.25, 0]} scale={badge.s} />}
+        {badge.k > 0 && <Tile3D img="tex/search.png" size={0.46} d={0.11} position={[0.55, 0.62 + badge.dy * 0.3, 0.4]} rotation={[0.06, badge.ry * 0.6 - 0.25, 0]} scale={badge.s} />}
       </Stage>
       <div style={{position: 'absolute', left: 70, top: 560, ...COND, fontSize: 64, color: E.ink, opacity: prog(f, 6, 12)}}>
         WORKFLOW <span style={{color: E.green}}>01</span>
@@ -139,7 +139,7 @@ export const Apollo: React.FC = () => {
       <div style={{position: 'absolute', left: 70, right: 70, top: 800, ...CARD, padding: '22px 26px', opacity: card, transform: `translateY(${(1 - card) * 50}px)`}}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6}}>
           <div style={{...COND, fontSize: 44, color: E.ink}}>TARGET COMPANIES</div>
-          <div style={{padding: '6px 14px', borderRadius: 999, background: '#CFF2DC', color: '#11743E', fontWeight: 800, fontSize: 21}}>248 found</div>
+          <div style={{padding: '6px 14px', borderRadius: 999, background: '#CFF2DC', color: '#11743E', fontWeight: 800, fontSize: 21}}>Auto-built · 248</div>
         </div>
         {COMPANIES.map(([n, d], i) => {
           const p = prog(f, 16 + i * 6, 12, ease.out);
@@ -201,10 +201,10 @@ export const Email: React.FC = () => {
   );
 };
 
-/* ---------------- 3 · LinkedIn via Unipile (dark) ---------------- */
+/* ---------------- 3 · LinkedIn connection + message, on its own (dark) ---------------- */
 export const Linkedin: React.FC = () => {
   const f = useCurrentFrame();
-  const uni = fr(wordAt('linkedin', 0, 'unipile'));
+  const uni = fr(wordAt('linkedin', 0, 'message'));
   const li = pop(f, 0, 24);
   const u = pop(f, uni - 6, 20);
   const card = prog(f, 12, 18, ease.out);
@@ -214,7 +214,7 @@ export const Linkedin: React.FC = () => {
       <Dark mood="after" />
       <Stage>
         {li.k > 0 && <Logo3D url="icons/linkedin.svg" size={0.62} depth={0.1} position={[-0.32, 0.45 + li.dy * 0.3, 0.3]} rotation={[0, li.ry, 0]} scale={li.s} />}
-        {u.k > 0 && <Tile3D img="tex/unipile.png" size={0.46} d={0.11} position={[0.42, 0.4 + u.dy * 0.3, 0.35]} rotation={[0.06, u.ry * 0.6 - 0.2, 0]} scale={u.s} />}
+        {u.k > 0 && <Tile3D img="tex/chat.png" size={0.42} d={0.1} position={[0.42, 0.4 + u.dy * 0.3, 0.35]} rotation={[0.06, u.ry * 0.6 - 0.2, 0]} scale={u.s} />}
       </Stage>
       <div style={{position: 'absolute', left: 0, right: 0, top: 1000, textAlign: 'center', ...COND, fontSize: 56, color: 'rgba(242,242,242,0.85)', opacity: prog(f, 6, 12)}}>
         WORKFLOW <span style={{color: E.lime}}>04–05</span>
@@ -236,7 +236,7 @@ export const Linkedin: React.FC = () => {
   );
 };
 
-/* ---------------- 4 · Vapi AI voice agent (dark) ---------------- */
+/* ---------------- 4 · the AI voice agent makes the calls (dark) ---------------- */
 export const Vapi: React.FC = () => {
   const f = useCurrentFrame();
   const agent = fr(wordAt('vapi', 0, 'voice'));
@@ -249,7 +249,7 @@ export const Vapi: React.FC = () => {
         <group position={[0, -0.1 + ph.dy * 0.4, 0]} rotation={[-0.04, -0.2 + ph.ry * 0.4, 0]} scale={0.76 * ph.s}>
           <Phone screen="tex/call.png" />
         </group>
-        {v.k > 0 && <Logo3D url="icons/vapi.svg" size={0.5} depth={0.08} tint="#F2F2F2" position={[0.6, 0.66 + v.dy * 0.3, 0.4]} rotation={[0, v.ry, 0]} scale={v.s} />}
+        {v.k > 0 && <Tile3D img="tex/bolt.png" size={0.4} d={0.1} position={[0.6, 0.66 + v.dy * 0.3, 0.4]} rotation={[0.06, v.ry * 0.6, 0]} scale={v.s} />}
       </Stage>
       {/* live voice waveform */}
       <div style={{position: 'absolute', left: 110, right: 110, top: 1460, height: 120, display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: prog(f, agent - 8, 12)}}>
@@ -266,7 +266,7 @@ export const Vapi: React.FC = () => {
   );
 };
 
-/* ---------------- 5 · Supabase CRM dashboard (paper) ---------------- */
+/* ---------------- 5 · every lead updated in one CRM (paper) ---------------- */
 const STAGES = ['New', 'Emailed', 'LinkedIn', 'Called', 'Meeting'];
 const LEAD_STAGE = [4, 3, 3, 2, 2, 1, 1, 1, 0, 0];
 export const Crm: React.FC = () => {
@@ -278,7 +278,7 @@ export const Crm: React.FC = () => {
     <AbsoluteFill>
       <Paper disc={{x: 540, y: 1240, r: 420}} />
       <Stage>
-        {s.k > 0 && <Logo3D url="icons/supabase.svg" size={0.44} depth={0.08} position={[-0.58, 0.68 + s.dy * 0.3, 0.4]} rotation={[0, s.ry, 0]} scale={s.s} />}
+        {s.k > 0 && <Tile3D img="tex/db.png" size={0.42} d={0.1} position={[-0.58, 0.68 + s.dy * 0.3, 0.4]} rotation={[0.06, s.ry * 0.6, 0]} scale={s.s} />}
       </Stage>
       <div style={{position: 'absolute', right: 70, top: 570, textAlign: 'right', opacity: prog(f, 6, 12)}}>
         <div style={{...COND, fontSize: 64, lineHeight: 0.95, color: E.ink}}>WORKFLOW</div>
@@ -286,7 +286,7 @@ export const Crm: React.FC = () => {
       </div>
       <div style={{position: 'absolute', left: 50, right: 50, top: 820, ...CARD, padding: '22px 20px', opacity: card, transform: `translateY(${(1 - card) * 50}px)`}}>
         <div style={{display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14}}>
-          <Img src={staticFile('icons/supabase.svg')} style={{height: 34}} />
+          <Img src={staticFile('tex/db.png')} style={{height: 40, borderRadius: 10}} />
           <div style={{flex: 1, ...COND, fontSize: 42, color: E.ink}}>PIPELINE</div>
           <div style={{padding: '6px 14px', borderRadius: 999, background: '#CFF2DC', color: '#11743E', fontWeight: 800, fontSize: 20}}>● Synced</div>
         </div>
@@ -320,7 +320,7 @@ export const Honest: React.FC = () => {
   const f = useCurrentFrame();
   const forget = fr(wordAt('honest', 0, 'set'));
   const w = pop(f, 4, 24);
-  const strike = prog(f, forget + 24, 12, ease.out);
+  const strike = prog(f, fr(wordAt('honest', 0, 'nahi')) - 2, 10, ease.out);
   return (
     <AbsoluteFill>
       <Dark mood="before" />

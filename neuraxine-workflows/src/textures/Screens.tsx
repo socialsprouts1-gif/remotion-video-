@@ -15,7 +15,7 @@ const Call: React.FC = () => (
     </div>
     <div style={{position: 'absolute', top: 150, left: 0, right: 0, textAlign: 'center'}}>
       <div style={{display: 'inline-flex', alignItems: 'center', gap: 12, padding: '10px 20px', borderRadius: 999, background: 'rgba(255,255,255,0.08)', fontWeight: 700, fontSize: 24}}>
-        <Img src={staticFile('icons/vapi.svg')} style={{height: 26, filter: 'invert(1)'}} /> AI Voice Agent
+        <span style={{width: 12, height: 12, borderRadius: 99, background: '#B5F12A', boxShadow: '0 0 12px #B5F12A'}} /> AI Voice Agent
       </div>
       <div style={{marginTop: 70, width: 210, height: 210, margin: '70px auto 0', borderRadius: 99, background: 'linear-gradient(140deg, #2B3A2E, #121814)', display: 'grid', placeItems: 'center', fontSize: 90, fontWeight: 800, color: '#B5F12A', boxShadow: '0 0 0 14px rgba(181,241,42,0.08), 0 0 0 30px rgba(181,241,42,0.04)'}}>RS</div>
       <div style={{marginTop: 40, fontWeight: 800, fontSize: 44}}>Rahul Sharma</div>
@@ -49,6 +49,9 @@ const ICON_PATHS: Record<string, string[]> = {
   mail: ['M3 6h18v12H3z', 'M3 7l9 6 9-6'],
   phone: ['M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z'],
   warn: ['M12 3L2 20h20z', 'M12 10v4', 'M12 17v.01'],
+  chat: ['M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z', 'M8 11h8', 'M8 14h5'],
+  db: ['M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z', 'M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6', 'M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3'],
+  bolt: ['M13 2L4 14h7l-1 8 9-12h-7z'],
 };
 
 /** Square tile faces: lime-on-black icons, a red warning, and neutral name badges for tools without an open logo. */

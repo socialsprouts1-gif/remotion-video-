@@ -10,7 +10,7 @@ const browserExecutable = process.env.REMOTION_BROWSER || null;
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
 const jobs = [
   ['TexPhone', 'call'],
-  ...['search', 'mail', 'phone', 'warn', 'apollo', 'unipile'].map((id) => ['TexSquare', id]),
+  ...['search', 'mail', 'phone', 'warn', 'chat', 'db', 'bolt'].map((id) => ['TexSquare', id]),
 ];
 for (const [comp, id] of jobs) {
   const composition = await selectComposition({serveUrl, id: comp, inputProps: {id}, browserExecutable});

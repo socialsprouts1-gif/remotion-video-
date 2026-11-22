@@ -247,7 +247,7 @@ const CHUNKS: Chunk[] = LINES.flatMap((l) => {
 });
 
 /** Key words per spoken line: they become the big condensed headline word. */
-export const KEY = new Set(['system', 'nahi.', '9', 'workflows', 'apollo', 'list.', 'personalized', 'sir', 'linkedin', 'unipile', 'vapi', 'ai', 'supabase', 'crm', 'dashboard', 'honest', 'forget', 'galat', 'spam', 'tezi', 'speed', 'target', 'leads.']);
+export const KEY = new Set(['system', 'nahi.', '9', 'workflows', 'target', 'list', 'personalized', 'sir', 'linkedin', 'connection', 'khud', 'ai', 'agent', 'update', 'crm', 'dashboard', 'honest', 'forget', 'galat', 'spam', 'tezi', 'speed', 'leads.']);
 const isKey = (w: string) => KEY.has(w.toLowerCase().replace(/["“”]/g, ''));
 
 /** Editorial caption: small bold words, with key words set huge in condensed caps (accent colour). */
