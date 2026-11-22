@@ -1,0 +1,25 @@
+# Script 5 — 9 workflows, ek sales team. Each phrase: (caption word | Devanagari spoken form).
+P = lambda s: [tuple(w.split("|")) for w in s.split()]
+LINES = [
+  [P("Lead|लीड dhoondhna,|ढूँढना, email,|ईमेल, LinkedIn|लिंक्डइन message,|मैसेज, call…|कॉल…"),
+   P("yeh|ये sab|सब ek|एक system|सिस्टम karta|करता hai.|है।"),
+   P("Main|मैं nahi.|नहीं।")],
+  [P("9|नौ workflows|वर्कफ़्लोज़ hain.|हैं।"),
+   P("Dikhata|दिखाता hoon|हूँ kaise|कैसे jude|जुड़े hain.|हैं।")],
+  [P("Pehla,|पहला, Apollo|अपोलो se|से target|टारगेट companies|कंपनीज़ ki|की list.|लिस्ट।")],
+  [P("Phir|फिर har|हर lead|लीड ke|के liye|लिए personalized|पर्सनलाइज़्ड email|ईमेल sequence.|सीक्वेंस।"),
+   P("Template|टेम्पलेट wala|वाला \"Dear|डियर Sir\"|सर nahi.|नहीं।")],
+  [P("LinkedIn|लिंक्डइन outreach,|आउटरीच, Unipile|यूनिपाइल se.|से।")],
+  [P("Aur|और calls?|कॉल्स? Vapi|वापी ka|का AI|ए_आई voice|वॉइस agent.|एजेंट।")],
+  [P("Sab|सब kuch|कुछ Supabase|सुपाबेस CRM|सी_आर_एम mein|में sync.|सिंक।"),
+   P("Ek|एक dashboard|डैशबोर्ड pe|पे dikhta|दिखता hai|है kaun|कौन kahan|कहाँ hai.|है।")],
+  [P("Ab|अब honest|ऑनेस्ट baat.|बात।"),
+   P("Yeh|ये \"set|सेट and|एंड forget\"|फ़ॉरगेट nahi|नहीं hai.|है।")],
+  [P("Galat|ग़लत list|लिस्ट daali?|डाली?"),
+   P("Toh|तो 9|नौ workflows|वर्कफ़्लोज़ milke|मिलके galat|ग़लत logon|लोगों ko|को spam|स्पैम karenge.|करेंगे।"),
+   P("Bas|बस tezi|तेज़ी se.|से।")],
+  [P("System|सिस्टम speed|स्पीड deta|देता hai.|है।"),
+   P("Sahi|सही target|टारगेट aapko|आपको hi|ही chunna|चुनना padega.|पड़ेगा।")],
+  [P("Aapki|आपकी sales|सेल्स team|टीम ko|को bhi|भी aisa|ऐसा chahiye?|चाहिए?"),
+   P("DM|डी_एम karo|करो \"LEADS\".|लीड्स।")],
+]

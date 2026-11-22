@@ -1,0 +1,13 @@
+Lead dhoondhna, email, LinkedIn message, call… yeh sab ek system karta hai. Main nahi.
+9 workflows hain. Dikhata hoon kaise jude hain.
+Pehla, Apollo se target companies ki list.
+Phir har lead ke liye personalized email sequence. Template wala "Dear Sir" nahi.
+LinkedIn outreach, Unipile se.
+Aur calls? Vapi ka AI voice agent.
+Sab kuch Supabase CRM mein sync. Ek dashboard pe dikhta hai kaun kahan hai.
+Ab honest baat. Yeh "set and forget" nahi hai.
+Galat list daali? Toh 9 workflows milke galat logon ko spam karenge. Bas tezi se.
+System speed deta hai. Sahi target aapko hi chunna padega.
+Aapki sales team ko bhi aisa chahiye? DM karo "LEADS".
+
+Script 5 — 9 workflows, ek sales team (Real Builds / build-in-public). Voice: AI voice (Piper hi_IN rohan). Logos: gilbarbara/logos via Iconify (CC0), Simple Icons (CC0); icons: Microsoft Fluent 3D emoji (MIT).
