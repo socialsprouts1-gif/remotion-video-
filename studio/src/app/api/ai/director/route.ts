@@ -8,6 +8,8 @@ import { directPlan, scriptPlan } from "@/server/ai/director";
 import { planToDoc, type BrandHints } from "@/lib/ai/plan-to-doc";
 import { ProductionPlan } from "@/lib/project/schema";
 import { nanoid } from "@/lib/id";
+import { buildTemplate } from "@/lib/templates";
+import { insertDoc, shiftDoc } from "@/lib/project/merge";
 
 const Body = z.object({
   brief: z.string().min(3).max(12000),
@@ -28,11 +30,15 @@ export const POST = route(async (req: Request) => {
   const u = await requireUser();
   const b = Body.parse(await req.json());
   let brand: BrandHints | undefined;
+  let intro: string | null = null;
+  let outro: string | null = null;
   let brandNotes: string | undefined;
   if (b.brandKitId) {
     const kit = await db.brandKit.findFirst({ where: { id: b.brandKitId, ownerId: u.id } });
     if (kit) {
-      const d = kit.data as { colors?: string[]; headlineFont?: string; bodyFont?: string; logoAssetId?: string; voice?: string };
+      const d = kit.data as { colors?: string[]; headlineFont?: string; bodyFont?: string; logoAssetId?: string; voice?: string; introTemplateId?: string | null; outroTemplateId?: string | null };
+      intro = d.introTemplateId ?? null;
+      outro = d.outroTemplateId ?? null;
       brand = { colors: d.colors, headlineFont: d.headlineFont, bodyFont: d.bodyFont, logoAssetId: d.logoAssetId, logoSrc: d.logoAssetId ? `/api/media/${d.logoAssetId}` : undefined };
       brandNotes = `${kit.name}: colours ${d.colors?.join(", ")}; fonts ${d.headlineFont}/${d.bodyFont}; ${d.voice ?? ""}`;
     }
@@ -47,7 +53,14 @@ export const POST = route(async (req: Request) => {
   }
   if (!plan) throw new Error("no plan");
   if (!b.createProject) return json({ plan, engine });
-  const doc = planToDoc(plan, { brand });
+  let doc = planToDoc(plan, { brand });
+  // brand intro / outro templates (editable layers on their own tracks)
+  if (intro) {
+    const introDoc = buildTemplate(intro, plan.aspectRatio);
+    shiftDoc(doc, introDoc.settings.durationInFrames);
+    doc = insertDoc(doc, introDoc, 0, "Intro");
+  }
+  if (outro) doc = insertDoc(doc, buildTemplate(outro, plan.aspectRatio), doc.settings.durationInFrames, "Outro");
   doc.brandKitId = b.brandKitId ?? null;
   doc.aiHistory.push({ id: nanoid(), at: new Date().toISOString(), kind: "director", prompt: b.brief.slice(0, 2000), summary: plan.creativeDirection.summary, engine });
   const project = await createProject(u.id, b.name ?? plan.title, doc);
