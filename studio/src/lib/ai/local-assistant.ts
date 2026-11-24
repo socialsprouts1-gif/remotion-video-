@@ -85,9 +85,17 @@ export function localAssistant(instruction: string, ctx: AssistantContext): Assi
 
   // colour
   const grade = (patch: Record<string, number>, label: string) => {
-    const ts = targets(ctx).filter((c) => c.type !== "text");
-    for (const c of ts) cmds.push({ op: "updateClip", clipId: c.id, patch: { effects: { ...patch } } });
-    if (ts.length) notes.push(`${label} on ${ts.length} clip(s).`);
+    const gradeable = (c: Clip) => c.type === "video" || c.type === "image" || c.type === "scene" || c.type === "solid" || c.type === "effect" || c.type === "adjustment";
+    let ts = allClips(ctx.doc).filter((c) => ctx.selection.includes(c.id) && gradeable(c));
+    if (!ts.length) ts = allClips(ctx.doc).filter((c) => c.type === "video" || c.type === "image" || c.type === "scene");
+    if (ts.length) {
+      for (const c of ts) cmds.push({ op: "updateClip", clipId: c.id, patch: { effects: { ...patch } } });
+      notes.push(`${label} on ${ts.length} clip(s).`);
+    } else {
+      // nothing to grade directly: an adjustment layer grades everything beneath it
+      cmds.push({ op: "addClip", clip: { type: "adjustment", name: label, start: 0, duration: ctx.doc.settings.durationInFrames, effects: { ...patch } } });
+      notes.push(`${label} via an adjustment layer over the whole timeline.`);
+    }
   };
   if (/warm/.test(t)) grade({ temperature: 0.35, saturation: 1.08 }, "Warmer grade");
   if (/cool|cold|blue(r)? tone/.test(t)) grade({ temperature: -0.35 }, "Cooler grade");

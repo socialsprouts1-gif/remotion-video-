@@ -56,7 +56,7 @@ export function Badge({ children, tone = "default", className }: { children: Rea
     danger: "bg-rose-400/10 text-rose-300",
     info: "bg-cyan-400/10 text-cyan-300",
   };
-  return <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium", tones[tone], className)}>{children}</span>;
+  return <span className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium", tones[tone], className)}>{children}</span>;
 }
 
 export function Card({ className, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
@@ -126,12 +126,24 @@ export function Modal({ open, onClose, title, children, wide, footer }: { open: 
 }
 
 export function Field({ label, hint, children, className }: { label: string; hint?: React.ReactNode; children: React.ReactNode; className?: string }) {
+  // <label> only wraps a single native control; groups (segmented buttons, pickers) get role="group"
+  // so the label text doesn't become the accessible name of the first button inside.
+  const native = React.isValidElement(children) && typeof children.type === "string" && ["input", "select", "textarea"].includes(children.type);
+  const id = React.useId();
+  if (native)
+    return (
+      <label className={cn("block", className)}>
+        <span className="label mb-1.5 block">{label}</span>
+        {children}
+        {hint ? <span className="mt-1 block text-xs text-ink-400">{hint}</span> : null}
+      </label>
+    );
   return (
-    <label className={cn("block", className)}>
-      <span className="label mb-1.5 block">{label}</span>
+    <div role="group" aria-labelledby={id} className={cn("block", className)}>
+      <span id={id} className="label mb-1.5 block">{label}</span>
       {children}
       {hint ? <span className="mt-1 block text-xs text-ink-400">{hint}</span> : null}
-    </label>
+    </div>
   );
 }
 

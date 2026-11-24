@@ -15,10 +15,16 @@ export function aiQueue() {
   return g.aiQueue;
 }
 
+function assertRedis() {
+  if (redis().status !== "ready") throw new Error("Redis is not connected");
+}
+
 export async function enqueueRender(renderJobId: string) {
+  assertRedis();
   await renderQueue().add("render", { renderJobId }, { jobId: renderJobId, attempts: 2, backoff: { type: "exponential", delay: 5000 }, removeOnComplete: 500, removeOnFail: 1000 });
 }
 export async function enqueueAi(aiJobId: string) {
+  assertRedis();
   await aiQueue().add("ai", { aiJobId }, { jobId: aiJobId, attempts: 3, backoff: { type: "exponential", delay: 4000 }, removeOnComplete: 500, removeOnFail: 1000 });
 }
 
