@@ -159,6 +159,7 @@ model Asset {
   posterKey   String?
   source      String    @default("upload") // upload | ai:<provider> | render
   aiJobId     String?
+  meta        Json?     // waveform peaks, ai prompt, etc.
   createdAt   DateTime  @default(now())
 
   @@index([ownerId, createdAt])

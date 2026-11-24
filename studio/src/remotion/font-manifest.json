@@ -1,0 +1,222 @@
+[
+ {
+  "family": "Inter",
+  "weight": 400,
+  "file": "fonts/inter-400.woff2"
+ },
+ {
+  "family": "Inter",
+  "weight": 500,
+  "file": "fonts/inter-500.woff2"
+ },
+ {
+  "family": "Inter",
+  "weight": 600,
+  "file": "fonts/inter-600.woff2"
+ },
+ {
+  "family": "Inter",
+  "weight": 700,
+  "file": "fonts/inter-700.woff2"
+ },
+ {
+  "family": "Inter",
+  "weight": 800,
+  "file": "fonts/inter-800.woff2"
+ },
+ {
+  "family": "Inter",
+  "weight": 900,
+  "file": "fonts/inter-900.woff2"
+ },
+ {
+  "family": "Space Grotesk",
+  "weight": 400,
+  "file": "fonts/space-grotesk-400.woff2"
+ },
+ {
+  "family": "Space Grotesk",
+  "weight": 500,
+  "file": "fonts/space-grotesk-500.woff2"
+ },
+ {
+  "family": "Space Grotesk",
+  "weight": 700,
+  "file": "fonts/space-grotesk-700.woff2"
+ },
+ {
+  "family": "Montserrat",
+  "weight": 400,
+  "file": "fonts/montserrat-400.woff2"
+ },
+ {
+  "family": "Montserrat",
+  "weight": 600,
+  "file": "fonts/montserrat-600.woff2"
+ },
+ {
+  "family": "Montserrat",
+  "weight": 700,
+  "file": "fonts/montserrat-700.woff2"
+ },
+ {
+  "family": "Montserrat",
+  "weight": 800,
+  "file": "fonts/montserrat-800.woff2"
+ },
+ {
+  "family": "Montserrat",
+  "weight": 900,
+  "file": "fonts/montserrat-900.woff2"
+ },
+ {
+  "family": "Poppins",
+  "weight": 400,
+  "file": "fonts/poppins-400.woff2"
+ },
+ {
+  "family": "Poppins",
+  "weight": 600,
+  "file": "fonts/poppins-600.woff2"
+ },
+ {
+  "family": "Poppins",
+  "weight": 700,
+  "file": "fonts/poppins-700.woff2"
+ },
+ {
+  "family": "Poppins",
+  "weight": 800,
+  "file": "fonts/poppins-800.woff2"
+ },
+ {
+  "family": "Manrope",
+  "weight": 400,
+  "file": "fonts/manrope-400.woff2"
+ },
+ {
+  "family": "Manrope",
+  "weight": 600,
+  "file": "fonts/manrope-600.woff2"
+ },
+ {
+  "family": "Manrope",
+  "weight": 800,
+  "file": "fonts/manrope-800.woff2"
+ },
+ {
+  "family": "Syne",
+  "weight": 600,
+  "file": "fonts/syne-600.woff2"
+ },
+ {
+  "family": "Syne",
+  "weight": 700,
+  "file": "fonts/syne-700.woff2"
+ },
+ {
+  "family": "Syne",
+  "weight": 800,
+  "file": "fonts/syne-800.woff2"
+ },
+ {
+  "family": "Bebas Neue",
+  "weight": 400,
+  "file": "fonts/bebas-neue-400.woff2"
+ },
+ {
+  "family": "Oswald",
+  "weight": 400,
+  "file": "fonts/oswald-400.woff2"
+ },
+ {
+  "family": "Oswald",
+  "weight": 600,
+  "file": "fonts/oswald-600.woff2"
+ },
+ {
+  "family": "Oswald",
+  "weight": 700,
+  "file": "fonts/oswald-700.woff2"
+ },
+ {
+  "family": "Anton",
+  "weight": 400,
+  "file": "fonts/anton-400.woff2"
+ },
+ {
+  "family": "Unbounded",
+  "weight": 400,
+  "file": "fonts/unbounded-400.woff2"
+ },
+ {
+  "family": "Unbounded",
+  "weight": 700,
+  "file": "fonts/unbounded-700.woff2"
+ },
+ {
+  "family": "Unbounded",
+  "weight": 900,
+  "file": "fonts/unbounded-900.woff2"
+ },
+ {
+  "family": "Playfair Display",
+  "weight": 400,
+  "file": "fonts/playfair-display-400.woff2"
+ },
+ {
+  "family": "Playfair Display",
+  "weight": 600,
+  "file": "fonts/playfair-display-600.woff2"
+ },
+ {
+  "family": "Playfair Display",
+  "weight": 700,
+  "file": "fonts/playfair-display-700.woff2"
+ },
+ {
+  "family": "Playfair Display",
+  "weight": 900,
+  "file": "fonts/playfair-display-900.woff2"
+ },
+ {
+  "family": "DM Serif Display",
+  "weight": 400,
+  "file": "fonts/dm-serif-display-400.woff2"
+ },
+ {
+  "family": "Cormorant Garamond",
+  "weight": 400,
+  "file": "fonts/cormorant-garamond-400.woff2"
+ },
+ {
+  "family": "Cormorant Garamond",
+  "weight": 600,
+  "file": "fonts/cormorant-garamond-600.woff2"
+ },
+ {
+  "family": "Cormorant Garamond",
+  "weight": 700,
+  "file": "fonts/cormorant-garamond-700.woff2"
+ },
+ {
+  "family": "JetBrains Mono",
+  "weight": 400,
+  "file": "fonts/jetbrains-mono-400.woff2"
+ },
+ {
+  "family": "JetBrains Mono",
+  "weight": 700,
+  "file": "fonts/jetbrains-mono-700.woff2"
+ },
+ {
+  "family": "Caveat",
+  "weight": 400,
+  "file": "fonts/caveat-400.woff2"
+ },
+ {
+  "family": "Caveat",
+  "weight": 700,
+  "file": "fonts/caveat-700.woff2"
+ }
+]

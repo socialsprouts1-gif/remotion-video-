@@ -18,6 +18,7 @@ export function getBundle(): Promise<string> {
     bundlePromise = bundle({
       entryPoint: path.join(root, "src/remotion/index.ts"),
       outDir: path.join(root, ".remotion-bundle"),
+      publicDir: path.join(root, "public"),
       webpackOverride: (config) => ({
         ...config,
         resolve: {
