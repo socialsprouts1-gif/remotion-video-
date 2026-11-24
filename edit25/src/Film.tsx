@@ -6,9 +6,9 @@ import tl from './tl.json';
 // Neura Studio before/after: white-to-mint stage, Before card set back, the final edit in front,
 // and the real Premiere workspace (program monitor, Lumetri, meters, timeline) on a tablet. Full v13 edit.
 export const FPS = 30;
-export const DURATION = 48;
-const CLIP = 47.34;
-const RAW_LEN = 44.77;
+export const DURATION = 62;
+const CLIP = 61.84;
+const RAW_LEN = 59.27;
 const SANS = 'InterV, "Liberation Sans", sans-serif';
 
 let loaded = false;
@@ -97,7 +97,7 @@ const Timeline: React.FC<{t: number; x: number; y: number; w: number; h: number}
       <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: topBar, background: '#1A1A1A', borderBottom: `1px solid ${PR.line}`, display: 'flex', alignItems: 'center'}}>
         <div style={{width: head, paddingLeft: 14, boxSizing: 'border-box', fontFamily: 'monospace', fontWeight: 700, fontSize: 22, color: PR.blue}}>{TCK(play)}</div>
         <div style={{display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px', height: '100%', borderBottom: `2px solid ${PR.blue}`, fontFamily: SANS, fontSize: 17, color: '#E0E0E0'}}>
-          Podcast_Clip1 <span style={{color: PR.dim}}>×</span>
+          Podcast_Clip2 <span style={{color: PR.dim}}>×</span>
         </div>
         <div style={{marginLeft: 'auto', display: 'flex', gap: 16, paddingRight: 18}}>
           {['⊓', '⧉', '▾', '✎'].map((c) => (
@@ -217,11 +217,11 @@ const Workspace: React.FC<{t: number; x: number; y: number; w: number; h: number
         {/* menu bar */}
         <div style={{height: 26, background: '#101010', display: 'flex', alignItems: 'center', gap: 22, padding: '0 16px', fontFamily: SANS, fontSize: 13, color: '#8a8a8a'}}>
           <span style={{color: '#cfcfcf', fontWeight: 600}}>Import</span><span>Edit</span><span style={{color: PR.blue}}>Export</span>
-          <span style={{marginLeft: 'auto'}}>Podcast_Clip1 — Edited</span>
+          <span style={{marginLeft: 'auto'}}>Podcast_Clip2 — Edited</span>
         </div>
         {/* program monitor */}
         <div style={{position: 'absolute', left: 10, top: 34, width: 300, height: top - 40, background: '#121212', borderRadius: 4, display: 'grid', placeItems: 'center'}}>
-          <div style={{position: 'absolute', left: 8, top: 4, fontFamily: SANS, fontSize: 12, color: '#9a9a9a'}}>Program: Podcast_Clip1</div>
+          <div style={{position: 'absolute', left: 8, top: 4, fontFamily: SANS, fontSize: 12, color: '#9a9a9a'}}>Program: Podcast_Clip2</div>
           <div style={{width: 104, height: 185, marginTop: 10, overflow: 'hidden', background: '#000'}}>
             <OffthreadVideo muted src={staticFile('clips/final.mp4')} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
           </div>
