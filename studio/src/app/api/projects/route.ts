@@ -23,7 +23,7 @@ export const GET = route(async (req: Request) => {
     where: { OR: [{ ownerId: u.id }, { members: { some: { userId: u.id } } }], archived: false, ...(q ? { name: { contains: q, mode: "insensitive" } } : {}) },
     orderBy: { updatedAt: "desc" },
     take: Math.min(100, Number(url.searchParams.get("limit") ?? 50)),
-    select: { id: true, name: true, width: true, height: true, fps: true, durationInFrames: true, updatedAt: true, createdAt: true, ownerId: true, thumbnailKey: true, templateId: true },
+    select: { id: true, name: true, width: true, height: true, fps: true, durationInFrames: true, updatedAt: true, createdAt: true, ownerId: true, thumbnailKey: true, templateId: true, document: true },
   });
   return json({ projects });
 });
