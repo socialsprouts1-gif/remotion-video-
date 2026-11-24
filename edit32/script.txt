@@ -1,0 +1,11 @@
+Bhai, aaj hai WhatsApp automation seekhne ka Day 1.
+Pehle samjho, WhatsApp automation hota kya hai?
+Customer message kare, aur bina aapke phone uthaye, system khud reply kare.
+Aaj ka setup simple hai. Customer likhega "Hi", aur turant welcome message jaayega.
+Saath mein, uska naam aur number automatically Google Sheet mein save.
+Bas itna karne se, raat ki enquiry bhi miss nahi hogi.
+Kal, Day 2 mein, hum AI se smart reply banayenge.
+Day 1 ka free guide chahiye? Comment karo "GUIDE", main DM mein bhej dunga.
+Video save karo, aur follow kar lo, varna Day 2 miss ho jayega!
+
+WhatsApp automation seekhne ka Day 1 (series). Voice: AI voice (Piper hi_IN rohan). Logos: Simple Icons (CC0); icons: Microsoft Fluent 3D emoji (MIT).
