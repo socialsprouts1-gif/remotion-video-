@@ -1,0 +1,270 @@
+// Lumora Studio - database schema
+// The editable video itself lives in Project.document (JSON, validated by src/lib/project/schema.ts).
+// Everything else (users, assets, jobs, versions, billing) is relational.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  CREATOR
+  STUDIO
+  ENTERPRISE
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  googleId      String?   @unique
+  avatarUrl     String?
+  role          Role      @default(USER)
+  plan          Plan      @default(FREE)
+  credits       Int       @default(200)
+  storageBytes  BigInt    @default(0)
+  disabled      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  projects      Project[]
+  assets        Asset[]
+  renders       RenderJob[]
+  aiJobs        AiJob[]
+  ledger        CreditLedger[]
+  brandKits     BrandKit[]
+  memberships   ProjectMember[]
+  comments      Comment[]
+  uploads       UploadSession[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent  String?
+  ip         String?
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Project {
+  id           String    @id @default(cuid())
+  ownerId      String
+  owner        User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name         String
+  width        Int
+  height       Int
+  fps          Int
+  durationInFrames Int
+  document     Json
+  revision     Int       @default(1)
+  thumbnailKey String?
+  templateId   String?
+  archived     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  versions     ProjectVersion[]
+  renders      RenderJob[]
+  aiJobs       AiJob[]
+  members      ProjectMember[]
+  comments     Comment[]
+
+  @@index([ownerId, updatedAt])
+}
+
+model ProjectVersion {
+  id         String   @id @default(cuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  revision   Int
+  label      String?
+  kind       String   @default("autosave") // autosave | snapshot | ai | restore
+  document   Json
+  createdAt  DateTime @default(now())
+
+  @@index([projectId, createdAt])
+}
+
+enum MemberRole {
+  VIEWER
+  COMMENTER
+  EDITOR
+}
+
+model ProjectMember {
+  id         String     @id @default(cuid())
+  projectId  String
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       MemberRole @default(EDITOR)
+  createdAt  DateTime   @default(now())
+
+  @@unique([projectId, userId])
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  frame      Int?
+  body       String
+  resolved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([projectId])
+}
+
+enum AssetKind {
+  VIDEO
+  AUDIO
+  IMAGE
+  FONT
+  OTHER
+}
+
+model Asset {
+  id          String    @id @default(cuid())
+  ownerId     String
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  kind        AssetKind
+  name        String
+  mimeType    String
+  sizeBytes   BigInt
+  storageKey  String    @unique
+  width       Int?
+  height      Int?
+  durationSec Float?
+  fps         Float?
+  hasAudio    Boolean?
+  posterKey   String?
+  source      String    @default("upload") // upload | ai:<provider> | render
+  aiJobId     String?
+  createdAt   DateTime  @default(now())
+
+  @@index([ownerId, createdAt])
+}
+
+model UploadSession {
+  id           String   @id @default(cuid())
+  ownerId      String
+  owner        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  fileName     String
+  mimeType     String
+  totalBytes   BigInt
+  chunkSize    Int
+  totalChunks  Int
+  receivedChunks Int[]  @default([])
+  completed    Boolean  @default(false)
+  assetId      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+model RenderJob {
+  id           String    @id @default(cuid())
+  ownerId      String
+  owner        User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  projectId    String
+  project      Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectRevision Int
+  document     Json      // frozen snapshot that was rendered
+  settings     Json      // ExportSettings
+  status       JobStatus @default(QUEUED)
+  progress     Float     @default(0)
+  stage        String?
+  outputKey    String?
+  outputBytes  BigInt?
+  error        String?
+  attempts     Int       @default(0)
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([ownerId, createdAt])
+  @@index([status])
+}
+
+model AiJob {
+  id           String    @id @default(cuid())
+  ownerId      String
+  owner        User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  projectId    String?
+  project      Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  capability   String    // text-to-video | image-to-video | text-to-image | tts | ...
+  provider     String
+  model        String?
+  input        Json
+  output       Json?
+  externalId   String?
+  status       JobStatus @default(QUEUED)
+  progress     Float     @default(0)
+  error        String?
+  costCredits  Int       @default(0)
+  costUsd      Float?
+  attempts     Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([ownerId, createdAt])
+  @@index([status])
+}
+
+model CreditLedger {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  delta      Int
+  reason     String
+  refId      String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model BrandKit {
+  id          String   @id @default(cuid())
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String
+  isDefault   Boolean  @default(false)
+  data        Json     // BrandKitData: colors, fonts, logoAssetId, watermark, intro/outro, music prefs
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([ownerId])
+}
+
+model FeatureFlag {
+  key        String   @id
+  enabled    Boolean  @default(true)
+  note       String?
+  updatedAt  DateTime @updatedAt
+}
