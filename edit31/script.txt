@@ -1,0 +1,11 @@
+Bhai, aaj milo NeuraChat se. Aapka 24/7 AI sales assistant, WhatsApp aur Instagram pe.
+Socho, raat 2 baje customer message kare, aur reply turant chala jaaye.
+Customer bolega: "Mujhe price chahiye."
+NeuraChat automatically reply karega, aur 3 quick sawaal poochega.
+Customer details dega, aur system uska name, number aur requirement automatically save karega.
+Hot lead? Aapko turant notification, aur call bhi book.
+Matlab ek bhi lead miss nahi hogi.
+NeuraChat ka demo chahiye? Comment karo "DEMO", main DM mein bhej dunga.
+Video save aur share karo, aur follow karo Neuraxine.
+
+NeuraChat explainer (reference: "WhatsApp automation ka Day 06" style). Voice: AI voice (Piper hi_IN rohan). Logos: Simple Icons (CC0); icons: Microsoft Fluent 3D emoji (MIT).
