@@ -2,7 +2,7 @@ node_modules/
 .next/
 .env
 .env.local
-storage/
+/storage/
 .remotion-bundle/
 next-env.d.ts
 *.tsbuildinfo
