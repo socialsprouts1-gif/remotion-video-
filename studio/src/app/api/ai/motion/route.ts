@@ -10,7 +10,7 @@ import { newDocument } from "@/lib/project/factory";
 import { applyCommands } from "@/lib/project/ops";
 import { nanoid } from "@/lib/id";
 
-const Body = z.object({ prompt: z.string().min(3).max(2000), aspect: z.enum(["16:9", "9:16", "1:1", "4:5"]).default("16:9"), durationSec: z.number().min(1).max(60).default(5) });
+const Body = z.object({ prompt: z.string().min(3).max(12000), aspect: z.enum(["16:9", "9:16", "1:1", "4:5"]).default("16:9"), durationSec: z.number().min(1).max(60).default(5) });
 
 export const maxDuration = 120;
 

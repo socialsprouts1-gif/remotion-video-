@@ -8,7 +8,7 @@ import { ProjectDoc } from "@/lib/project/schema";
 
 const Body = z.object({
   projectId: z.string(),
-  instruction: z.string().min(1).max(4000),
+  instruction: z.string().min(1).max(12000),
   doc: z.unknown(),
   selection: z.array(z.string()).default([]),
   playhead: z.number().int().min(0).default(0),

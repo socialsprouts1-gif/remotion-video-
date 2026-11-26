@@ -61,7 +61,7 @@ export interface ModelSpec {
 }
 
 export const GenerationInput = z.object({
-  prompt: z.string().max(4000).default(""),
+  prompt: z.string().max(12000).default(""),
   negativePrompt: z.string().max(2000).optional(),
   durationSec: z.number().positive().max(60).optional(),
   aspectRatio: z.string().optional(),
