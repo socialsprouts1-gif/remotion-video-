@@ -1,0 +1,8 @@
+node_modules
+.next
+storage
+.remotion-bundle
+.env
+.env.*
+!.env.example
+*.tsbuildinfo

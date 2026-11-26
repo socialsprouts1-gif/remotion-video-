@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+
+@font-face { font-family: "Inter"; font-weight: 400; src: url(/fonts/inter-400.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 500; src: url(/fonts/inter-500.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 600; src: url(/fonts/inter-600.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 700; src: url(/fonts/inter-700.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Syne"; font-weight: 700; src: url(/fonts/syne-700.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Syne"; font-weight: 800; src: url(/fonts/syne-800.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url(/fonts/jetbrains-mono-400.woff2) format("woff2"); font-display: swap; }
+
+html, body { height: 100%; }
+body {
+  @apply bg-ink-950 text-ink-100 antialiased;
+  font-family: var(--font-sans);
+  background-image: radial-gradient(1200px 600px at 10% -10%, rgba(139,123,255,0.08), transparent 60%), radial-gradient(900px 500px at 110% 10%, rgba(94,225,255,0.05), transparent 60%);
+  background-attachment: fixed;
+}
+::selection { background: rgba(139,123,255,0.4); }
+* { scrollbar-width: thin; scrollbar-color: #2a303d transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: #2a303d; border-radius: 8px; }
+
+@layer components {
+  .panel { @apply rounded-2xl bg-ink-900/80 border border-white/[0.06] shadow-panel backdrop-blur; }
+  .panel-flat { @apply bg-ink-900 border-white/[0.06]; }
+  .label { @apply text-[11px] font-medium uppercase tracking-[0.12em] text-ink-300; }
+  .field { @apply w-full rounded-lg bg-ink-850 border border-white/[0.07] px-3 py-2 text-sm text-ink-100 placeholder:text-ink-400 outline-none transition focus:border-accent/60 focus:ring-2 focus:ring-accent/20; }
+  .field-sm { @apply w-full rounded-md bg-ink-850 border border-white/[0.07] px-2 py-1 text-xs text-ink-100 outline-none focus:border-accent/60; }
+  .shimmer { background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 100%); background-size: 200% 100%; @apply animate-shimmer; }
+  .text-gradient { @apply bg-clip-text text-transparent; background-image: linear-gradient(100deg, #ffffff 0%, #c9c2ff 45%, #7fe7ff 100%); }
+}
+
+input[type="range"] { accent-color: #8b7bff; }
+input[type="color"] { -webkit-appearance: none; border: none; padding: 0; background: none; }
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; }
