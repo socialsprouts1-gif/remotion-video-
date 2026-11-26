@@ -10,6 +10,7 @@ import { db } from "../src/server/db";
 import { redis } from "../src/server/queue/redis";
 import { AI_QUEUE, RENDER_QUEUE } from "../src/server/queue/queues";
 import { storage, scratchDir } from "../src/server/storage";
+import { ensureBrowser } from "@remotion/renderer";
 import { getBundle, renderProject } from "../src/server/render/render-doc";
 import { resolveMediaForRender } from "../src/server/services/exports";
 import { runAiJob } from "../src/server/ai/runner";
@@ -64,6 +65,10 @@ async function processRender(renderJobId: string) {
 }
 
 async function main() {
+  if (!process.env.REMOTION_BROWSER_EXECUTABLE) {
+    console.log("[worker] making sure Chrome Headless Shell is installed…");
+    await ensureBrowser();
+  }
   console.log("[worker] warming Remotion bundle…");
   await getBundle();
   console.log("[worker] bundle ready");

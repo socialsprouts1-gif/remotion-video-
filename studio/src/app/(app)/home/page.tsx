@@ -27,7 +27,7 @@ export default async function HomePage() {
 
   const quick = [
     { href: "/ai-studio", icon: Sparkles, title: "Generate video with AI", body: "Describe it — the AI Director plans scenes, typography, pacing and builds an editable timeline.", tone: "from-accent/25 to-glow-cyan/10" },
-    { href: "/assets?upload=1", icon: Upload, title: "Edit existing video", body: "Upload footage and cut, grade, caption and animate it on a multi-track timeline.", tone: "from-glow-cyan/20 to-transparent" },
+    { href: "/auto-edit", icon: Upload, title: "Edit existing video", body: "Upload raw footage, pick a style or reference — AI cuts it like an editor, then fine-tune on the timeline.", tone: "from-glow-cyan/20 to-transparent" },
     { href: "/motion", icon: Shapes, title: "Create motion graphics", body: "Kinetic type, logo reveals, HUDs, charts, particles — all editable layers and keyframes.", tone: "from-glow-rose/20 to-transparent" },
     { href: "/animation", icon: Wand2, title: "Generate animation", body: "Bring stills to life with image-to-video and camera motion controls.", tone: "from-glow-amber/20 to-transparent" },
   ];

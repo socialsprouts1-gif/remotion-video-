@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -8,6 +9,8 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "10mb" },
   },
   poweredByHeader: false,
+  // this app lives in a subfolder of a larger repo; pin tracing to it
+  outputFileTracingRoot: path.resolve("."),
 };
 
 export default nextConfig;

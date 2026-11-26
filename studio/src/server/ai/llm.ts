@@ -32,7 +32,7 @@ function extractJson(text: string): unknown {
  * Ask Claude for JSON matching `schema`. On a validation failure the error is fed
  * back once so the model can correct itself.
  */
-export async function llmJson<T>(opts: { system: string; user: string; schema: z.ZodType<T, z.ZodTypeDef, unknown>; effort?: "low" | "medium" | "high"; maxTokens?: number }): Promise<T> {
+export async function llmJson<T>(opts: { system: string; user: string | Anthropic.ContentBlockParam[]; schema: z.ZodType<T, z.ZodTypeDef, unknown>; effort?: "low" | "medium" | "high"; maxTokens?: number }): Promise<T> {
   const c = getClient();
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: opts.user }];
   let lastError = "";

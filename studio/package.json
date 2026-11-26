@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
-    "start": "next start -p 3000",
-    "worker": "tsx --env-file=.env worker/render-worker.ts",
+    "start": "next start -p ${PORT:-3000}",
+    "worker": "tsx --env-file-if-exists=.env worker/render-worker.ts",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "db:push": "prisma db push",

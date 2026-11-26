@@ -7,6 +7,7 @@ import { db } from "../db";
 import { refundCredits } from "../services/credits";
 import { assetDto, ingestFile } from "../services/assets";
 import { findModel } from "./registry";
+import { runAutoEdit } from "./auto-edit-runner";
 import { GenerationInput, ProviderError, providerFetch, type ProviderOutput } from "./types";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -36,6 +37,15 @@ async function saveOutputs(job: { id: string; ownerId: string; provider: string;
 export async function runAiJob(aiJobId: string) {
   const job = await db.aiJob.findUnique({ where: { id: aiJobId } });
   if (!job || job.status === "SUCCEEDED" || job.status === "CANCELED") return;
+  if (job.capability === "auto-edit") {
+    try {
+      return await runAutoEdit(job.id);
+    } catch (e) {
+      await db.aiJob.update({ where: { id: job.id }, data: { status: "FAILED", error: (e as Error).message.slice(0, 1000) } });
+      await refundCredits(job.ownerId, job.costCredits, "Refund: auto edit failed", job.id);
+      return;
+    }
+  }
   const found = findModel(job.provider, job.model ?? "");
   const fail = async (error: string) => {
     await db.aiJob.update({ where: { id: job.id }, data: { status: "FAILED", error: error.slice(0, 1000) } });

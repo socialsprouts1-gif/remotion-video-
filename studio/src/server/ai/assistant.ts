@@ -3,6 +3,7 @@ import { EditCommand, allClips, applyCommands } from "../../lib/project/ops";
 import { ANIMATION_PRESETS, EFFECT_KINDS, TRANSITION_TYPES, type ProjectDoc } from "../../lib/project/schema";
 import { localAssistant, type AssistantContext, type AssistantPlan } from "../../lib/ai/local-assistant";
 import { FONT_LIBRARY_NAMES } from "../../lib/ai/fonts-list";
+import { EDITING_PLAYBOOK, MOTION_PLAYBOOK } from "../../lib/ai/playbooks";
 import { llmConfigured, llmJson } from "./llm";
 
 const SYSTEM = `You are the editing assistant inside Lumora Studio, a professional video editor. You do not chat about edits — you perform them by emitting editing commands that the editor applies (with preview and undo).
@@ -38,6 +39,10 @@ Available commands (JSON objects with "op"):
 
 Easing names: linear, easeIn, easeOut, easeInOut, easeInCubic, easeOutCubic, easeInOutCubic, easeOutBack, spring, bounce, elastic, hold.
 Fonts available: ${FONT_LIBRARY_NAMES.join(", ")}.
+
+${EDITING_PLAYBOOK}
+
+${MOTION_PLAYBOOK}
 
 Rules:
 - If the user selected clips, "this"/"it" means the selection. Otherwise act on the whole project sensibly.

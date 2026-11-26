@@ -7,7 +7,7 @@ import { storage, scratchDir } from "../storage";
 import { makePoster, probe, waveform } from "../media/probe";
 
 export const MAX_UPLOAD_BYTES = 4 * 1024 ** 3;
-export const CHUNK_SIZE = 8 * 1024 * 1024;
+export const CHUNK_SIZE = 4 * 1024 * 1024; // stays under proxy / serverless body limits
 
 export function kindForMime(mime: string): AssetKind | null {
   if (mime.startsWith("video/")) return "VIDEO";

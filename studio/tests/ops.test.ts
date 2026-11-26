@@ -148,3 +148,33 @@ test("motion composer produces applicable commands", () => {
   const { doc } = applyCommands(newDocument(), commands);
   assert.ok(allClips(doc).some((c) => c.type === "text" && c.text === "NOVA"));
 });
+
+import { basicEditPlan, buildEditDoc, EditPlan } from "../src/lib/ai/auto-edit";
+import { BUILTIN_STYLES, builtinStyle } from "../src/lib/ai/edit-styles";
+
+const src = { assetId: "a1", src: "/api/media/a1", name: "raw.mp4", durationSec: 40, hasAudio: true, silences: [{ start: 5, end: 7 }, { start: 20, end: 22 }], scenes: [12, 30], words: [{ text: "hello", start: 1, end: 1.4 }, { text: "world", start: 1.5, end: 2 }] };
+
+test("basic auto edit removes silences and fits the target length", () => {
+  const plan = basicEditPlan([src], builtinStyle("reels")!, 15);
+  const total = plan.segments.reduce((s, x) => s + (x.end - x.start), 0);
+  assert.ok(total <= 15.01, `total ${total}`);
+  for (const s of plan.segments) for (const sil of src.silences) assert.ok(!(s.start >= sil.start + 0.2 && s.end <= sil.end - 0.2), "segment inside a silence");
+});
+
+test("every built-in style builds a valid project with captions from transcript", () => {
+  for (const style of BUILTIN_STYLES) {
+    const plan = basicEditPlan([src], style, 20);
+    const doc = buildEditDoc({ plan, style, sources: [src], aspect: "9:16", music: { assetId: "m", src: "/api/media/m", durationSec: 60, beats: [0.5, 1, 1.5, 2, 2.5, 3] } });
+    assert.equal(doc.settings.width, 1080);
+    assert.ok(doc.tracks.some((t) => t.kind === "audio" && t.clips.length === 1));
+    if (style.captions !== "none") assert.ok(doc.tracks.some((t) => t.name === "Captions" && t.clips.length > 0), style.name);
+  }
+});
+
+test("AI plans are clamped to real footage", () => {
+  const plan = EditPlan.parse({ segments: [{ source: 5, start: 35, end: 999 }, { start: -1, end: 3 }], titles: [{ text: "Hi", at: 0, duration: 2 }] });
+  const doc = buildEditDoc({ plan, style: builtinStyle("cinematic")!, sources: [src], aspect: "16:9" });
+  const vids = doc.tracks.find((t) => t.kind === "video")!.clips;
+  assert.equal(vids.length, 2);
+  assert.ok(vids.every((c) => c.type === "video" && c.trimStart / 30 <= 40));
+});

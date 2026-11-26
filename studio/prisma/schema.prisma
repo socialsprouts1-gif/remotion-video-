@@ -45,6 +45,7 @@ model User {
   aiJobs        AiJob[]
   ledger        CreditLedger[]
   brandKits     BrandKit[]
+  editStyles    EditStyle[]
   memberships   ProjectMember[]
   comments      Comment[]
   uploads       UploadSession[]
@@ -268,4 +269,18 @@ model FeatureFlag {
   enabled    Boolean  @default(true)
   note       String?
   updatedAt  DateTime @updatedAt
+}
+
+/// Editing styles learned from reference videos (the user's style library).
+model EditStyle {
+  id          String   @id @default(cuid())
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String
+  description String   @default("")
+  profile     Json     // StyleProfile (src/lib/ai/edit-styles.ts)
+  sourceAssetId String?
+  createdAt   DateTime @default(now())
+
+  @@index([ownerId])
 }

@@ -90,6 +90,8 @@ All secrets stay on the server. Nothing below is ever sent to the browser.
 | 20 procedural motion-graphics effects (particles, light streaks, HUD, charts, counters, lower thirds, grid, orbs, glitch, smoke, fire, confetti, light sweep…) | ✅ | All editable params |
 | 12 editable templates × 4 aspect ratios | ✅ | |
 | Export: MP4/H.264, WebM/VP8, MOV/ProRes, GIF · 720p–4K · 24–60 fps · 16:9/9:16/1:1/4:5 reframing · quality presets · watermark · size estimate · queue, progress, cancel, history, download | ✅ | Background worker, retries, crash recovery |
+| **Auto Edit**: raw footage + style preset / prompt / reference video → editable edit (shot & silence detection, beat sync, Claude watches sampled frames, transcript-aware cuts, captions, zooms, grade, titles, music) | ✅ / 🔌 Claude, ElevenLabs | No-AI fallback removes silences and paces cuts to the style, clearly labelled |
+| **Style library**: 8 built-in edit styles plus styles learned from your reference videos; editing and motion **playbooks** the AI follows (`src/lib/ai/playbooks.ts`) | ✅ | |
 | AI Director (brief → plan → storyboard → timeline), product commercial, script-to-video, multi-platform variations, brand-kit aware | 🔌 Claude | Rule-based *basic planner (no AI)* fallback, labelled in the UI |
 | Editing assistant: instruction → validated edit commands → live preview → apply as one undo step | 🔌 Claude | Built-in *command parser (no AI)* handles ~20 common edits |
 | AI motion graphics generator (prompt → editable layers + keyframes) | 🔌 Claude | Keyword-based basic composer fallback |
@@ -104,6 +106,10 @@ All secrets stay on the server. Nothing below is ever sent to the browser.
 | Object removal, face blur, motion tracking, stabilization, silence removal, upscaling UI, beat detection, smart repurposing, reference-video analysis, real-time collaboration UI | 🧭 | The assistant reports these as unavailable instead of faking them. The schema already has project members, comments and audio beat markers |
 
 ---
+
+## Deploying
+
+See [docs/DEPLOY.md](docs/DEPLOY.md). The recommended setup is Railway (web + worker from the included `Dockerfile`), Supabase (Postgres + Storage) and Upstash (Redis).
 
 ## How it fits together
 

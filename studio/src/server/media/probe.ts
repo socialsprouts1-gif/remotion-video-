@@ -3,6 +3,10 @@ import { promisify } from "node:util";
 
 const run = promisify(execFile);
 
+/** Binary paths (override with FFMPEG_PATH / FFPROBE_PATH, e.g. in containers). */
+export const FFMPEG = process.env.FFMPEG_PATH || "ffmpeg";
+export const FFPROBE = process.env.FFPROBE_PATH || "ffprobe";
+
 export interface ProbeResult {
   durationSec: number | null;
   width: number | null;
@@ -13,7 +17,7 @@ export interface ProbeResult {
 }
 
 export async function probe(file: string): Promise<ProbeResult> {
-  const { stdout } = await run("ffprobe", ["-v", "error", "-print_format", "json", "-show_format", "-show_streams", file], { maxBuffer: 10 * 1024 * 1024 });
+  const { stdout } = await run(FFPROBE, ["-v", "error", "-print_format", "json", "-show_format", "-show_streams", file], { maxBuffer: 10 * 1024 * 1024 });
   const j = JSON.parse(stdout) as { format?: { duration?: string }; streams?: { codec_type: string; width?: number; height?: number; avg_frame_rate?: string; duration?: string; disposition?: { attached_pic?: number }; tags?: { rotate?: string }; side_data_list?: { rotation?: number }[] }[] };
   const v = j.streams?.find((s) => s.codec_type === "video" && !s.disposition?.attached_pic);
   const a = j.streams?.find((s) => s.codec_type === "audio");
@@ -33,12 +37,12 @@ export async function probe(file: string): Promise<ProbeResult> {
 /** Extract a poster frame (jpeg) for video, or a resized copy for images. */
 export async function makePoster(input: string, output: string, atSec = 0.5) {
   const args = atSec > 0 ? ["-ss", String(atSec)] : [];
-  await run("ffmpeg", ["-v", "error", "-y", ...args, "-i", input, "-frames:v", "1", "-vf", "scale='min(640,iw)':-2", "-q:v", "4", output]);
+  await run(FFMPEG, ["-v", "error", "-y", ...args, "-i", input, "-frames:v", "1", "-vf", "scale='min(640,iw)':-2", "-q:v", "4", output]);
 }
 
 /** Normalized peak waveform for timeline display. */
 export async function waveform(input: string, points = 600): Promise<number[]> {
-  const { stdout } = await run("ffmpeg", ["-v", "error", "-i", input, "-ac", "1", "-ar", "2000", "-f", "s16le", "-"], { encoding: "buffer", maxBuffer: 400 * 1024 * 1024 });
+  const { stdout } = await run(FFMPEG, ["-v", "error", "-i", input, "-ac", "1", "-ar", "2000", "-f", "s16le", "-"], { encoding: "buffer", maxBuffer: 400 * 1024 * 1024 });
   const samples = new Int16Array(stdout.buffer, stdout.byteOffset, Math.floor(stdout.byteLength / 2));
   const per = Math.max(1, Math.floor(samples.length / points));
   const out: number[] = [];

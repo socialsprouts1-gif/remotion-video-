@@ -26,7 +26,7 @@ export const POST = route(async (req: Request) => {
   let engine: string;
   if (llmConfigured()) {
     const instruction = `Create a complete ${b.durationSec}-second motion graphics composition from scratch on this empty ${width}x${height} canvas at ${fps}fps: "${b.prompt}".
-Build it entirely from editable layers: solids/gradients for backgrounds, text with rich style (gradient, extrude, glow, stroke), shapes, procedural effects (particles, light-sweep, light-streaks, orbs, grid, hud, glitch, smoke, fire, film-grain, bar-chart, counter, lower-third...), and explicit keyframes with easing for position/scale/rotation/opacity/blur/color plus in/out animation presets and loops. Use staggered timing so elements build up, a clear hero moment, and a hold at the end. Every clip must lie within frames 0..${b.durationSec * fps}.`;
+Build it entirely from editable layers: solids/gradients for backgrounds, text with rich style (gradient, extrude, glow, stroke), shapes, procedural effects (particles, light-sweep, light-streaks, orbs, grid, hud, glitch, smoke, fire, film-grain, bar-chart, counter, lower-third...), and explicit keyframes with easing for position/scale/rotation/opacity/blur/color plus in/out animation presets and loops. Follow the motion design playbook: layered depth (background, mid, foreground), staggered eased entrances, a light sweep or accent at the hero moment, continuity between beats, and a clean held end frame. Aim for 8-20 layers with deliberate keyframes — this must look like a premium studio piece, not a template. Every clip must lie within frames 0..${b.durationSec * fps}.`;
     const r = await planEdits(instruction, { doc: base, selection: [], playhead: 0 });
     commands = r.commands;
     summary = r.reply;

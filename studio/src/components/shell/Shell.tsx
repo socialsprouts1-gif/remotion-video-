@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
-  AudioLines, Clapperboard, Download, FolderOpen, Home, Image as ImageIcon, LayoutTemplate, LogOut, Menu, Palette, Settings, Shapes, Shield, Sparkles, Wand2, Film, Coins,
+  AudioLines, Scissors, Clapperboard, Download, FolderOpen, Home, Image as ImageIcon, LayoutTemplate, LogOut, Menu, Palette, Settings, Shapes, Shield, Sparkles, Wand2, Film, Coins,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { api } from "@/lib/api";
@@ -14,6 +14,7 @@ export interface ShellUser { id: string; email: string; name: string | null; rol
 const NAV = [
   { href: "/home", label: "Home", icon: Home },
   { href: "/ai-studio", label: "AI Studio", icon: Sparkles },
+  { href: "/auto-edit", label: "Auto Edit", icon: Scissors },
   { href: "/editor", label: "Video Editor", icon: Clapperboard },
   { href: "/motion", label: "Motion Graphics", icon: Shapes },
   { href: "/animation", label: "AI Animation", icon: Wand2 },
