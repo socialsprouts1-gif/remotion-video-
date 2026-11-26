@@ -6,3 +6,4 @@ node_modules/
 .remotion-bundle/
 next-env.d.ts
 *.tsbuildinfo
+dump.rdb
