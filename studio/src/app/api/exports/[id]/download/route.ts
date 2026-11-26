@@ -2,7 +2,7 @@ import { Readable } from "node:stream";
 import { db } from "@/server/db";
 import { getUser } from "@/server/auth/session";
 import { storage } from "@/server/storage";
-import { outputInfo } from "@/server/render/render-doc";
+import { outputInfo } from "@/server/render/export-math";
 import type { ExportSettings } from "@/lib/project/schema";
 
 export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }) {

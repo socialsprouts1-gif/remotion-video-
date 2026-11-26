@@ -8,7 +8,8 @@ import fs from "node:fs";
 import { Worker } from "bullmq";
 import { db } from "../src/server/db";
 import { redis } from "../src/server/queue/redis";
-import { AI_QUEUE, RENDER_QUEUE } from "../src/server/queue/queues";
+import { AI_QUEUE, INGEST_QUEUE, RENDER_QUEUE } from "../src/server/queue/queues";
+import { processUpload } from "../src/server/services/assets";
 import { storage, scratchDir } from "../src/server/storage";
 import { ensureBrowser } from "@remotion/renderer";
 import { getBundle, renderProject } from "../src/server/render/render-doc";
@@ -75,13 +76,14 @@ async function main() {
   const concurrency = Number(process.env.RENDER_JOBS_PER_WORKER || 1);
   const render = new Worker(RENDER_QUEUE, async (j) => processRender(j.data.renderJobId as string), { connection: redis(), concurrency, lockDuration: 120_000 });
   const ai = new Worker(AI_QUEUE, async (j) => runAiJob(j.data.aiJobId as string), { connection: redis(), concurrency: 4, lockDuration: 600_000 });
-  for (const w of [render, ai]) w.on("failed", (j, err) => console.error(`[${w.name}] job ${j?.id} failed: ${err.message}`));
+  const ingest = new Worker(INGEST_QUEUE, async (j) => processUpload(j.data.uploadId as string), { connection: redis(), concurrency: 2, lockDuration: 600_000 });
+  for (const w of [render, ai, ingest]) w.on("failed", (j, err) => console.error(`[${w.name}] job ${j?.id} failed: ${err.message}`));
   // Recover jobs orphaned by a crashed worker: RUNNING in DB but not active in the queue.
   const stale = await db.renderJob.findMany({ where: { status: "RUNNING", startedAt: { lt: new Date(Date.now() - 30 * 60_000) } } });
   for (const s of stale) await db.renderJob.update({ where: { id: s.id }, data: { status: "FAILED", error: "Worker stopped while rendering. Please retry.", finishedAt: new Date() } });
-  console.log(`[worker] listening on '${RENDER_QUEUE}' and '${AI_QUEUE}'`);
+  console.log(`[worker] listening on '${RENDER_QUEUE}', '${AI_QUEUE}' and '${INGEST_QUEUE}'`);
   const shutdown = async () => {
-    await Promise.all([render.close(), ai.close()]);
+    await Promise.all([render.close(), ai.close(), ingest.close()]);
     process.exit(0);
   };
   process.on("SIGINT", shutdown);

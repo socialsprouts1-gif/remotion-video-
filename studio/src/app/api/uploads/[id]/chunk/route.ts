@@ -1,8 +1,8 @@
-import fsp from "node:fs/promises";
 import { db } from "@/server/db";
 import { HttpError, json, route } from "@/server/http";
 import { requireUser } from "@/server/auth/session";
-import { chunkPath } from "@/server/services/assets";
+import { partKey } from "@/server/services/assets";
+import { storage } from "@/server/storage";
 
 export const PUT = route(async (req: Request, ctx: { params: Promise<{ id: string }> }) => {
   const u = await requireUser();
@@ -15,7 +15,7 @@ export const PUT = route(async (req: Request, ctx: { params: Promise<{ id: strin
   const buf = Buffer.from(await req.arrayBuffer());
   const expected = index === s.totalChunks - 1 ? Number(s.totalBytes) - index * s.chunkSize : s.chunkSize;
   if (buf.length !== expected) throw new HttpError(400, `Chunk ${index} should be ${expected} bytes, got ${buf.length}`);
-  await fsp.writeFile(chunkPath(id, index), buf);
+  await storage().putBuffer(partKey(id, index), buf, "application/octet-stream");
   await db.$executeRaw`UPDATE "UploadSession" SET "receivedChunks" = array_append("receivedChunks", ${index}), "updatedAt" = now() WHERE id = ${id} AND NOT (${index} = ANY("receivedChunks"))`;
   return json({ ok: true, index });
 });

@@ -161,6 +161,8 @@ model Asset {
   source      String    @default("upload") // upload | ai:<provider> | render
   aiJobId     String?
   meta        Json?     // waveform peaks, ai prompt, etc.
+  status      String    @default("ready") // processing | ready | failed
+  error       String?
   createdAt   DateTime  @default(now())
 
   @@index([ownerId, createdAt])

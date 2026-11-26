@@ -10,7 +10,7 @@ export const GET = route(async (req: Request) => {
   const kind = url.searchParams.get("kind")?.toUpperCase() as AssetKind | undefined;
   const q = url.searchParams.get("q") ?? "";
   const assets = await db.asset.findMany({
-    where: { ownerId: u.id, ...(kind ? { kind } : {}), ...(q ? { name: { contains: q, mode: "insensitive" } } : {}), NOT: { storageKey: { startsWith: "pending/" } } },
+    where: { ownerId: u.id, ...(kind ? { kind } : {}), ...(q ? { name: { contains: q, mode: "insensitive" } } : {}), status: "ready", NOT: { storageKey: { startsWith: "pending/" } } },
     orderBy: { createdAt: "desc" },
     take: 300,
   });

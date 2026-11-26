@@ -74,8 +74,17 @@ export async function uploadFile(file: File, onProgress: (p: number, stage: stri
   };
   await Promise.all([worker(), worker(), worker()]);
   onProgress(0.95, "Processing (probe, poster, waveform)");
-  const r = await api<{ asset: AssetDto }>(`/api/uploads/${session.uploadId}/complete`, { method: "POST" });
+  let { asset } = await api<{ asset: AssetDto }>(`/api/uploads/${session.uploadId}/complete`, { method: "POST" });
   write(k, null);
+  // on hosted setups the worker processes the file (FFmpeg); wait for it
+  const started = Date.now();
+  while (asset.status === "processing") {
+    if (Date.now() - started > 20 * 60_000) throw new Error("Processing is taking too long — is the worker running?");
+    onProgress(0.97, "Processing on the worker");
+    await new Promise((r) => setTimeout(r, 2000));
+    asset = (await api<{ asset: AssetDto }>(`/api/assets/${asset.id}`)).asset;
+  }
+  if (asset.status === "failed") throw new Error(asset.error ?? "Processing failed");
   onProgress(1, "Done");
-  return r.asset;
+  return asset;
 }

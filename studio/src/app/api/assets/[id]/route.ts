@@ -3,6 +3,15 @@ import { db } from "@/server/db";
 import { HttpError, json, route } from "@/server/http";
 import { requireUser } from "@/server/auth/session";
 import { storage } from "@/server/storage";
+import { assetDto } from "@/server/services/assets";
+
+export const GET = route(async (_req: Request, ctx: { params: Promise<{ id: string }> }) => {
+  const u = await requireUser();
+  const { id } = await ctx.params;
+  const a = await db.asset.findFirst({ where: { id, ownerId: u.id } });
+  if (!a) throw new HttpError(404, "Asset not found");
+  return json({ asset: assetDto(a) });
+});
 
 type Ctx = { params: Promise<{ id: string }> };
 

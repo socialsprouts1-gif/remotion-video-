@@ -3,7 +3,7 @@ import { json, route } from "@/server/http";
 import { requireUser } from "@/server/auth/session";
 import { requireProject } from "@/server/services/projects";
 import { ExportSettings, ProjectDoc } from "@/lib/project/schema";
-import { estimateBytes, outputSize, prepareExportDoc } from "@/server/render/render-doc";
+import { estimateBytes, outputSize, prepareExportDoc } from "@/server/render/export-math";
 
 export const POST = route(async (req: Request) => {
   const u = await requireUser();

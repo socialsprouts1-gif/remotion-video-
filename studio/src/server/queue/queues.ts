@@ -3,8 +3,9 @@ import { redis } from "./redis";
 
 export const RENDER_QUEUE = "render";
 export const AI_QUEUE = "ai";
+export const INGEST_QUEUE = "ingest";
 
-const g = globalThis as unknown as { renderQueue?: Queue; aiQueue?: Queue };
+const g = globalThis as unknown as { renderQueue?: Queue; aiQueue?: Queue; ingestQueue?: Queue };
 
 export function renderQueue() {
   g.renderQueue ??= new Queue(RENDER_QUEUE, { connection: redis() });
@@ -36,4 +37,10 @@ export async function workerCount(name: string) {
   } catch {
     return -1;
   }
+}
+
+export async function enqueueIngest(uploadId: string) {
+  assertRedis();
+  g.ingestQueue ??= new Queue(INGEST_QUEUE, { connection: redis() });
+  await g.ingestQueue.add("ingest", { uploadId }, { jobId: `ingest-${uploadId}`, attempts: 2, backoff: { type: "exponential", delay: 3000 }, removeOnComplete: 500, removeOnFail: 500 });
 }

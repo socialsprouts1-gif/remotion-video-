@@ -27,7 +27,7 @@ export function extFor(name: string, mime: string) {
  * Ingest a local file as an asset: probe metadata, poster frame, waveform, then move to storage.
  * Used by uploads, AI generations and render outputs.
  */
-export async function ingestFile(opts: { ownerId: string; file: string; name: string; mime: string; source?: string; aiJobId?: string; meta?: Record<string, unknown> }) {
+export async function ingestFile(opts: { ownerId: string; file: string; name: string; mime: string; source?: string; aiJobId?: string; meta?: Record<string, unknown>; assetId?: string }) {
   const kind = kindForMime(opts.mime) ?? "OTHER";
   const size = (await fsp.stat(opts.file)).size;
   let meta: Record<string, unknown> = { ...(opts.meta ?? {}) };
@@ -39,8 +39,7 @@ export async function ingestFile(opts: { ownerId: string; file: string; name: st
       if (kind !== "IMAGE") throw new Error(`Could not read media file: ${(e as Error).message.slice(0, 200)}`);
     }
   }
-  const asset = await db.asset.create({
-    data: {
+  const fields = {
       ownerId: opts.ownerId,
       kind,
       name: opts.name.slice(0, 200),
@@ -54,8 +53,10 @@ export async function ingestFile(opts: { ownerId: string; file: string; name: st
       hasAudio: kind === "VIDEO" ? p.hasAudio : kind === "AUDIO" ? true : null,
       source: opts.source ?? "upload",
       aiJobId: opts.aiJobId,
-    },
-  });
+  };
+  const asset = opts.assetId
+    ? await db.asset.update({ where: { id: opts.assetId }, data: { ...fields, storageKey: undefined, status: "processing" } })
+    : await db.asset.create({ data: fields });
   const key = `users/${opts.ownerId}/assets/${asset.id}${extFor(opts.name, opts.mime)}`;
   let posterKey: string | null = null;
   const tmpDir = scratchDir("ingest", asset.id);
@@ -81,13 +82,15 @@ export async function ingestFile(opts: { ownerId: string; file: string; name: st
   } finally {
     await fsp.rm(tmpDir, { recursive: true, force: true });
   }
-  const updated = await db.asset.update({ where: { id: asset.id }, data: { storageKey: key, posterKey, meta: meta as object } });
+  const updated = await db.asset.update({ where: { id: asset.id }, data: { storageKey: key, posterKey, meta: meta as object, status: "ready", error: null } });
   await db.user.update({ where: { id: opts.ownerId }, data: { storageBytes: { increment: BigInt(size) } } });
   return updated;
 }
 
-export function assetDto(a: { id: string; kind: string; name: string; mimeType: string; sizeBytes: bigint; width: number | null; height: number | null; durationSec: number | null; fps: number | null; hasAudio: boolean | null; posterKey: string | null; source: string; createdAt: Date; meta?: unknown }) {
+export function assetDto(a: { id: string; kind: string; name: string; mimeType: string; sizeBytes: bigint; width: number | null; height: number | null; durationSec: number | null; fps: number | null; hasAudio: boolean | null; posterKey: string | null; source: string; createdAt: Date; meta?: unknown; status?: string; error?: string | null }) {
   return {
+    status: a.status ?? "ready",
+    error: a.error ?? null,
     id: a.id,
     kind: a.kind,
     name: a.name,
@@ -107,19 +110,47 @@ export function assetDto(a: { id: string; kind: string; name: string; mimeType: 
 }
 export type AssetDto = ReturnType<typeof assetDto>;
 
-export function chunkPath(uploadId: string, index: number) {
-  return path.join(scratchDir("uploads", uploadId), `${index}.part`);
-}
+export const partKey = (uploadId: string, index: number) => `uploads/${uploadId}/${index}.part`;
 
+/** Concatenate uploaded parts (stored in the object store) into one local file. */
 export async function assembleChunks(uploadId: string, totalChunks: number, outFile: string) {
   const out = fs.createWriteStream(outFile);
   for (let i = 0; i < totalChunks; i++) {
+    const r = await storage().read(partKey(uploadId, i));
     await new Promise<void>((resolve, reject) => {
-      const r = fs.createReadStream(chunkPath(uploadId, i));
       r.on("error", reject);
       r.on("end", resolve);
       r.pipe(out, { end: false });
     });
   }
   await new Promise<void>((resolve, reject) => out.end((e?: Error | null) => (e ? reject(e) : resolve())));
+}
+
+export async function removeChunks(uploadId: string, totalChunks: number) {
+  for (let i = 0; i < totalChunks; i++) await storage().remove(partKey(uploadId, i)).catch(() => undefined);
+}
+
+/** Where heavy media processing (FFmpeg) runs: inline in the web server, or in the worker (serverless hosts). */
+export function ingestMode(): "inline" | "worker" {
+  const m = process.env.INGEST_MODE;
+  if (m === "inline" || m === "worker") return m;
+  return process.env.VERCEL ? "worker" : "inline";
+}
+
+/** Worker side: assemble an upload and process it into the pre-created asset. */
+export async function processUpload(uploadId: string) {
+  const s = await db.uploadSession.findUniqueOrThrow({ where: { id: uploadId } });
+  if (!s.assetId) throw new Error("upload has no asset");
+  const dir = scratchDir("uploads", uploadId);
+  const assembled = path.join(dir, "assembled");
+  try {
+    await assembleChunks(uploadId, s.totalChunks, assembled);
+    await ingestFile({ ownerId: s.ownerId, file: assembled, name: s.fileName, mime: s.mimeType, assetId: s.assetId });
+    await removeChunks(uploadId, s.totalChunks);
+  } catch (e) {
+    await db.asset.update({ where: { id: s.assetId }, data: { status: "failed", error: (e as Error).message.slice(0, 500) } });
+    throw e;
+  } finally {
+    await fsp.rm(dir, { recursive: true, force: true });
+  }
 }
