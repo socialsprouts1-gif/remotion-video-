@@ -29,6 +29,24 @@ for c in [4.8, 18.86, 25.06, 33.17]: place(whoosh(0.9), c - 0.45, 0.22, pan=0.2)
 for c in [8.28, 29.72]: place(whoosh(0.6), c - 0.3, 0.14, pan=-0.2)
 for t0, f in [(4.95, 1568), (6.6, 1318.5), (9.12, 1046.5), (12.95, 1568), (14.3, 1760), (15.4, 1568), (16.7, 1318.5), (29.3, 1046.5), (35.5, 1760), (38.4, 1046.5), (39.65, 1568)]:
     place(chime(f), t0, 0.07, pan=float(rng.uniform(-0.3, 0.3)))
+def flick(d=0.12):
+    n = int(SR * d); x = rng.standard_normal(n); t = np.arange(n) / n
+    X = np.fft.rfft(x); f = np.fft.rfftfreq(n, 1 / SR); X *= (f > 1500) * (f < 9000)
+    y = np.fft.irfft(X, n) * np.exp(-t * 9); return y / np.abs(y).max()
+
+def tick(f=2600):
+    t = np.arange(int(SR * 0.04)) / SR; y = np.sin(2 * np.pi * f * t) * np.exp(-t * 160); return y
+
+# v2: whips on cuts, page flicks, polaroid snaps, title shimmers, card flip, number roll, letterbox open
+for c in [6.6, 8.167, 18.933, 23.4]: place(whoosh(0.45), c - 0.25, 0.2, pan=0.3)
+for c in [14.267, 15.333]: place(flick(0.14), c - 0.12, 0.16); place(flick(0.1), c + 0.02, 0.1)
+for c in [12.97, 16.633]: place(whoosh(0.7), c - 0.3, 0.14)
+for c in [17.92, 18.06, 18.2]: place(flick(0.06), c + 0.25, 0.12, pan=float(rng.uniform(-0.4, 0.4)))
+for c, f in [(3.5, 1760), (9.12, 1318.5), (28.42, 1568), (36.4, 1760)]: place(chime(f, 2.2), c, 0.06); place(whoosh(0.9), c - 0.2, 0.06)
+place(whoosh(1.2), 24.8, 0.08, pan=-0.4)
+place(flick(0.18), 29.4, 0.14)
+for i in range(10): place(tick(2200 + 90 * i), 39.7 + i * 0.05 + 0.55, 0.05)
+place(whoosh(1.0), 0.0, 0.1)
 # soft reverb tail
 ir = rng.standard_normal(int(SR * 1.8)) * np.exp(-np.arange(int(SR * 1.8)) / SR * 3.2) * 0.02
 for ch in range(2):
