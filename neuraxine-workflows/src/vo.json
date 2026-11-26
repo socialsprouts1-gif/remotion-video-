@@ -1,0 +1,72 @@
+{
+ "voice": "hm_omega",
+ "total": 48.707,
+ "lines": [
+  {
+   "section": "hook",
+   "start": 0.4,
+   "dur": 4.792,
+   "text": "Lead dhoondhna, email, LinkedIn message, call… yeh sab ek system karta hai. Main nahi."
+  },
+  {
+   "section": "nine",
+   "start": 5.642,
+   "dur": 2.619,
+   "text": "9 workflows hain. Dikhata hoon kaise jude hain."
+  },
+  {
+   "section": "apollo",
+   "start": 8.711,
+   "dur": 3.226,
+   "text": "Pehla, sahi target companies ki list khud banti hai."
+  },
+  {
+   "section": "email",
+   "start": 12.387,
+   "dur": 4.761,
+   "text": "Phir har lead ke liye personalized email sequence. Template wala “Dear Sir” nahi."
+  },
+  {
+   "section": "linkedin",
+   "start": 17.598,
+   "dur": 3.164,
+   "text": "Uske baad LinkedIn pe connection aur message. Khud se."
+  },
+  {
+   "section": "vapi",
+   "start": 21.212,
+   "dur": 2.476,
+   "text": "Aur calls? AI voice agent khud karta hai."
+  },
+  {
+   "section": "crm",
+   "start": 24.138,
+   "dur": 5.037,
+   "text": "Phir har lead ka update ek CRM mein. Ek dashboard pe dikhta hai kaun kahan hai."
+  },
+  {
+   "section": "honest",
+   "start": 29.625,
+   "dur": 2.776,
+   "text": "Ab honest baat. Yeh “set and forget” nahi hai."
+  },
+  {
+   "section": "wrong",
+   "start": 32.852,
+   "dur": 5.081,
+   "text": "Galat list daali? Toh 9 workflows milke galat logon ko spam karenge. Bas tezi se."
+  },
+  {
+   "section": "speed",
+   "start": 38.382,
+   "dur": 3.606,
+   "text": "System speed deta hai. Sahi target aapko hi chunna padega."
+  },
+  {
+   "section": "cta",
+   "start": 42.438,
+   "dur": 3.469,
+   "text": "Aapki sales team ko bhi aisa chahiye? DM karo “LEADS”."
+  }
+ ]
+}
