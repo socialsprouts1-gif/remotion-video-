@@ -59,20 +59,30 @@ class LocalStorage implements Storage {
   }
 }
 
+/** Env values pasted into hosting dashboards often carry quotes, spaces or line breaks. */
+function s3Env(name: string, fallback = "") {
+  const v = (process.env[name] ?? "").trim().replace(/^["']|["']$/g, "").replace(/\s+/g, "");
+  if (/[^\x21-\x7e]/.test(v)) throw new Error(`${name} contains invalid characters. Re-copy it from your storage provider.`);
+  return v || fallback;
+}
+
 class S3Storage implements Storage {
-  private clientP = import("@aws-sdk/client-s3").then(
-    (m) =>
-      [
-        m,
-        new m.S3Client({
-          region: process.env.S3_REGION || "auto",
-          endpoint: process.env.S3_ENDPOINT || undefined,
-          forcePathStyle: !!process.env.S3_ENDPOINT,
-          credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "", secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "" },
-        }),
-      ] as const,
-  );
-  bucket = process.env.S3_BUCKET ?? "";
+  private clientP = import("@aws-sdk/client-s3").then((m) => {
+    const endpoint = s3Env("S3_ENDPOINT");
+    const accessKeyId = s3Env("S3_ACCESS_KEY_ID");
+    const secretAccessKey = s3Env("S3_SECRET_ACCESS_KEY");
+    if (!accessKeyId || !secretAccessKey) throw new Error("S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY are not set.");
+    return [
+      m,
+      new m.S3Client({
+        region: s3Env("S3_REGION", "auto"),
+        endpoint: endpoint || undefined,
+        forcePathStyle: !!endpoint,
+        credentials: { accessKeyId, secretAccessKey },
+      }),
+    ] as const;
+  });
+  bucket = s3Env("S3_BUCKET");
   async putFile(key: string, localPath: string, mime: string) {
     const [m, c] = await this.clientP;
     const stat = await fsp.stat(localPath);
