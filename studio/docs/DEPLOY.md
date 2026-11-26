@@ -74,7 +74,9 @@ Don't set `ENABLE_MOCK_PROVIDER` in production. It's ignored when `NODE_ENV=prod
 
 Only for the **web** part, and only with `STORAGE_DRIVER="s3"`.
 
-On Vercel, set `DATABASE_URL` to Supabase's **Transaction pooler** string (port **6543**) with `?pgbouncer=true&connection_limit=1&sslmode=require` appended. Every serverless function opens its own connections, and the session pooler (port 5432) only allows 15 clients, so uploads fail with `EMAXCONNSESSION`. The Vercel build doesn't change the schema; run `npx prisma db push` with the session-pooler URL (port 5432) from your computer when the schema changes. The worker on Railway keeps the port-5432 URL. The worker still has to run on Railway or another Docker host. Two limits apply on Vercel:
+On Vercel, set `DATABASE_URL` to Supabase's **Transaction pooler** string (port **6543**) with `?pgbouncer=true&connection_limit=1&sslmode=require` appended. Every serverless function opens its own connections, and the session pooler (port 5432) only allows 15 clients, so uploads fail with `EMAXCONNSESSION`. The Vercel build doesn't change the schema; run `npx prisma db push` with the session-pooler URL (port 5432) from your computer when the schema changes. The worker on Railway keeps the port-5432 URL.
+
+The worker still has to run on Railway or another Docker host. Two limits apply on Vercel:
 
 - **FFmpeg:** upload processing (probe, poster, waveform) needs FFmpeg, which Vercel functions don't include.
 - **Uploads:** chunked uploads assume a single server, because chunks are stored on local disk before assembly.
