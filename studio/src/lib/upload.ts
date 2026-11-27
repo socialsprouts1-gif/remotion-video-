@@ -50,37 +50,70 @@ export async function uploadFile(file: File, onProgress: (p: number, stage: stri
   }
   const session = s;
   const todo = Array.from({ length: session.totalChunks }, (_, i) => i).filter((i) => !session.received.includes(i));
-  let done = session.totalChunks - todo.length;
-  onProgress(done / session.totalChunks, done ? "Resuming upload" : "Uploading");
+  const chunkBytes = (i: number) => Math.min(file.size, (i + 1) * session.chunkSize) - i * session.chunkSize;
+  let doneBytes = session.received.reduce((n, i) => n + chunkBytes(i), 0);
+  const inFlight = new Map<number, number>();
+  const mb = (b: number) => (b / 1048576).toFixed(1);
+  const report = (label = "Uploading") => {
+    const sent = Math.min(file.size, doneBytes + [...inFlight.values()].reduce((a, b) => a + b, 0));
+    onProgress(sent / Math.max(1, file.size), `${label} · ${mb(sent)} of ${mb(file.size)} MB`);
+  };
+  report(doneBytes ? "Resuming" : "Uploading");
+  const putChunk = (i: number, blob: Blob) =>
+    new Promise<void>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", `/api/uploads/${session.uploadId}/chunk?index=${i}`);
+      xhr.setRequestHeader("content-type", "application/octet-stream");
+      xhr.upload.onprogress = (ev) => {
+        inFlight.set(i, ev.loaded);
+        report();
+      };
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) return resolve();
+        let msg = `Chunk ${i} failed`;
+        try {
+          msg = JSON.parse(xhr.responseText).error ?? msg;
+        } catch {
+          /* non-JSON error body */
+        }
+        reject(new ApiError(xhr.status, msg));
+      };
+      xhr.onerror = () => reject(new Error(`Network error on chunk ${i}`));
+      xhr.onabort = () => reject(new Error("Upload canceled"));
+      signal?.addEventListener("abort", () => xhr.abort(), { once: true });
+      xhr.send(blob);
+    });
   const worker = async () => {
     while (todo.length) {
       if (signal?.aborted) throw new Error("Upload canceled");
       const i = todo.shift()!;
-      const blob = file.slice(i * session.chunkSize, Math.min(file.size, (i + 1) * session.chunkSize));
+      const blob = file.slice(i * session.chunkSize, i * session.chunkSize + chunkBytes(i));
       let attempt = 0;
       for (;;) {
         try {
-          const res = await fetch(`/api/uploads/${session.uploadId}/chunk?index=${i}`, { method: "PUT", body: blob, signal, headers: { "content-type": "application/octet-stream" } });
-          if (!res.ok) throw new ApiError(res.status, (await res.json().catch(() => ({}))).error ?? `Chunk ${i} failed`);
+          await putChunk(i, blob);
           break;
         } catch (e) {
+          inFlight.delete(i);
+          report();
           if (signal?.aborted || ++attempt >= 4 || (e instanceof ApiError && e.status < 500)) throw e;
           await new Promise((r) => setTimeout(r, 800 * 2 ** attempt));
         }
       }
-      done++;
-      onProgress((done / session.totalChunks) * 0.92, "Uploading");
+      inFlight.delete(i);
+      doneBytes += chunkBytes(i);
+      report();
     }
   };
   await Promise.all([worker(), worker(), worker()]);
-  onProgress(0.95, "Processing (probe, poster, waveform)");
+  onProgress(1, "Upload complete · processing");
   let { asset } = await api<{ asset: AssetDto }>(`/api/uploads/${session.uploadId}/complete`, { method: "POST" });
   write(k, null);
   // on hosted setups the worker processes the file (FFmpeg); wait for it
   const started = Date.now();
   while (asset.status === "processing") {
     if (Date.now() - started > 20 * 60_000) throw new Error("Processing is taking too long — is the worker running?");
-    onProgress(0.97, "Processing on the worker");
+    onProgress(1, "Uploaded · processing on the worker");
     await new Promise((r) => setTimeout(r, 2000));
     asset = (await api<{ asset: AssetDto }>(`/api/assets/${asset.id}`)).asset;
   }
