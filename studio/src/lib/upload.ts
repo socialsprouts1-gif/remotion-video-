@@ -54,8 +54,10 @@ export async function uploadFile(file: File, onProgress: (p: number, stage: stri
   let doneBytes = session.received.reduce((n, i) => n + chunkBytes(i), 0);
   const inFlight = new Map<number, number>();
   const mb = (b: number) => (b / 1048576).toFixed(1);
+  let shown = 0;
   const report = (label = "Uploading") => {
-    const sent = Math.min(file.size, doneBytes + [...inFlight.values()].reduce((a, b) => a + b, 0));
+    // never move backwards: a retried chunk shouldn't make the bar jump down
+    const sent = (shown = Math.max(shown, Math.min(file.size, doneBytes + [...inFlight.values()].reduce((a, b) => a + b, 0))));
     onProgress(sent / Math.max(1, file.size), `${label} · ${mb(sent)} of ${mb(file.size)} MB`);
   };
   report(doneBytes ? "Resuming" : "Uploading");

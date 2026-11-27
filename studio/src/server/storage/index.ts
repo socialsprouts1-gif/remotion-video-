@@ -128,6 +128,44 @@ export function storage(): Storage {
   return g.storage;
 }
 
+/** Turns an S3 error into a message that says which setting to check. */
+export function explainStorageError(e: unknown): string | null {
+  const code = (e as { Code?: string; name?: string })?.Code ?? (e as { name?: string })?.name ?? "";
+  const hints: Record<string, string> = {
+    SignatureDoesNotMatch: "Storage rejected the upload: the secret key or region is wrong. Re-check S3_SECRET_ACCESS_KEY and S3_REGION.",
+    InvalidAccessKeyId: "Storage rejected the upload: S3_ACCESS_KEY_ID is not recognised.",
+    NoSuchBucket: "Storage bucket not found. Create a bucket with the exact name in S3_BUCKET.",
+    AccessDenied: "Storage denied access. Check the S3 access key's permissions.",
+  };
+  if (hints[code]) return hints[code];
+  if (e instanceof Error && /contains invalid characters|are not set/.test(e.message)) return e.message;
+  return null;
+}
+
+/** Non-secret view of the storage settings plus a live write test, for diagnosing setup problems. */
+export async function checkStorage() {
+  const raw = (n: string) => (process.env[n] ?? "").trim().replace(/^["']|["']$/g, "").replace(/\s+/g, "");
+  const keyId = raw("S3_ACCESS_KEY_ID");
+  const secret = raw("S3_SECRET_ACCESS_KEY");
+  const info = {
+    driver: env.storageDriver,
+    endpoint: raw("S3_ENDPOINT") || null,
+    region: raw("S3_REGION") || null,
+    bucket: raw("S3_BUCKET") || null,
+    accessKeyId: keyId ? `${keyId.slice(0, 4)}… (${keyId.length} characters)` : "not set",
+    secretAccessKey: secret ? `set (${secret.length} characters)` : "not set",
+  };
+  const key = `healthcheck/${Date.now()}.txt`;
+  try {
+    await storage().putBuffer(key, Buffer.from("ok"), "text/plain");
+    await storage().remove(key);
+    return { ok: true, ...info, result: "Upload test passed" };
+  } catch (e) {
+    const code = (e as { Code?: string; name?: string })?.Code ?? (e as Error)?.name;
+    return { ok: false, ...info, error: code ?? "Error", result: explainStorageError(e) ?? (e as Error)?.message ?? String(e) };
+  }
+}
+
 /** Scratch directory for uploads-in-progress and render outputs before they are stored. */
 export function scratchDir(...parts: string[]) {
   const dir = path.resolve(env.storageDir, ".scratch", ...parts);

@@ -2,7 +2,7 @@ import { db } from "@/server/db";
 import { HttpError, json, route } from "@/server/http";
 import { requireUser } from "@/server/auth/session";
 import { partKey } from "@/server/services/assets";
-import { storage } from "@/server/storage";
+import { explainStorageError, storage } from "@/server/storage";
 
 export const PUT = route(async (req: Request, ctx: { params: Promise<{ id: string }> }) => {
   const u = await requireUser();
@@ -15,7 +15,14 @@ export const PUT = route(async (req: Request, ctx: { params: Promise<{ id: strin
   const buf = Buffer.from(await req.arrayBuffer());
   const expected = index === s.totalChunks - 1 ? Number(s.totalBytes) - index * s.chunkSize : s.chunkSize;
   if (buf.length !== expected) throw new HttpError(400, `Chunk ${index} should be ${expected} bytes, got ${buf.length}`);
-  await storage().putBuffer(partKey(id, index), buf, "application/octet-stream");
+  try {
+    await storage().putBuffer(partKey(id, index), buf, "application/octet-stream");
+  } catch (e) {
+    // configuration problems won't fix themselves: report them instead of letting the client retry
+    const hint = explainStorageError(e);
+    if (hint) throw new HttpError(422, hint, "STORAGE_CONFIG");
+    throw e;
+  }
   await db.$executeRaw`UPDATE "UploadSession" SET "receivedChunks" = array_append("receivedChunks", ${index}), "updatedAt" = now() WHERE id = ${id} AND NOT (${index} = ANY("receivedChunks"))`;
   return json({ ok: true, index });
 });
