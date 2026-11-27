@@ -4,7 +4,7 @@ export const env = {
   appSecret: process.env.APP_SECRET ?? "",
   storageDriver: (process.env.STORAGE_DRIVER ?? "local") as "local" | "s3",
   storageDir: process.env.STORAGE_DIR ?? "./storage",
-  redisUrl: process.env.REDIS_URL ?? "redis://127.0.0.1:6379",
+  redisUrl: (process.env.REDIS_URL ?? "").trim().replace(/^["']|["']$/g, "") || "redis://127.0.0.1:6379",
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
   adminEmails: (process.env.ADMIN_EMAILS ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean),
