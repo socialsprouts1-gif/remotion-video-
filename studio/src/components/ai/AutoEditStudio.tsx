@@ -117,7 +117,7 @@ export function AutoEditStudio() {
               }} />
             </div>
             {uploads.map((u) => (
-              <div key={u.id} className="mb-2"><div className="mb-1 text-[11px] text-ink-300">{u.name} · {u.stage}</div><Progress value={u.progress} /></div>
+              <div key={u.id} className="mb-2"><div className="mb-1 flex justify-between gap-2 text-[11px] text-ink-300"><span className="truncate">{u.name} · {u.stage}</span><span className="shrink-0 font-semibold tabular-nums text-ink-100">{Math.round(u.progress * 100)}%</span></div><Progress value={u.progress} /></div>
             ))}
             {vids.length ? (
               <div className="flex gap-2 overflow-x-auto pb-2">

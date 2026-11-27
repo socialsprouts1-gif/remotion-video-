@@ -95,7 +95,7 @@ export function MediaPanel() {
           <div key={u.id} className="rounded-lg bg-ink-850 p-2">
             <div className="mb-1 flex justify-between text-[11px]">
               <span className="truncate">{u.name}</span>
-              <span className="text-ink-400">{u.stage}</span>
+              <span className="shrink-0 text-ink-400 tabular-nums">{u.stage} · {Math.round(u.progress * 100)}%</span>
             </div>
             <Progress value={u.progress} />
           </div>
