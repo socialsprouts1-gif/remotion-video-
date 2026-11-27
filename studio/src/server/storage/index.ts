@@ -79,6 +79,9 @@ class S3Storage implements Storage {
         endpoint: endpoint || undefined,
         forcePathStyle: !!endpoint,
         credentials: { accessKeyId, secretAccessKey },
+        // S3-compatible stores (Supabase, R2, MinIO) don't all accept the SDK's default CRC32 checksum headers
+        requestChecksumCalculation: "WHEN_REQUIRED",
+        responseChecksumValidation: "WHEN_REQUIRED",
       }),
     ] as const;
   });
